@@ -5,7 +5,7 @@
     overflow: hidden;
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding-top: 140px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -34,7 +34,6 @@
     width: 100%;
     max-width: 450px;
     padding: 20px;
-    padding-bottom: 200px;
 }
 
 .logo-container {

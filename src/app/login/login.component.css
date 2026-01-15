@@ -1,23 +1,31 @@
 .login-container {
-    position: center;
-
+    position: relative;
+    height: 100vh;
     background-color: white;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Fallback font, adjust if project has specific font */
 }
 
-/* Background Shapes */
 .shape {
     position: absolute;
     z-index: 1;
+    height: 100%;
+    width: auto;
+    top: 0;
+    bottom: 0;
 }
 
+.blue-shape {
+    left: 0;
+}
 
-/* Content Wrapper */
+.green-shape {
+    right: 0;
+}
+
 .login-content {
     z-index: 10;
     display: flex;
@@ -28,7 +36,6 @@
     padding: 20px;
 }
 
-/* Logo */
 .logo-container {
     margin-bottom: 40px;
 }
@@ -36,24 +43,22 @@
 .logo {
     max-width: 600px;
     height: auto;
-    margin-top: 90px;
+    margin-top: 0;
 }
 
-/* Title */
 .title {
     font-size: 2rem;
-    color: #000;
+    color: #75757d;
     margin-bottom: 30px;
     font-weight: 500;
 }
 
-/* Form */
 .login-form {
     width: 100%;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .form-group label {
@@ -73,16 +78,13 @@
     outline: none;
     background-color: #fff;
     box-sizing: border-box;
-    /* Important for padding to not affect width */
     transition: border-color 0.3s;
 }
 
 .form-control:focus {
     border-color: #5C6BC0;
-    /* Example focus color matching button */
 }
 
-/* Forgot Password */
 .forgot-password {
     text-align: center;
     margin-bottom: 30px;
@@ -94,15 +96,12 @@
     font-size: 0.85rem;
 }
 
-/* Button */
 .btn-submit {
     width: 60%;
-    /* Not full width based on image */
     margin: 0 auto;
     display: block;
     padding: 12px;
     background-color: #5C6BC0;
-    /* Match the blue/purple in image approximately */
     color: white;
     border: none;
     border-radius: 8px;

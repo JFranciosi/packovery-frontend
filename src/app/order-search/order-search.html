@@ -41,7 +41,7 @@
         </div>
 
         <nav class="nav-menu">
-            <a class="nav-item active">
+            <a class="nav-item active" routerLink="/order-search">
                 <span class="icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -51,7 +51,7 @@
                 </span>
                 <span>Ricerca ordine</span>
             </a>
-            <a class="nav-item">
+            <a class="nav-item" routerLink="/active-signals">
                 <span class="icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -64,7 +64,7 @@
                 </span>
                 <span>Segnalazioni attive</span>
             </a>
-            <a class="nav-item">
+            <a class="nav-item" routerLink="/alert-configurator">
                 <span class="icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -243,7 +243,8 @@
             </div>
             <div class="filter-action">
 
-                <button class="btn-search" (click)="search()">Cerca</button>
+                <button class="btn-search"
+                    (click)="isStatusOpen = false; isWeightOpen = false; isSizeDropdownOpen = false;">Cerca</button>
             </div>
         </div>
 

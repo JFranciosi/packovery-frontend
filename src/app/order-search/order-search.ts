@@ -121,13 +121,6 @@ export class OrderSearch {
         this.filters = { ...this.initialFilters };
     }
 
-    search() {
-        this.isStatusOpen = false;
-        this.isWeightOpen = false;
-        this.isSizeDropdownOpen = false;
-        this.router.navigate(['/order-details']);
-    }
-
     logout() {
         // Here you would typically clear session/tokens
         this.router.navigate(['/']);

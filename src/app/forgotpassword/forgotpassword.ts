@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
     selector: 'app-forgotpassword',
@@ -11,5 +11,9 @@ import { RouterLink } from '@angular/router';
     styleUrls: ['./forgotpassword.css']
 })
 export class Forgotpassword {
+    constructor(private router: Router) { }
 
+    onSubmit() {
+        this.router.navigate(['/confirmation-code']);
+    }
 }

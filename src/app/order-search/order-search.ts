@@ -105,4 +105,10 @@ export class OrderSearch {
             this.isSizeDropdownOpen = false;
         }
     }
+
+    isSidebarOpen = false;
+
+    toggleSidebar() {
+        this.isSidebarOpen = !this.isSidebarOpen;
+    }
 }

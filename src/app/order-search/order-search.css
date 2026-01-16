@@ -11,6 +11,33 @@
     display: flex;
     height: 100vh;
     background-color: #ffffff;
+    position: relative;
+    /* Context for mobile overlay */
+}
+
+/* Mobile Header */
+.mobile-header {
+    display: none;
+    /* Hidden by default */
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 20px;
+    background-color: white;
+    border-bottom: 1px solid #f0f0f0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: #333;
 }
 
 /* Sidebar */
@@ -23,6 +50,27 @@
     flex-direction: column;
     border-right: 1px solid #f0f0f0;
     /* Subtle separator */
+    transition: transform 0.3s ease;
+    z-index: 100;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .logo-container {
@@ -325,11 +373,6 @@ th:last-child {
     text-align: center;
 }
 
-/* Specific alignment for "Dimensione" header based on visual */
-th:nth-last-child(2) {
-    /* "Dimensione" header covers the Size column */
-}
-
 tbody tr {
     height: 60px;
     border-bottom: 1px solid #f0f0f0;
@@ -450,8 +493,86 @@ td.action-cell {
     padding: 0 4px;
 }
 
-/* Adjustments for the 4-column grid layout */
-/* The last item (Search button) needs to handle its placement */
-/* In HTML structure, I put 8 items (7 inputs + 1 button). */
-/* Row 1: 4 inputs. Row 2: 3 inputs + 1 button. */
-/* This naturally fits grid-template-columns: repeat(4, 1fr) */
+/* ------------------------------------------------------------- */
+/* RESPONSIVE QUERIES */
+/* ------------------------------------------------------------- */
+
+/* Tablet & Smaller Laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .main-content {
+        padding: 30px;
+    }
+
+    .filters-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile Devices (max-width: 768px) */
+@media (max-width: 768px) {
+    :host {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .layout-container {
+        flex-direction: column;
+        padding-top: 60px;
+        /* Space for mobile header */
+        height: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .mobile-header {
+        display: flex;
+    }
+
+    .sidebar-overlay {
+        display: block;
+        /* Enabled but controlled by opacity/pointer-events */
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        padding: 20px;
+        width: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 100%;
+        padding-bottom: 40px;
+    }
+
+    /* Filters: 1 column on mobile */
+    .filters-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Table: Horizontal Scroll */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 800px;
+        /* Ensure table doesn't squash freely */
+    }
+
+    /* Pagination: Center on mobile */
+    .pagination {
+        justify-content: center;
+    }
+}

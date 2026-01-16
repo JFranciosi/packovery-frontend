@@ -37,11 +37,11 @@
 }
 
 .logo-container {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .logo {
-    max-width: 720px;
+    max-width: 600px;
     height: auto;
     margin-top: 0;
 }
@@ -72,7 +72,7 @@
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 16px;
     font-size: 1rem;
     color: #333;
     outline: none;
@@ -109,7 +109,7 @@
     background-color: #5C6BC0;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 16px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;

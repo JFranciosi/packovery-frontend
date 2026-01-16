@@ -5,6 +5,7 @@ import { ConfirmationCode } from './confirmation-code/confirmation-code';
 import { ResetPassword } from './reset-password/reset-password';
 import { OrderSearch } from './order-search/order-search';
 import { OrderDetails } from './order-details/order-details';
+import { ActiveSignals } from './active-signals/active-signals';
 
 export const routes: Routes = [
     {
@@ -36,5 +37,10 @@ export const routes: Routes = [
         title: 'Reset Password',
         path: 'reset-password',
         component: ResetPassword
+    },
+    {
+        title: 'Active Signals',
+        path: 'active-signals',
+        component: ActiveSignals
     }
 ];

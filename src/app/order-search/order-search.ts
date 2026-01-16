@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 interface Order {
     id: string;
@@ -20,6 +21,8 @@ interface Order {
     styleUrls: ['./order-search.css']
 })
 export class OrderSearch {
+    private router = inject(Router);
+    private eRef = inject(ElementRef);
 
     // Filter models
     filters = {
@@ -32,10 +35,12 @@ export class OrderSearch {
         size: ''
     };
 
+    initialFilters = { ...this.filters };
+
     // Dropdown options (mock)
-    statusOptions = ['In transito', 'In attesa', 'Consegnato'];
-    weightOptions = ['S (1g - 90g)', 'M (1kg - 3kg)', 'L (3kg - 5kg)', 'XL (6kg - 10kg)'];
-    sizeOptions = ['S (1cm - 15cm)', 'M (16cm - 30cm)', 'L (31cm - 45cm)', 'XL (46cm - 100cm)'];
+    statusOptions = ['', 'In transito', 'In attesa', 'Consegnato'];
+    weightOptions = ['', 'S (1g - 90g)', 'M (1kg - 3kg)', 'L (3kg - 5kg)', 'XL (6kg - 10kg)'];
+    sizeOptions = ['', 'S (1cm - 15cm)', 'M (16cm - 30cm)', 'L (31cm - 45cm)', 'XL (46cm - 100cm)'];
 
     // Data
     orders: Order[] = [
@@ -110,5 +115,23 @@ export class OrderSearch {
 
     toggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen;
+    }
+
+    clearFilters() {
+        this.filters = { ...this.initialFilters };
+    }
+
+    logout() {
+        // Here you would typically clear session/tokens
+        this.router.navigate(['/']);
+    }
+
+    @HostListener('document:click', ['$event'])
+    clickout(event: any) {
+        if (!this.eRef.nativeElement.contains(event.target)) {
+            this.isStatusOpen = false;
+            this.isWeightOpen = false;
+            this.isSizeDropdownOpen = false;
+        }
     }
 }

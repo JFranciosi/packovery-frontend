@@ -12,19 +12,24 @@
         <form class="login-form">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control">
+                <input type="email" id="email" name="email" class="form-control" [(ngModel)]="email" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="form-control">
+                <input type="password" id="password" name="password" class="form-control" [(ngModel)]="password"
+                    required>
+            </div>
+
+            <div class="error-message" *ngIf="errorMessage" style="color: red; margin-bottom: 10px;">
+                {{ errorMessage }}
             </div>
 
             <div class="forgot-password">
                 <a href="/forgot-password">Password Dimenticata?</a>
             </div>
 
-            <button type="button" class="btn-submit">Accedi</button>
+            <button type="button" class="btn-submit" (click)="login()">Accedi</button>
         </form>
     </div>
 </div>

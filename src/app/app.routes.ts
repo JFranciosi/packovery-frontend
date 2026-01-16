@@ -4,12 +4,18 @@ import { Forgotpassword } from './forgotpassword/forgotpassword';
 import { ConfirmationCode } from './confirmation-code/confirmation-code';
 import { ResetPassword } from './reset-password/reset-password';
 import { OrderSearch } from './order-search/order-search';
+import { OrderDetails } from './order-details/order-details';
 
 export const routes: Routes = [
     {
         title: 'Order Search',
         path: 'order-search',
         component: OrderSearch
+    },
+    {
+        title: 'Order Details',
+        path: 'order-details', // Just 'order-details' for now to match link, can add '/:id' if we really passed id
+        component: OrderDetails
     },
     {
         title: 'Login',

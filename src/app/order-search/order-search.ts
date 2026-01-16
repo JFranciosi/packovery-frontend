@@ -1,7 +1,7 @@
 import { Component, HostListener, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 interface Order {
     id: string;
@@ -16,7 +16,7 @@ interface Order {
 @Component({
     selector: 'app-order-search',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, RouterLink],
     templateUrl: './order-search.html',
     styleUrls: ['./order-search.css']
 })

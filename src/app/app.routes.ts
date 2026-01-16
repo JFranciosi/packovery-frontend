@@ -6,6 +6,7 @@ import { ResetPassword } from './reset-password/reset-password';
 import { OrderSearch } from './order-search/order-search';
 import { OrderDetails } from './order-details/order-details';
 import { ActiveSignals } from './active-signals/active-signals';
+import { AlertConfigurator } from './alert-configurator/alert-configurator';
 
 export const routes: Routes = [
     {
@@ -42,5 +43,10 @@ export const routes: Routes = [
         title: 'Active Signals',
         path: 'active-signals',
         component: ActiveSignals
+    },
+    {
+        title: 'Alert Configurator',
+        path: 'alert-configurator',
+        component: AlertConfigurator
     }
 ];

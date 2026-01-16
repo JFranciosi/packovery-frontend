@@ -45,7 +45,7 @@ export class AlertConfigurator {
     }
 
     editAlert(alert: Alert) {
-        console.log('Edit', alert);
+        this.router.navigate(['/alert-modification', alert.id]);
     }
 
     deleteAlert(alert: Alert) {

@@ -51,6 +51,11 @@ export class OrderDetails implements AfterViewInit {
         this.isSidebarOpen = !this.isSidebarOpen;
     }
 
+    logout() {
+        // Implement logout logic here
+        console.log('Logging out...');
+    }
+
     ngAfterViewInit(): void {
         this.initMap();
     }

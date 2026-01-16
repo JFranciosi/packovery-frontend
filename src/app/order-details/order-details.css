@@ -23,14 +23,22 @@
     display: flex;
     flex-direction: column;
     border-right: 1px solid #f0f0f0;
-    z-index: 3100;
-    /* Highest priority */
+    z-index: 100;
 }
 
 .logo-container {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-name {
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #4A69BD;
+    letter-spacing: -0.5px;
 }
 
 .nav-menu {
@@ -75,12 +83,33 @@
     margin-top: auto;
 }
 
+.logout-item {
+    color: #ff4d4f;
+    margin-top: 10px;
+}
+
+.logout-item .icon svg {
+    stroke: #ff4d4f;
+}
+
+.logout-item:hover {
+    background-color: #fff1f0;
+    color: #ff4d4f;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
 /* Main Content */
 .main-content {
     flex: 1;
-    padding: 40px 60px;
+    padding: 0 60px;
     overflow-y: auto;
     animation: fadeInPage 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 @keyframes fadeInPage {
@@ -100,7 +129,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .page-title {
@@ -131,8 +160,6 @@
 }
 
 .btn-back svg {
-    /* Flip horizontally if needed to match "Torna indietro" arrow direction */
-    transform: scaleX(-1);
     color: #666;
 }
 
@@ -142,7 +169,7 @@
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     background-color: #fff;
 }
 
@@ -216,8 +243,8 @@
 .rider-grid {
     display: grid;
     column-gap: 24px;
-    row-gap: 20px;
-    margin-bottom: 40px;
+    row-gap: 16px;
+    margin-bottom: 20px;
 }
 
 .info-grid {
@@ -335,8 +362,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 3001;
-    /* High z-index to stay above map (Leaflet ~400-1000) */
+    z-index: 50;
 }
 
 .menu-toggle {
@@ -355,8 +381,7 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 3000;
-    /* Above everything but drawer/sidebar */
+    z-index: 90;
 }
 
 .sidebar-overlay.open {

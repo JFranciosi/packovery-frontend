@@ -7,6 +7,7 @@ import { OrderSearch } from './order-search/order-search';
 import { OrderDetails } from './order-details/order-details';
 import { ActiveSignals } from './active-signals/active-signals';
 import { AlertConfigurator } from './alert-configurator/alert-configurator';
+import { AlertCreation } from './alert-creation/alert-creation';
 
 export const routes: Routes = [
     {
@@ -48,5 +49,10 @@ export const routes: Routes = [
         title: 'Alert Configurator',
         path: 'alert-configurator',
         component: AlertConfigurator
+    },
+    {
+        title: 'Create Alert',
+        path: 'alert-creation',
+        component: AlertCreation
     }
 ];

@@ -113,5 +113,39 @@ export class OrderDetails implements AfterViewInit {
         // Fit bounds
         this.map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
     }
+
+    // Chat Logic
+    isChatOpen = false;
+    newMessage = '';
+    messages: { text: string, sender: 'user' | 'rider', time: string }[] = [
+        { text: 'Ciao, a che ora è prevista la consegna?', sender: 'user', time: '14:05' },
+        { text: 'Ciao Luca! Arriverò verso le 14:30.', sender: 'rider', time: '14:06' }
+    ];
+
+    toggleChat() {
+        this.isChatOpen = !this.isChatOpen;
+    }
+
+    sendMessage() {
+        if (!this.newMessage.trim()) return;
+
+        this.messages.push({
+            text: this.newMessage,
+            sender: 'user',
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+
+        const userMsg = this.newMessage;
+        this.newMessage = '';
+
+        // Simulate Rider Response
+        setTimeout(() => {
+            this.messages.push({
+                text: `Ricevuto: "${userMsg}". Sto arrivando!`,
+                sender: 'rider',
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+        }, 2000);
+    }
 }
 

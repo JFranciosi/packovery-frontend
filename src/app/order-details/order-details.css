@@ -362,7 +362,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 50;
+    z-index: 3001;
 }
 
 .menu-toggle {
@@ -381,7 +381,7 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 90;
+    z-index: 3000;
 }
 
 .sidebar-overlay.open {
@@ -420,7 +420,10 @@
         padding-top: 60px;
         height: 100%;
         overflow: hidden;
+        overflow-x: hidden;
         box-sizing: border-box;
+        width: 100%;
+        max-width: 100vw;
     }
 
     .mobile-header {
@@ -439,10 +442,13 @@
     .main-content {
         padding: 20px;
         width: 100%;
+        max-width: 100%;
         overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         height: 100%;
         padding-bottom: 40px;
+        box-sizing: border-box;
     }
 
     .page-header {

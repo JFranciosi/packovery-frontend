@@ -1,5 +1,19 @@
 @import 'leaflet/dist/leaflet.css';
 
+/* Global Mobile Optimization - Prevent Horizontal Scroll */
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;

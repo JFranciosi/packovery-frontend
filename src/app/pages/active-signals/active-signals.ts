@@ -4,13 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 
-interface Signal {
-    id: string; // Order ID
-    alertId: string;
-    description: string; // e.g., "Segnale GPS interrotto"
-    time: string; // e.g., "00:30"
-    type: 'gps' | 'delay' | 'other';
-}
+import { Signal } from '../../model/models';
 
 @Component({
     selector: 'app-active-signals',

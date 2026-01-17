@@ -4,14 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 
-interface Alert {
-    id: string;
-    name: string;
-    createdDate: string;
-    type: string;
-    threshold: string;
-    status: 'Attivo' | 'Non attivo';
-}
+import { Alert } from '../../model/models';
 
 @Component({
     selector: 'app-alert-configurator',

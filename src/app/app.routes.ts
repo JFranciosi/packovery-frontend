@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { Login } from './login/login';
-import { Forgotpassword } from './forgotpassword/forgotpassword';
-import { ConfirmationCode } from './confirmation-code/confirmation-code';
-import { ResetPassword } from './reset-password/reset-password';
-import { OrderSearch } from './order-search/order-search';
-import { OrderDetails } from './order-details/order-details';
-import { ActiveSignals } from './active-signals/active-signals';
-import { AlertConfigurator } from './alert-configurator/alert-configurator';
-import { AlertCreation } from './alert-creation/alert-creation';
-import { AlertModification } from './alert-modification/alert-modification';
+import { Login } from './pages/login/login';
+import { Forgotpassword } from './pages/forgotpassword/forgotpassword';
+import { ConfirmationCode } from './pages/confirmation-code/confirmation-code';
+import { ResetPassword } from './pages/reset-password/reset-password';
+import { OrderSearch } from './component/order-search/order-search';
+import { OrderDetails } from './pages/order-details/order-details';
+import { ActiveSignals } from './pages/active-signals/active-signals';
+import { AlertConfigurator } from './component/alert-configurator/alert-configurator';
+import { AlertCreation } from './component/alert-creation/alert-creation';
+import { AlertModification } from './component/alert-modification/alert-modification';
 
 export const routes: Routes = [
     {

@@ -3,15 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-interface Order {
-    id: string;
-    status: string;
-    origin: string;
-    destination: string;
-    date: string;
-    weight: string;
-    size: string;
-}
+import { Order } from '../../model/models';
 
 @Component({
     selector: 'app-order-search',

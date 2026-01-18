@@ -28,7 +28,6 @@ export class Login {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (response) => {
         console.log('Login successful', response);
-        // Navigate to dashboard or home, e.g. order-search
         this.router.navigate(['/order-search']);
       },
       error: (err) => {

@@ -165,12 +165,10 @@ textarea:focus {
 
 .readonly-input {
     background-color: #fcfcfc;
-    /* Slight grey specifically for read-only fields */
     color: #666;
 }
 
 
-/* Threshold */
 .threshold-wrapper {
     display: flex;
     align-items: center;
@@ -199,7 +197,6 @@ textarea:focus {
     text-decoration: underline;
 }
 
-/* Toggle Switch */
 .status-toggle-wrapper {
     display: flex;
     align-items: center;
@@ -256,7 +253,6 @@ input:checked+.slider:before {
     color: #333;
 }
 
-/* Action Button */
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -281,7 +277,6 @@ input:checked+.slider:before {
 }
 
 
-/* Mobile */
 .mobile-header {
     display: none;
 }

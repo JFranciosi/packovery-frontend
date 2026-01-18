@@ -15,91 +15,7 @@
     position: relative;
 }
 
-/* Sidebar (Copied from Order Search to ensure pixel perfect consistency) */
-.sidebar {
-    width: 280px;
-    background-color: #fcfcfc;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #f0f0f0;
-    z-index: 100;
-}
-
-.logo-container {
-    margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.logo-name {
-    margin-top: 8px;
-    font-size: 20px;
-    font-weight: 800;
-    color: #4A69BD;
-    letter-spacing: -0.5px;
-}
-
-.nav-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex: 1;
-}
-
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    color: #444;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
-
-.nav-item.active {
-    background-color: #5865F2;
-    /* Approx blue */
-    color: white;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.2);
-}
-
-.nav-item:hover:not(.active) {
-    background-color: #f5f5f7;
-}
-
-.nav-item .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar-footer {
-    margin-top: auto;
-}
-
-.logout-item {
-    color: #ff4d4f;
-    margin-top: 10px;
-}
-
-.logout-item .icon svg {
-    stroke: #ff4d4f;
-}
-
-.logout-item:hover {
-    background-color: #fff1f0;
-    color: #ff4d4f;
-}
-
-.cursor-pointer {
-    cursor: pointer;
-}
+/* Sidebar styles removed - using SidebarComponent */
 
 /* Main Content */
 .main-content {
@@ -373,24 +289,7 @@
     color: #333;
 }
 
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 3000;
-}
-
-.sidebar-overlay.open {
-    display: block;
-}
-
-.sidebar.open {
-    transform: translateX(0);
-}
+/* Sidebar styles removed */
 
 
 /* Responsive Queries */

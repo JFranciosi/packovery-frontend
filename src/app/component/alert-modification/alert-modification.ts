@@ -15,7 +15,6 @@ export class AlertModification implements OnInit {
 
     isSidebarOpen = false;
 
-    // Form Model
     alert = {
         id: '',
         type: '',
@@ -28,7 +27,6 @@ export class AlertModification implements OnInit {
     constructor(private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        // Get ID from route
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.loadAlert(id);
@@ -36,11 +34,8 @@ export class AlertModification implements OnInit {
     }
 
     loadAlert(id: string) {
-        // Mock data loading
-        // In real app, fetch from service
         console.log('Loading alert', id);
 
-        // Mock data based on ID or just generic for demo
         this.alert = {
             id: 'A0001',
             type: 'Ritardo consegna ordine',

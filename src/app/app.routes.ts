@@ -27,6 +27,11 @@ export const routes: Routes = [
         component: Login
     },
     {
+        title: 'Login',
+        path: 'login',
+        component: Login
+    },
+    {
         title: 'Forgot Password',
         path: 'forgot-password',
         component: Forgotpassword

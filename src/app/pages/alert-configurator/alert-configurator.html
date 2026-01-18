@@ -116,7 +116,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let alert of alerts">
+                    @for (alert of alerts; track $index) {
+                    <tr>
                         <td class="col-name" data-label="Nome">{{ alert.name }}</td>
                         <td class="col-date" data-label="Data creazione">{{ alert.createdDate }}</td>
                         <td class="col-type" data-label="Tipologia">{{ alert.type }}</td>
@@ -150,6 +151,7 @@
                             </div>
                         </td>
                     </tr>
+                    }
                 </tbody>
             </table>
         </div>

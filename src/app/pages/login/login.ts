@@ -18,6 +18,11 @@ export class Login {
   email = '';
   password = '';
   errorMessage = '';
+  passwordFieldType: string = 'password';
+
+  togglePasswordVisibility(): void {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
   login() {
     this.authService.login({ email: this.email, password: this.password }).subscribe({

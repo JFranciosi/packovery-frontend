@@ -59,6 +59,28 @@
 
 .form-group {
     margin-bottom: 10px;
+    position: relative;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle-icon:hover {
+    color: #5C6BC0;
 }
 
 .form-group label {

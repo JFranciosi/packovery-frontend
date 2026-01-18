@@ -110,10 +110,11 @@
             <div class="form-group">
                 <label>Tipologia</label>
                 <div class="type-selector">
-                    <button *ngFor="let t of alertTypes" class="type-btn" [class.selected]="alert.type === t"
-                        (click)="selectType(t)">
+                    @for (t of alertTypes; track t) {
+                    <button class="type-btn" [class.selected]="alert.type === t" (click)="selectType(t)">
                         {{ t }}
                     </button>
+                    }
                 </div>
             </div>
 

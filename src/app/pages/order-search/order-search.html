@@ -103,13 +103,15 @@
                 <label>ID ordine</label>
                 <div class="input-wrapper">
                     <input type="text" placeholder="..." [(ngModel)]="filters.orderId">
-                    <span class="clear-field" *ngIf="filters.orderId" (click)="filters.orderId = ''">
+                    @if (filters.orderId) {
+                    <span class="clear-field" (click)="filters.orderId = ''">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </span>
+                    }
                 </div>
             </div>
 
@@ -119,14 +121,15 @@
                     <div class="custom-select-trigger">
                         {{ filters.status || '----' }}
                     </div>
-                    <span class="clear-field" *ngIf="filters.status"
-                        (click)="filters.status = ''; $event.stopPropagation()">
+                    @if (filters.status) {
+                    <span class="clear-field" (click)="filters.status = ''; $event.stopPropagation()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </span>
+                    }
                     <span class="chevron">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -135,24 +138,30 @@
                     </span>
                 </div>
                 <!-- Custom Dropdown -->
-                <div class="custom-dropdown-options" *ngIf="isStatusOpen">
-                    <div class="option" *ngFor="let opt of statusOptions" (click)="selectOption('status', opt)">
+                @if (isStatusOpen) {
+                <div class="custom-dropdown-options">
+                    @for (opt of statusOptions; track opt) {
+                    <div class="option" (click)="selectOption('status', opt)">
                         {{ opt || '----' }}
                     </div>
+                    }
                 </div>
+                }
             </div>
 
             <div class="filter-group">
                 <label>Città di partenza</label>
                 <div class="input-wrapper">
                     <input type="text" placeholder="..." [(ngModel)]="filters.originCity">
-                    <span class="clear-field" *ngIf="filters.originCity" (click)="filters.originCity = ''">
+                    @if (filters.originCity) {
+                    <span class="clear-field" (click)="filters.originCity = ''">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </span>
+                    }
                 </div>
             </div>
 
@@ -160,13 +169,15 @@
                 <label>Città di destinazione</label>
                 <div class="input-wrapper">
                     <input type="text" placeholder="..." [(ngModel)]="filters.destCity">
-                    <span class="clear-field" *ngIf="filters.destCity" (click)="filters.destCity = ''">
+                    @if (filters.destCity) {
+                    <span class="clear-field" (click)="filters.destCity = ''">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </span>
+                    }
                 </div>
             </div>
 
@@ -174,13 +185,15 @@
                 <label>Data creazione ordine</label>
                 <div class="input-wrapper">
                     <input type="date" placeholder="..." [(ngModel)]="filters.date">
-                    <span class="clear-field" *ngIf="filters.date" (click)="filters.date = ''">
+                    @if (filters.date) {
+                    <span class="clear-field" (click)="filters.date = ''">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </span>
+                    }
                 </div>
             </div>
 
@@ -190,14 +203,15 @@
                     <div class="custom-select-trigger">
                         {{ filters.weight || '----' }}
                     </div>
-                    <span class="clear-field" *ngIf="filters.weight"
-                        (click)="filters.weight = ''; $event.stopPropagation()">
+                    @if (filters.weight) {
+                    <span class="clear-field" (click)="filters.weight = ''; $event.stopPropagation()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </span>
+                    }
                     <span class="chevron">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -206,11 +220,15 @@
                     </span>
                 </div>
                 <!-- Custom Dropdown -->
-                <div class="custom-dropdown-options" *ngIf="isWeightOpen">
-                    <div class="option" *ngFor="let opt of weightOptions" (click)="selectOption('weight', opt)">
+                @if (isWeightOpen) {
+                <div class="custom-dropdown-options">
+                    @for (opt of weightOptions; track opt) {
+                    <div class="option" (click)="selectOption('weight', opt)">
                         {{ opt || '----' }}
                     </div>
+                    }
                 </div>
+                }
             </div>
 
             <div class="filter-group relative">
@@ -219,14 +237,15 @@
                     <div class="custom-select-trigger">
                         {{ filters.size || '----' }}
                     </div>
-                    <span class="clear-field" *ngIf="filters.size"
-                        (click)="filters.size = ''; $event.stopPropagation()">
+                    @if (filters.size) {
+                    <span class="clear-field" (click)="filters.size = ''; $event.stopPropagation()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </span>
+                    }
                     <span class="chevron">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -235,11 +254,15 @@
                     </span>
                 </div>
                 <!-- Custom Dropdown for demonstration/screenshot match -->
-                <div class="custom-dropdown-options" *ngIf="isSizeDropdownOpen">
-                    <div class="option" *ngFor="let opt of sizeOptions" (click)="selectOption('size', opt)">
+                @if (isSizeDropdownOpen) {
+                <div class="custom-dropdown-options">
+                    @for (opt of sizeOptions; track opt) {
+                    <div class="option" (click)="selectOption('size', opt)">
                         {{ opt || '----' }}
                     </div>
+                    }
                 </div>
+                }
             </div>
             <div class="filter-action">
 
@@ -264,7 +287,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let order of orders">
+                    @for (order of orders; track order.id) {
+                    <tr>
                         <td data-label="ID ordine">{{ order.id }}</td>
                         <td data-label="Stato">{{ order.status }}</td>
                         <td data-label="Partenza">{{ order.origin }}</td>
@@ -285,9 +309,12 @@
                             </a>
                         </td>
                     </tr>
+                    }
                     <!-- Empty rows filler if needed? -->
-                    <tr class="empty-row-filler" *ngIf="orders.length < 5"></tr>
-                    <tr class="empty-row-filler" *ngIf="orders.length < 5"></tr>
+                    @if (orders.length < 5) { <tr class="empty-row-filler">
+                        </tr> }
+                        @if (orders.length < 5) { <tr class="empty-row-filler">
+                            </tr> }
                 </tbody>
             </table>
         </div>

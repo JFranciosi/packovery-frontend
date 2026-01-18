@@ -210,13 +210,14 @@
         </div>
 
         <div class="chat-messages">
-            <div *ngFor="let msg of messages" class="message" [class.user]="msg.sender === 'user'"
-                [class.rider]="msg.sender === 'rider'">
+            @for (msg of messages; track $index) {
+            <div class="message" [class.user]="msg.sender === 'user'" [class.rider]="msg.sender === 'rider'">
                 <div class="msg-bubble">
                     {{ msg.text }}
                 </div>
                 <div class="msg-time">{{ msg.time }}</div>
             </div>
+            }
         </div>
 
         <div class="chat-input-area">

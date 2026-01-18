@@ -2,7 +2,7 @@ import { Component, HostListener, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { SidebarComponent } from '../../component/sidebar/sidebar';
+import { SidebarComponent } from '../sidebar/sidebar';
 
 import { Order } from '../../model/models';
 

@@ -3,7 +3,7 @@ import { Login } from './pages/login/login';
 import { Forgotpassword } from './pages/forgotpassword/forgotpassword';
 import { ConfirmationCode } from './pages/confirmation-code/confirmation-code';
 import { ResetPassword } from './pages/reset-password/reset-password';
-import { OrderSearch } from './pages/order-search/order-search';
+import { OrderSearch } from './component/order-search/order-search';
 import { OrderDetails } from './pages/order-details/order-details';
 import { ActiveSignals } from './pages/active-signals/active-signals';
 import { AlertConfigurator } from './pages/alert-configurator/alert-configurator';

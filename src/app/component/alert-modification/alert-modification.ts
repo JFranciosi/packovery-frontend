@@ -1,13 +1,13 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { SidebarComponent } from '../../component/sidebar/sidebar';
 
 @Component({
     selector: 'app-alert-modification',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent],
     templateUrl: './alert-modification.html',
     styleUrls: ['./alert-modification.css']
 })

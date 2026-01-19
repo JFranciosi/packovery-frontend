@@ -78,12 +78,13 @@
                 }
             </div>
 
-            <div class="filter-group">
+            <div class="filter-group relative">
                 <label>Città di partenza</label>
                 <div class="input-wrapper">
-                    <input type="text" placeholder="..." [(ngModel)]="filters.originCity">
+                    <input type="text" placeholder="..." [value]="filters.originCity"
+                        (input)="onOriginCityInput($event)">
                     @if (filters.originCity) {
-                    <span class="clear-field" (click)="filters.originCity = ''">
+                    <span class="clear-field" (click)="filters.originCity = ''; isOriginCityOpen = false">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -92,14 +93,24 @@
                     </span>
                     }
                 </div>
+                <!-- City Autocomplete Dropdown -->
+                @if (isOriginCityOpen && filteredOriginCities.length > 0) {
+                <div class="custom-dropdown-options">
+                    @for (city of filteredOriginCities; track city.nome) {
+                    <div class="option" (click)="selectOriginCity(city)">
+                        {{ city.nome }} ({{ city.sigla }})
+                    </div>
+                    }
+                </div>
+                }
             </div>
 
-            <div class="filter-group">
+            <div class="filter-group relative">
                 <label>Città di destinazione</label>
                 <div class="input-wrapper">
-                    <input type="text" placeholder="..." [(ngModel)]="filters.destCity">
+                    <input type="text" placeholder="..." [value]="filters.destCity" (input)="onDestCityInput($event)">
                     @if (filters.destCity) {
-                    <span class="clear-field" (click)="filters.destCity = ''">
+                    <span class="clear-field" (click)="filters.destCity = ''; isDestCityOpen = false">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -108,18 +119,38 @@
                     </span>
                     }
                 </div>
+                <!-- City Autocomplete Dropdown -->
+                @if (isDestCityOpen && filteredDestCities.length > 0) {
+                <div class="custom-dropdown-options">
+                    @for (city of filteredDestCities; track city.nome) {
+                    <div class="option" (click)="selectDestCity(city)">
+                        {{ city.nome }} ({{ city.sigla }})
+                    </div>
+                    }
+                </div>
+                }
             </div>
 
             <div class="filter-group">
                 <label>Data creazione ordine</label>
                 <div class="input-wrapper">
-                    <input type="date" placeholder="..." [(ngModel)]="filters.date">
+                    <input #dateInput type="date" placeholder="..." [(ngModel)]="filters.date">
                     @if (filters.date) {
                     <span class="clear-field" (click)="filters.date = ''">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </span>
+                    } @else {
+                    <span class="calendar-icon" (click)="dateInput.showPicker()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
                     </span>
                     }

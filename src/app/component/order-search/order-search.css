@@ -149,6 +149,35 @@
     padding-right: 36px;
 }
 
+/* Hide native date icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+input[type="date"] {
+    position: relative;
+}
+
+/* Calendar icon style */
+.calendar-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+    /* Let clicks pass through if covered, but here we want to click it. handled in HTML */
+    pointer-events: auto;
+    cursor: pointer;
+    display: flex;
+    transition: color 0.2s;
+}
+
+.calendar-icon:hover {
+    color: #333;
+}
+
 .input-wrapper .icon-right {
     position: absolute;
     right: 12px;

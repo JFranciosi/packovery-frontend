@@ -24,3 +24,15 @@ export interface Alert {
     threshold: string;
     status: 'Attivo' | 'Non attivo';
 }
+
+export interface Comune {
+    nome: string;
+    codice: string;
+    zona: { nome: string; codice: string };
+    regione: { nome: string; codice: string };
+    provincia: { nome: string; codice: string };
+    sigla: string;
+    codiceCatastale: string;
+    cap: string[];
+    popolazione: number;
+}

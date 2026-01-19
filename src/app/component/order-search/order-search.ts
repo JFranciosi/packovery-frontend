@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar';
 
-import { Order } from '../../model/models';
+import { LocationsService } from '../../services/locations.service';
+import { Order, Comune } from '../../model/models';
 
 @Component({
     selector: 'app-order-search',
@@ -16,6 +17,7 @@ import { Order } from '../../model/models';
 export class OrderSearch {
     private router = inject(Router);
     private eRef = inject(ElementRef);
+    private locationsService = inject(LocationsService);
 
     // Filter models
     filters = {
@@ -34,6 +36,12 @@ export class OrderSearch {
     statusOptions = ['', 'In transito', 'In attesa', 'Consegnato'];
     weightOptions = ['', 'S (1g - 90g)', 'M (1kg - 3kg)', 'L (3kg - 5kg)', 'XL (6kg - 10kg)'];
     sizeOptions = ['', 'S (1cm - 15cm)', 'M (16cm - 30cm)', 'L (31cm - 45cm)', 'XL (46cm - 100cm)'];
+
+    // Autocomplete data
+    filteredOriginCities: Comune[] = [];
+    filteredDestCities: Comune[] = [];
+    isOriginCityOpen = false;
+    isDestCityOpen = false;
 
     // Data
     orders: Order[] = [
@@ -85,6 +93,10 @@ export class OrderSearch {
         if (type !== 'weight') this.isWeightOpen = false;
         if (type !== 'size') this.isSizeDropdownOpen = false;
 
+        // Close city dropdowns
+        this.isOriginCityOpen = false;
+        this.isDestCityOpen = false;
+
         // Toggle current
         if (type === 'status') this.isStatusOpen = !this.isStatusOpen;
         if (type === 'weight') this.isWeightOpen = !this.isWeightOpen;
@@ -102,6 +114,44 @@ export class OrderSearch {
             this.filters.size = value;
             this.isSizeDropdownOpen = false;
         }
+    }
+
+    onOriginCityInput(event: any) {
+        const value = event.target.value;
+        this.filters.originCity = value;
+        if (value.length >= 2) {
+            this.locationsService.searchComuni(value).subscribe(cities => {
+                this.filteredOriginCities = cities;
+                this.isOriginCityOpen = true;
+            });
+        } else {
+            this.filteredOriginCities = [];
+            this.isOriginCityOpen = false;
+        }
+    }
+
+    selectOriginCity(city: Comune) {
+        this.filters.originCity = `${city.nome} ${city.sigla}`;
+        this.isOriginCityOpen = false;
+    }
+
+    onDestCityInput(event: any) {
+        const value = event.target.value;
+        this.filters.destCity = value;
+        if (value.length >= 2) {
+            this.locationsService.searchComuni(value).subscribe(cities => {
+                this.filteredDestCities = cities;
+                this.isDestCityOpen = true;
+            });
+        } else {
+            this.filteredDestCities = [];
+            this.isDestCityOpen = false;
+        }
+    }
+
+    selectDestCity(city: Comune) {
+        this.filters.destCity = `${city.nome} ${city.sigla}`;
+        this.isDestCityOpen = false;
     }
 
     isSidebarOpen = false;
@@ -125,6 +175,8 @@ export class OrderSearch {
             this.isStatusOpen = false;
             this.isWeightOpen = false;
             this.isSizeDropdownOpen = false;
+            this.isOriginCityOpen = false;
+            this.isDestCityOpen = false;
         }
     }
 }

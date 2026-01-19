@@ -26,6 +26,15 @@ export class AuthService {
         );
     }
 
+    resendCode(email: string): Observable<any> {
+        // TODO: API call to resend code
+        console.log('Resending code to', email);
+        return new Observable(observer => {
+            observer.next({ success: true });
+            observer.complete();
+        });
+    }
+
     logout() {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');

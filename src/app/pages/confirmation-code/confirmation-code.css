@@ -61,6 +61,22 @@
     line-height: 1.5;
 }
 
+.btn-link {
+    background: none;
+    border: none;
+    color: #5C6BC0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    margin-bottom: 20px;
+    font-family: inherit;
+    padding: 0;
+}
+
+.btn-link:hover {
+    color: #4a569d;
+}
+
 .login-form {
     width: 100%;
     max-width: 450px;

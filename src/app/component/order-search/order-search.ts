@@ -169,14 +169,12 @@ export class OrderSearch {
         this.router.navigate(['/']);
     }
 
-    @HostListener('document:click', ['$event'])
-    clickout(event: any) {
-        if (!this.eRef.nativeElement.contains(event.target)) {
-            this.isStatusOpen = false;
-            this.isWeightOpen = false;
-            this.isSizeDropdownOpen = false;
-            this.isOriginCityOpen = false;
-            this.isDestCityOpen = false;
-        }
+    @HostListener('document:click')
+    clickout() {
+        this.isStatusOpen = false;
+        this.isWeightOpen = false;
+        this.isSizeDropdownOpen = false;
+        this.isOriginCityOpen = false;
+        this.isDestCityOpen = false;
     }
 }

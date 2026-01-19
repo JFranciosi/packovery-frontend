@@ -78,11 +78,11 @@
                 }
             </div>
 
-            <div class="filter-group relative">
+            <div class="filter-group relative" (click)="$event.stopPropagation()">
                 <label>Città di partenza</label>
                 <div class="input-wrapper">
                     <input type="text" placeholder="..." [value]="filters.originCity"
-                        (input)="onOriginCityInput($event)">
+                        (input)="onOriginCityInput($event)" (focus)="onOriginCityInput($event)">
                     @if (filters.originCity) {
                     <span class="clear-field" (click)="filters.originCity = ''; isOriginCityOpen = false">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -105,10 +105,11 @@
                 }
             </div>
 
-            <div class="filter-group relative">
+            <div class="filter-group relative" (click)="$event.stopPropagation()">
                 <label>Città di destinazione</label>
                 <div class="input-wrapper">
-                    <input type="text" placeholder="..." [value]="filters.destCity" (input)="onDestCityInput($event)">
+                    <input type="text" placeholder="..." [value]="filters.destCity" (input)="onDestCityInput($event)"
+                        (focus)="onDestCityInput($event)">
                     @if (filters.destCity) {
                     <span class="clear-field" (click)="filters.destCity = ''; isDestCityOpen = false">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"

@@ -27,12 +27,19 @@ export class AuthService {
     }
 
     resendCode(email: string): Observable<any> {
-        // TODO: API call to resend code
-        console.log('Resending code to', email);
-        return new Observable(observer => {
-            observer.next({ success: true });
-            observer.complete();
-        });
+        return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+    }
+
+    forgotPassword(email: string): Observable<any> {
+        return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+    }
+
+    verifyCode(email: string, code: string): Observable<any> {
+        return this.http.post(`${this.apiUrl}/verify-code`, { email, code });
+    }
+
+    resetPassword(email: string, code: string, newPassword: string): Observable<any> {
+        return this.http.post(`${this.apiUrl}/reset-password`, { email, code, newPassword });
     }
 
     logout() {

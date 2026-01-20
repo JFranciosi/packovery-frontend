@@ -89,14 +89,25 @@
                 </div>
             </div>
 
+            @if (errorMessage) {
+            <div class="error-message" style="color: #ff4d4f; margin-bottom: 20px; font-size: 13px;">
+                {{ errorMessage }}
+            </div>
+            }
+
             <!-- Action -->
             <div class="form-actions">
-                <button class="btn-create" (click)="createAlert()">
-                    Crea alert
+                <button class="btn-create" (click)="createAlert()" [disabled]="isLoading">
+                    @if (isLoading) {
+                    <div class="spinner-small"></div>
+                    }
+                    <span>{{ isLoading ? 'Creazione in corso...' : 'Crea alert' }}</span>
+                    @if (!isLoading) {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
+                    }
                 </button>
             </div>
 

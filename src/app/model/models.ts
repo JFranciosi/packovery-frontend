@@ -64,3 +64,10 @@ export interface FilterOrderRequest {
     weight?: string;
     size?: string;
 }
+export interface AlertRequest {
+    alertName: string;
+    alertTypology: string;
+    alertDescription: string;
+    alertStatus: boolean;
+    alertTheshold: number; 
+}

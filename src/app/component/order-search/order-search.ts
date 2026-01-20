@@ -94,13 +94,8 @@ export class OrderSearch implements OnInit {
 
     loadOrders() {
         this.isLoading = true;
-        const hasFilters = this.filters.orderId ||
-            this.filters.status ||
-            this.filters.originCity ||
-            this.filters.destCity ||
-            this.filters.date ||
-            this.filters.weight ||
-            this.filters.size;
+
+        const hasFilters = Object.values(this.filters).some(v => v !== '');
 
         if (!hasFilters) {
             this.orderService.getOrders(this.offset, this.limit).subscribe({
@@ -117,31 +112,28 @@ export class OrderSearch implements OnInit {
             return;
         }
 
-        const request: FilterOrderRequest = {
-            id: this.filters.orderId ? this.filters.orderId.toUpperCase() : undefined,
-            status: this.filters.status || undefined,
-            departureLocation: this.filters.originCity || undefined,
-            deliveryLocation: this.filters.destCity || undefined,
-            orderCreationDate: this.filters.date ? new Date(this.filters.date).toISOString() : undefined,
-            weight: this.filters.weight || undefined,
-            size: this.filters.size || undefined
-        };
+        const request: FilterOrderRequest = {};
 
-        // If date is simple "YYYY-MM-DD", LocalDateTime parser might fail if it expects "YYYY-MM-DDTHH:MM:SS".
-        // Let's ensure if date is present, we send it in a compatible format. 
-        // Backend `getFilteredOrders` uses `LocalDateTime`.
-        // If input type=date gives "2026-01-20", appending "T00:00:00" helps.
+        if (this.filters.orderId) request.id = this.filters.orderId.toUpperCase();
+        if (this.filters.status) request.status = this.filters.status;
+        if (this.filters.originCity) request.departureLocation = this.filters.originCity;
+        if (this.filters.destCity) request.deliveryLocation = this.filters.destCity;
+        if (this.filters.weight) request.weight = this.filters.weight;
+        if (this.filters.size) request.size = this.filters.size;
+
         if (this.filters.date) {
-            request.orderCreationDate = this.filters.date + 'T00:00:00';
+            // Invio nel formato YYYY-MM-DDTHH:mm:ss richiesto da Quarkus per LocalDateTime
+            request.orderCreationDate = `${this.filters.date}T00:00:00`;
         }
 
         this.orderService.getFilteredOrders(request, this.offset, this.limit).subscribe({
             next: (data) => {
                 this.orders = data;
+                this.hasMoreOrders = data.length === this.limit;
                 this.isLoading = false;
             },
             error: (err) => {
-                console.error('Error fetching orders', err);
+                console.error('Error filtering orders', err);
                 this.isLoading = false;
             }
         });
@@ -149,15 +141,14 @@ export class OrderSearch implements OnInit {
 
     nextPage() {
         if (this.orders.length < this.limit) return;
-
-        this.offset++;
+        this.offset += this.limit; // Ora va di 6 in 6 (0, 6, 12...)
         this.currentPage++;
         this.loadOrders();
     }
 
     prevPage() {
         if (this.offset > 0) {
-            this.offset--;
+            this.offset -= this.limit; // Torna indietro di 6
             this.currentPage--;
             this.loadOrders();
         }
@@ -210,7 +201,7 @@ export class OrderSearch implements OnInit {
     }
 
     selectOriginCity(city: Comune) {
-        this.filters.originCity = `${city.nome} ${city.sigla}`;
+        this.filters.originCity = city.nome; // Invio solo il nome per match più probabile
         this.isOriginCityOpen = false;
     }
 
@@ -229,7 +220,7 @@ export class OrderSearch implements OnInit {
     }
 
     selectDestCity(city: Comune) {
-        this.filters.destCity = `${city.nome} ${city.sigla}`;
+        this.filters.destCity = city.nome; // Invio solo il nome
         this.isDestCityOpen = false;
     }
 

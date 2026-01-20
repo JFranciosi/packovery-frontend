@@ -18,7 +18,7 @@ export const routes: Routes = [
     },
     {
         title: 'Order Details',
-        path: 'order-details', // Just 'order-details' for now to match link, can add '/:id' if we really passed id
+        path: 'order-details/:id',
         component: OrderDetails
     },
     {

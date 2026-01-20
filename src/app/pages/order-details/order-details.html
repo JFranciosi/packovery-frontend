@@ -22,6 +22,29 @@
     <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
 
     <main class="main-content">
+        @if (isLoading) {
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #666; font-weight: 500;">Caricamento ordine...</p>
+        </div>
+        }
+
+        @if (error) {
+        <div class="error-container">
+            <div class="error-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c53030" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <h2>Oops! Qualcosa è andato storto</h2>
+            <p>{{ error }}</p>
+            <button class="btn-back" routerLink="/order-search" style="margin: 20px auto;">
+                Torna alla ricerca
+            </button>
+        </div>
+        } @else {
         <!-- Top Header -->
         <div class="page-header">
             <h1 class="page-title">ID ordine: {{ order.id }}</h1>
@@ -118,6 +141,7 @@
             </div>
         </div>
 
+        }
     </main>
 
     <!-- Chat Drawer -->

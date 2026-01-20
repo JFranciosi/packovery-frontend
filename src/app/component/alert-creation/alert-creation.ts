@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
     selector: 'app-alert-creation',
@@ -12,12 +13,15 @@ import { SidebarComponent } from '../../component/sidebar/sidebar';
     styleUrls: ['./alert-creation.css']
 })
 export class AlertCreation {
-
     isSidebarOpen = false;
+    isLoading = false;
+    errorMessage = '';
+
+    private alertService = inject(AlertService);
 
     // Form Model
     alert = {
-        type: 'Ritardo consegna ordine', // Default selected? verify with user or image. Image shows 'Ritardo consegna ordine' active.
+        type: 'Ritardo consegna ordine',
         name: 'Alert1',
         description: 'Lorem ipsum dolor sit amet consectetur. Nec sed pharetra sed cum viverra fames.',
         threshold: '00:00',
@@ -51,26 +55,63 @@ export class AlertCreation {
         let h = parseInt(parts[0]) || 0;
         let m = parseInt(parts[1]) || 0;
 
-        // Convert to total minutes
         let totalMinutes = h * 60 + m;
-
-        // Add requested time
         totalMinutes += hours * 60;
 
-        // Convert back to HH:mm
         h = Math.floor(totalMinutes / 60);
         m = Math.round(totalMinutes % 60);
 
-        // Format
         const hStr = h < 10 ? '0' + h : '' + h;
         const mStr = m < 10 ? '0' + m : '' + m;
 
         this.alert.threshold = `${hStr}:${mStr}`;
     }
 
+    private mapTypology(type: string): string {
+        switch (type) {
+            case 'Ritardo partenza ordine': return 'ORDER_DEPARTURE_DELAY';
+            case 'Ritardo consegna ordine': return 'ORDER_DELIVERY_DELAY';
+            case 'Segnale GPS interrotto': return 'GPS_SIGNAL_INTERRUPTED';
+            default: return '';
+        }
+    }
+
     createAlert() {
-        console.log('Create Alert', this.alert);
-        // In a real app, save and navigate back
-        this.router.navigate(['/alert-configurator']);
+        if (!this.alert.name) {
+            this.errorMessage = 'Il nome è obbligatorio';
+            return;
+        }
+
+        const parts = this.alert.threshold.split(':');
+        const minutes = (parseInt(parts[0]) || 0) * 60 + (parseInt(parts[1]) || 0);
+
+        if (minutes < 30 || minutes % 30 !== 0) {
+            this.errorMessage = 'La soglia deve essere di almeno 30 minuti e multipli di 30 (es. 00:30, 01:00, 01:30...)';
+            return;
+        }
+
+        const request = {
+            alertName: this.alert.name,
+            alertTypology: this.mapTypology(this.alert.type),
+            alertDescription: this.alert.description,
+            alertStatus: this.alert.active,
+            alertTheshold: minutes
+        };
+
+        this.isLoading = true;
+        this.errorMessage = '';
+
+        this.alertService.createAlert(request).subscribe({
+            next: (response) => {
+                this.isLoading = false;
+                console.log('Alert creato:', response);
+                this.router.navigate(['/alert-configurator']);
+            },
+            error: (err) => {
+                this.isLoading = false;
+                this.errorMessage = err.error || 'Errore durante la creazione dell\'alert';
+                console.error('Errore creazione alert', err);
+            }
+        });
     }
 }

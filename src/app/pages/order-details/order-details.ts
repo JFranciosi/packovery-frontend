@@ -1,9 +1,11 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import * as L from 'leaflet';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
+import { OrderService } from '../../services/order.service';
+import { OrderResponse } from '../../model/models';
 
 @Component({
     selector: 'app-order-details',
@@ -12,30 +14,18 @@ import { SidebarComponent } from '../../component/sidebar/sidebar';
     templateUrl: './order-details.html',
     styleUrls: ['./order-details.css']
 })
-export class OrderDetails implements AfterViewInit {
+export class OrderDetails implements AfterViewInit, OnInit {
+    private route = inject(ActivatedRoute);
+    private orderService = inject(OrderService);
     private map!: L.Map;
 
-    // Mock addresses with coords for Leaflet
-    order = {
-        id: 'CD5678',
-        creatorName: 'Luca',
-        creatorSurname: 'Rinaldi',
-        status: 'In transito',
-        creationDate: '13/01/2026',
-        weight: 'L (3kg - 5kg)',
-        size: 'L (31cm - 45cm)',
-        departure: {
-            address: 'Via Garibaldi 27, Busto Arsizio, 21052, VA',
-            lat: 45.6120, lng: 8.8515
-        },
-        currentPosition: {
-            coords: '45°37\'05.8"N 9°00\'41.4"E',
-            lat: 45.6183, lng: 9.0115 // Approx location from DMS
-        },
-        arrival: {
-            address: 'Via Cesare Battisti 1315, Cislago, 21040 VA',
-            lat: 45.6577, lng: 8.9733
-        }
+    isLoading = true;
+    error = '';
+
+    order: any = {
+        departure: {},
+        currentPosition: {},
+        arrival: {}
     };
 
     rider = {
@@ -52,15 +42,74 @@ export class OrderDetails implements AfterViewInit {
     }
 
     logout() {
-        // Implement logout logic here
         console.log('Logging out...');
     }
 
+    ngOnInit() {
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.fetchOrder(id);
+        }
+    }
+
+    private fetchOrder(id: string) {
+        this.isLoading = true;
+        this.orderService.getFilteredOrders({ id }, 0, 1).subscribe({
+            next: (orders) => {
+                if (orders && orders.length > 0) {
+                    const raw = orders[0];
+                    this.order = {
+                        id: raw.id,
+                        creatorName: 'Utente',
+                        creatorSurname: 'Packovery',
+                        status: this.getStatusLabel(raw.status),
+                        creationDate: new Date(raw.plannedDeliveryTime).toLocaleDateString('it-IT'),
+                        weight: raw.packageWeight,
+                        size: raw.packageSize,
+                        departure: {
+                            address: raw.departureLocation,
+                            lat: 45.6120, lng: 8.8515
+                        },
+                        currentPosition: {
+                            coords: '45°37\'05.8"N 9°00\'41.4"E',
+                            lat: 45.6183, lng: 9.0115
+                        },
+                        arrival: {
+                            address: raw.deliveryLocation,
+                            lat: 45.6577, lng: 8.9733
+                        }
+                    };
+                    this.isLoading = false;
+                    setTimeout(() => this.initMap(), 100);
+                } else {
+                    this.error = 'Ordine non trovato';
+                    this.isLoading = false;
+                }
+            },
+            error: (err) => {
+                this.error = 'Errore nel caricamento';
+                this.isLoading = false;
+            }
+        });
+    }
+
+    getStatusLabel(status: string): string {
+        switch (status) {
+            case 'PENDING': return 'In attesa';
+            case 'SHIPPED': return 'In transito';
+            case 'DELIVERED': return 'Consegnato';
+            case 'CANCELLED': return 'Cancellato';
+            case 'RETURNED': return 'Reso';
+            default: return status;
+        }
+    }
+
     ngAfterViewInit(): void {
-        this.initMap();
+        // Map will be initialized after data load
     }
 
     private initMap(): void {
+        if (!document.getElementById('map')) return;
         const centerLat = 45.635;
         const centerLng = 8.91;
 

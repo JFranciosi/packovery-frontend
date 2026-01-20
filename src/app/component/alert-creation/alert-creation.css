@@ -8,10 +8,7 @@
     font-family: 'Inter', sans-serif;
 }
 
-/* Base styling from other pages (reused for consistency) */
-/* Ideally these should be in a shared style.css, copying for now per 'standalone' task nature */
 
-/* Sidebar styles removed - using SidebarComponent */
 
 .main-content {
     flex: 1;
@@ -53,10 +50,6 @@
     border-color: #999;
     color: #333;
 }
-
-/* Flip icon horizontally to match the 'undo' arrow style if needed, 
-   but standard back icon design is usually fine. 
-   SVG in HTML is manually drawn to look like a 'return' arrow. */
 
 
 /* Form */
@@ -201,13 +194,7 @@ input:checked+.slider {
     /* Green for active */
 }
 
-/* Custom Green Outline style from image? 
-   Image shows a green 'outline' pill/toggle for 'Attivo'.
-   Let's approximate standard toggle or match specific design.
-   Design: Outline pill with a dot inside? 
-   No, it looks like a standard small toggle, green when active. 
-   The 'Attivo' text is next to it.
-*/
+
 
 input:checked+.slider:before {
     transform: translateX(16px);
@@ -296,6 +283,27 @@ input:checked+.slider:before {
     .mobile-header {
         z-index: 3001;
         position: relative;
-        /* Ensure z-index works, though flex container typically stacks content. Wait, mobile header is fixed usually? */
     }
+}
+
+/* Loading Spinner & Error styles */
+.spinner-small {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.btn-create:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    box-shadow: none;
 }

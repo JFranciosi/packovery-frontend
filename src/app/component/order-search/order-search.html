@@ -236,6 +236,11 @@
 
         <!-- Table -->
         <div class="table-container">
+            @if (isLoading) {
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+            }
             <table>
                 <thead>
                     <tr>

@@ -80,6 +80,7 @@ export class OrderSearch implements OnInit {
     limit = 6;
     currentPage = 1;
     hasMoreOrders = true; // To track if there are more orders to load
+    isLoading = false; // Loading state
 
     ngOnInit() {
         this.clearFilters();
@@ -92,6 +93,7 @@ export class OrderSearch implements OnInit {
     }
 
     loadOrders() {
+        this.isLoading = true;
         const hasFilters = this.filters.orderId ||
             this.filters.status ||
             this.filters.originCity ||
@@ -105,9 +107,11 @@ export class OrderSearch implements OnInit {
                 next: (data) => {
                     this.orders = data;
                     this.hasMoreOrders = data.length === this.limit;
+                    this.isLoading = false;
                 },
                 error: (err) => {
                     console.error('Error fetching orders', err);
+                    this.isLoading = false;
                 }
             });
             return;
@@ -134,10 +138,11 @@ export class OrderSearch implements OnInit {
         this.orderService.getFilteredOrders(request, this.offset, this.limit).subscribe({
             next: (data) => {
                 this.orders = data;
+                this.isLoading = false;
             },
             error: (err) => {
                 console.error('Error fetching orders', err);
-                // Handle error
+                this.isLoading = false;
             }
         });
     }

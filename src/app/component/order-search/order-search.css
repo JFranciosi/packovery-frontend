@@ -336,6 +336,8 @@ input[type="date"] {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    position: relative;
+    /* Needed for loading overlay */
 }
 
 table {
@@ -700,5 +702,37 @@ td.action-cell {
 
     .pagination {
         justify-content: center;
+    }
+}
+
+/* Spinner Styles adapted */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    border-radius: 12px;
+    /* Match table container */
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(88, 101, 242, 0.2);
+    border-radius: 50%;
+    border-top-color: #5865F2;
+    /* Matches primary color */
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
 }

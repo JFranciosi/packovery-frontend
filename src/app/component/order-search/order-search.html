@@ -48,10 +48,11 @@
                 <label>Stato</label>
                 <div class="select-wrapper" (click)="toggleDropdown('status'); $event.stopPropagation()">
                     <div class="custom-select-trigger">
-                        {{ filters.status || '----' }}
+                        {{ selectedStatusLabel || '----' }}
                     </div>
                     @if (filters.status) {
-                    <span class="clear-field" (click)="filters.status = ''; $event.stopPropagation()">
+                    <span class="clear-field"
+                        (click)="filters.status = ''; selectedStatusLabel = ''; $event.stopPropagation()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -69,9 +70,9 @@
                 <!-- Custom Dropdown -->
                 @if (isStatusOpen) {
                 <div class="custom-dropdown-options">
-                    @for (opt of statusOptions; track opt) {
+                    @for (opt of statusOptions; track opt.value) {
                     <div class="option" (click)="selectOption('status', opt)">
-                        {{ opt || '----' }}
+                        {{ opt.label }}
                     </div>
                     }
                 </div>
@@ -162,10 +163,11 @@
                 <label>Peso</label>
                 <div class="select-wrapper" (click)="toggleDropdown('weight'); $event.stopPropagation()">
                     <div class="custom-select-trigger">
-                        {{ filters.weight || '----' }}
+                        {{ selectedWeightLabel || '----' }}
                     </div>
                     @if (filters.weight) {
-                    <span class="clear-field" (click)="filters.weight = ''; $event.stopPropagation()">
+                    <span class="clear-field"
+                        (click)="filters.weight = ''; selectedWeightLabel = ''; $event.stopPropagation()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -183,9 +185,9 @@
                 <!-- Custom Dropdown -->
                 @if (isWeightOpen) {
                 <div class="custom-dropdown-options">
-                    @for (opt of weightOptions; track opt) {
+                    @for (opt of weightOptions; track opt.value) {
                     <div class="option" (click)="selectOption('weight', opt)">
-                        {{ opt || '----' }}
+                        {{ opt.label }}
                     </div>
                     }
                 </div>
@@ -196,10 +198,11 @@
                 <label>Dimensione</label>
                 <div class="select-wrapper" (click)="toggleDropdown('size'); $event.stopPropagation()">
                     <div class="custom-select-trigger">
-                        {{ filters.size || '----' }}
+                        {{ selectedSizeLabel || '----' }}
                     </div>
                     @if (filters.size) {
-                    <span class="clear-field" (click)="filters.size = ''; $event.stopPropagation()">
+                    <span class="clear-field"
+                        (click)="filters.size = ''; selectedSizeLabel = ''; $event.stopPropagation()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -217,9 +220,9 @@
                 <!-- Custom Dropdown for demonstration/screenshot match -->
                 @if (isSizeDropdownOpen) {
                 <div class="custom-dropdown-options">
-                    @for (opt of sizeOptions; track opt) {
+                    @for (opt of sizeOptions; track opt.value) {
                     <div class="option" (click)="selectOption('size', opt)">
-                        {{ opt || '----' }}
+                        {{ opt.label }}
                     </div>
                     }
                 </div>
@@ -227,8 +230,7 @@
             </div>
             <div class="filter-action">
 
-                <button class="btn-search"
-                    (click)="isStatusOpen = false; isWeightOpen = false; isSizeDropdownOpen = false;">Cerca</button>
+                <button class="btn-search" (click)="searchOrders()">Cerca</button>
             </div>
         </div>
 
@@ -251,12 +253,12 @@
                     @for (order of orders; track order.id) {
                     <tr>
                         <td data-label="ID ordine">{{ order.id }}</td>
-                        <td data-label="Stato">{{ order.status }}</td>
-                        <td data-label="Partenza">{{ order.origin }}</td>
-                        <td data-label="Destinazione">{{ order.destination }}</td>
-                        <td data-label="Data creazione">{{ order.date }}</td>
-                        <td data-label="Peso">{{ order.weight }}</td>
-                        <td data-label="Dimensione">{{ order.size }}</td>
+                        <td data-label="Stato">{{ getStatusLabel(order.status) }}</td>
+                        <td data-label="Partenza">{{ order.departureLocation }}</td>
+                        <td data-label="Destinazione">{{ order.deliveryLocation }}</td>
+                        <td data-label="Data creazione">{{ order.plannedDeliveryTime | date:'dd/MM/yyyy' }}</td>
+                        <td data-label="Peso">{{ order.packageWeight }}</td>
+                        <td data-label="Dimensione">{{ order.packageSize }}</td>
                         <td class="action-cell">
                             <a routerLink="/order-details" class="doc-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -271,11 +273,7 @@
                         </td>
                     </tr>
                     }
-                    <!-- Empty rows filler if needed? -->
-                    @if (orders.length < 5) { <tr class="empty-row-filler">
-                        </tr> }
-                        @if (orders.length < 5) { <tr class="empty-row-filler">
-                            </tr> }
+                    <!-- Empty rows filler removed -->
                 </tbody>
             </table>
         </div>
@@ -284,18 +282,22 @@
 
         <!-- Pagination -->
         <div class="pagination">
-            <button class="page-nav prev">
+            <button class="page-nav prev" (click)="prevPage()" [disabled]="offset === 0"
+                [class.disabled]="offset === 0">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
-            <button class="page-num active">1</button>
+            <button class="page-num active">{{ currentPage }}</button>
+            <!-- 
             <button class="page-num">2</button>
             <button class="page-num">3</button>
             <span class="ellipsis">...</span>
-            <button class="page-num">10</button>
-            <button class="page-nav next">
+            <button class="page-num">10</button> 
+            -->
+            <button class="page-nav next" (click)="nextPage()" [disabled]="orders.length < limit"
+                [class.disabled]="orders.length < limit">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>

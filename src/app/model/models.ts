@@ -36,3 +36,31 @@ export interface Comune {
     cap: string[];
     popolazione: number;
 }
+
+export interface OrderResponse {
+    id: string;
+    trackingCode: string;
+    status: string;
+    plannedDeliveryTime: string;
+    actualDeliveryTime?: string;
+    deliveryDelay?: any; // Duration format might vary
+    priorityLevel: string;
+    packageSize: string;
+    packageWeight: string;
+    oversize: boolean;
+    overWeight: boolean;
+    actualSize?: number;
+    actualWeight?: number;
+    departureLocation: string;
+    deliveryLocation: string;
+}
+
+export interface FilterOrderRequest {
+    id?: string;
+    status?: string;
+    departureLocation?: string;
+    deliveryLocation?: string;
+    orderCreationDate?: string;
+    weight?: string;
+    size?: string;
+}

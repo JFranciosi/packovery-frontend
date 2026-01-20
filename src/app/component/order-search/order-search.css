@@ -315,7 +315,7 @@ input[type="date"] {
     background-color: #5865F2;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 12px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;

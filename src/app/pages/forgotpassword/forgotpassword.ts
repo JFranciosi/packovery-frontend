@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class Forgotpassword {
     email: string = '';
+    isLoading: boolean = false;
     private authService = inject(AuthService);
     private router = inject(Router);
 
@@ -21,11 +22,16 @@ export class Forgotpassword {
             alert('Inserisci un indirizzo email.');
             return;
         }
+        if (this.isLoading) return;
+        this.isLoading = true;
+
         this.authService.forgotPassword(this.email).subscribe({
             next: () => {
+                this.isLoading = false;
                 this.router.navigate(['/confirmation-code'], { queryParams: { email: this.email } });
             },
             error: (err) => {
+                this.isLoading = false;
                 alert('Errore durante l\'invio del codice: ' + (err.error?.message || err.message));
             }
         });

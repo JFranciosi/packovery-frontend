@@ -61,21 +61,7 @@
     line-height: 1.5;
 }
 
-.btn-link {
-    background: none;
-    border: none;
-    color: #5C6BC0;
-    cursor: pointer;
-    font-size: 0.9rem;
-    text-decoration: underline;
-    margin-bottom: 20px;
-    font-family: inherit;
-    padding: 0;
-}
-
-.btn-link:hover {
-    color: #4a569d;
-}
+/* Removed .btn-link styles as they are replaced by .resend-section */
 
 .login-form {
     width: 100%;
@@ -160,4 +146,38 @@
 
 .btn-submit:hover {
     background-color: #4a569d;
+}
+
+.resend-section {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.resend-section p {
+    margin: 0 0 8px 0;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #5C6BC0;
+    /* Matching btn-submit color */
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 0;
+    font-weight: 500;
+}
+
+.btn-text:hover {
+    color: #4a569d;
+}
+
+.btn-text:disabled {
+    color: #999;
+    cursor: not-allowed;
+    text-decoration: none;
 }

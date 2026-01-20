@@ -51,11 +51,16 @@
             </div>
             }
 
+            <button type="submit" class="btn-submit" (click)="login()" [disabled]="isLoading">
+                @if (isLoading) {
+                <div class="spinner"></div>
+                }
+                <span>{{ isLoading ? 'Accesso in corso...' : 'Accedi' }}</span>
+            </button>
+
             <div class="forgot-password">
                 <a href="/forgot-password">Password Dimenticata?</a>
             </div>
-
-            <button type="button" class="btn-submit" (click)="login()">Accedi</button>
         </form>
     </div>
 </div>

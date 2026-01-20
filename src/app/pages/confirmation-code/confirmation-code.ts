@@ -14,6 +14,8 @@ import { AuthService } from '../../services/auth.service';
 export class ConfirmationCode implements OnInit {
     digits: string[] = ['', '', '', '', '', ''];
     email: string = '';
+    isLoading: boolean = false;
+    isResending: boolean = false;
     private authService = inject(AuthService);
     private route = inject(ActivatedRoute);
     private router = inject(Router);
@@ -29,9 +31,18 @@ export class ConfirmationCode implements OnInit {
             alert('Email non trovata.');
             return;
         }
+        if (this.isResending) return;
+        this.isResending = true;
+
         this.authService.forgotPassword(this.email).subscribe({
-            next: () => alert('Codice inviato di nuovo!'),
-            error: (err) => alert('Errore: ' + (err.error?.message || err.message))
+            next: () => {
+                this.isResending = false;
+                alert('Codice inviato di nuovo!');
+            },
+            error: (err) => {
+                this.isResending = false;
+                alert('Errore: ' + (err.error?.message || err.message));
+            }
         });
     }
 
@@ -41,11 +52,16 @@ export class ConfirmationCode implements OnInit {
             alert('Inserisci il codice completo.');
             return;
         }
+        if (this.isLoading) return;
+        this.isLoading = true;
+
         this.authService.verifyCode(this.email, code).subscribe({
             next: () => {
+                this.isLoading = false;
                 this.router.navigate(['/reset-password'], { queryParams: { email: this.email, code: code } });
             },
             error: (err) => {
+                this.isLoading = false;
                 alert('Codice non valido o scaduto: ' + (err.error?.message || err.message));
             }
         });
@@ -59,6 +75,29 @@ export class ConfirmationCode implements OnInit {
         } else if (event.key === 'Backspace') {
             const prevInput = event.target.previousElementSibling;
             if (prevInput) prevInput.focus();
+        }
+    }
+
+    onPaste(event: ClipboardEvent) {
+        event.preventDefault();
+        const clipboardData = event.clipboardData || (window as any).clipboardData;
+        const pastedData = clipboardData.getData('Text');
+
+        if (pastedData) {
+            const chars = pastedData.trim().split('');
+            for (let i = 0; i < 6 && i < chars.length; i++) {
+                if (chars[i] >= '0' && chars[i] <= '9') {
+                    this.digits[i] = chars[i];
+                }
+            }
+            // Focus the last filled input or the first empty one
+            setTimeout(() => {
+                const inputs = document.querySelectorAll('.code-input');
+                const lastIndex = Math.min(chars.length, 6) - 1;
+                if (lastIndex >= 0 && inputs[lastIndex]) {
+                    (inputs[lastIndex] as HTMLElement).focus();
+                }
+            }, 0);
         }
     }
 }

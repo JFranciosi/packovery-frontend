@@ -16,6 +16,11 @@ export class ResetPassword implements OnInit {
     confirmPassword: string = '';
     email: string = '';
     code: string = '';
+    isLoading: boolean = false;
+    isResending: boolean = false;
+
+    passwordFieldType: string = 'password';
+    confirmPasswordFieldType: string = 'password';
 
     private authService = inject(AuthService);
     private route = inject(ActivatedRoute);
@@ -26,6 +31,37 @@ export class ResetPassword implements OnInit {
             this.email = params['email'];
             this.code = params['code'];
         });
+    }
+
+    resendCode() {
+        if (!this.email) {
+            alert('Email non trovata. Riprova la procedura.');
+            this.router.navigate(['/forgot-password']);
+            return;
+        }
+
+        if (this.isResending) return;
+        this.isResending = true;
+
+        this.authService.forgotPassword(this.email).subscribe({
+            next: () => {
+                this.isResending = false;
+                alert('Nuovo codice inviato! Inserisci il nuovo codice.');
+                this.router.navigate(['/confirmation-code'], { queryParams: { email: this.email } });
+            },
+            error: (err) => {
+                this.isResending = false;
+                alert('Errore: ' + (err.error?.message || err.message));
+            }
+        });
+    }
+
+    togglePasswordVisibility(): void {
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    }
+
+    toggleConfirmPasswordVisibility(): void {
+        this.confirmPasswordFieldType = this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
     }
 
     onSubmit() {
@@ -45,12 +81,17 @@ export class ResetPassword implements OnInit {
             return;
         }
 
+        if (this.isLoading) return;
+        this.isLoading = true;
+
         this.authService.resetPassword(this.email, this.code, this.password).subscribe({
             next: () => {
+                this.isLoading = false;
                 alert('Password modificata con successo!');
                 this.router.navigate(['/login']);
             },
             error: (err) => {
+                this.isLoading = false;
                 alert('Errore durante il reset della password: ' + (err.error?.message || err.message));
             }
         });

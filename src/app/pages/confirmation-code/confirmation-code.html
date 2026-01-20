@@ -9,14 +9,13 @@
 
         <h2 class="title">Codice di conferma</h2>
         <p class="subtitle">Inserisci il codice a 6 che ti abbiamo inviato per email.</p>
-        <button type="button" class="btn-link" (click)="resendCode()">Invia di nuovo email</button>
 
         <form class="login-form">
             <div class="form-group">
                 <label for="code1">Codice</label>
                 <div class="code-inputs">
                     <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[0]"
-                        name="digit0" (keyup)="onKeyUp($event, 0)">
+                        name="digit0" (keyup)="onKeyUp($event, 0)" (paste)="onPaste($event)">
                     <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[1]"
                         name="digit1" (keyup)="onKeyUp($event, 1)">
                     <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[2]"
@@ -32,7 +31,19 @@
 
             <div class="button-group">
                 <button type="button" class="btn btn-cancel" routerLink="/forgot-password">Annulla</button>
-                <button type="button" class="btn btn-submit" (click)="onSubmit()">Conferma</button>
+                <button type="button" class="btn btn-submit" (click)="onSubmit()" [disabled]="isLoading">
+                    @if (isLoading) {
+                    <div class="spinner"></div>
+                    }
+                    <span>{{ isLoading ? 'Verifica...' : 'Conferma' }}</span>
+                </button>
+            </div>
+
+            <div class="resend-section">
+                <p>Il codice scade dopo 15 minuti.</p>
+                <button type="button" class="btn-text" (click)="resendCode()" [disabled]="isResending">
+                    {{ isResending ? 'Invio in corso...' : 'Invia un nuovo codice' }}
+                </button>
             </div>
         </form>
     </div>

@@ -31,15 +31,15 @@ export class AuthService {
     }
 
     forgotPassword(email: string): Observable<any> {
-        return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+        return this.http.post(`${this.apiUrl}/forgot-password`, { email }, { responseType: 'text' });
     }
 
     verifyCode(email: string, code: string): Observable<any> {
-        return this.http.post(`${this.apiUrl}/verify-code`, { email, code });
+        return this.http.post(`${this.apiUrl}/verify-code`, { email, code }, { responseType: 'text' });
     }
 
     resetPassword(email: string, code: string, newPassword: string): Observable<any> {
-        return this.http.post(`${this.apiUrl}/reset-password`, { email, code, newPassword });
+        return this.http.post(`${this.apiUrl}/reset-password`, { email, code, newPassword }, { responseType: 'text' });
     }
 
     logout() {

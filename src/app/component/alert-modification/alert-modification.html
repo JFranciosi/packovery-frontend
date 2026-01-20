@@ -39,6 +39,17 @@
         </div>
 
         <div class="form-container">
+            @if (isLoading) {
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+            }
+
+            @if (errorMessage) {
+            <div class="error-banner">
+                {{ errorMessage }}
+            </div>
+            }
             <!-- ID and Type (Side by Side) -->
             <div class="form-row">
                 <div class="form-group flex-1">

@@ -69,5 +69,16 @@ export interface AlertRequest {
     alertTypology: string;
     alertDescription: string;
     alertStatus: boolean;
-    alertTheshold: number; 
+    alertTheshold: number;
 }
+
+export interface AlertResponse {
+    id: number;
+    alertName: string;
+    alertTypology: string;
+    alertDescription: string;
+    alertStatus: boolean;
+    alertCreatedDate: string;
+    alertTheshold: string; // ISO-8601 duration
+}
+

@@ -82,3 +82,8 @@ export interface AlertResponse {
     alertTheshold: string; // ISO-8601 duration
 }
 
+
+export interface SelectOptionsResponse {
+    orderStatuses: string[];
+    packageScales: string[];
+}

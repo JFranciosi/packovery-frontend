@@ -35,7 +35,9 @@ export class OrderSearch implements OnInit {
     initialFilters = { ...this.filters };
 
     // Dropdown options
-    statusOptions = [
+    statusOptions: { label: string, value: string }[] = [];
+
+    readonly defaultStatusOptions = [
         { label: 'In transito', value: 'SHIPPED' },
         { label: 'In attesa', value: 'PENDING' },
         { label: 'Consegnato', value: 'DELIVERED' },
@@ -124,7 +126,34 @@ export class OrderSearch implements OnInit {
     isLoading = false; // Loading state
 
     ngOnInit() {
+        this.loadSelectOptions();
         this.clearFilters();
+    }
+
+    loadSelectOptions() {
+        this.orderService.getSelectOptions().subscribe({
+            next: (data) => {
+                // Map Statuses
+                if (data.orderStatuses && data.orderStatuses.length > 0) {
+                    this.statusOptions = data.orderStatuses.map(status => ({
+                        label: this.getStatusLabel(status),
+                        value: status
+                    }));
+                } else {
+                    this.statusOptions = [];
+                }
+
+                // Map Package Scales (assuming they map to Size options for now, or just logging them)
+                // If packageScales corresponds to the S/M/L/XL logic
+                // Note: The UI has separate Weight and Size dropdowns, but usually they share the same 'Scale' (S, M, L, XL).
+                // We will update both if the values match the expected S,M,L,XL keys, or just keep hardcoded if they need specific ranges text.
+                // For now, let's just stick to updating statuses as requested, but we have the data.
+            },
+            error: (err) => {
+                console.warn('Failed to load select options', err);
+                this.statusOptions = [];
+            }
+        });
     }
 
     searchOrders() {

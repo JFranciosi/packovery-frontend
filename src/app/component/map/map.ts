@@ -14,9 +14,12 @@ export class Map implements AfterViewInit, OnDestroy {
     @Input() arrival: any;
     @Input() currentPosition: any;
 
+    isFullscreen = false;
+
     private map!: L.Map;
 
     ngAfterViewInit(): void {
+        this.fixLeafletIcons();
         if (this.departure && this.arrival && this.currentPosition) {
             setTimeout(() => this.initMap(), 100);
         }
@@ -26,6 +29,35 @@ export class Map implements AfterViewInit, OnDestroy {
         if (this.map) {
             this.map.remove();
         }
+    }
+
+    toggleFullscreen() {
+        this.isFullscreen = !this.isFullscreen;
+        setTimeout(() => {
+            if (this.map) {
+                this.map.invalidateSize();
+                if (this.isFullscreen) {
+                    this.fitBoundsIfRouteExists();
+                }
+            }
+        }, 300);
+    }
+
+    private fixLeafletIcons() {
+        const iconRetinaUrl = 'assets/marker-icon-2x.png';
+        const iconUrl = 'assets/marker-icon.png';
+        const shadowUrl = 'assets/marker-shadow.png';
+        const DefaultIcon = L.icon({
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        L.Marker.prototype.options.icon = DefaultIcon;
     }
 
     private initMap(): void {
@@ -69,6 +101,8 @@ export class Map implements AfterViewInit, OnDestroy {
         }
     }
 
+    private routeLayer: L.GeoJSON | null = null;
+
     private getRoute(startLat: number, startLng: number, endLat: number, endLng: number) {
         const url = `https://router.project-osrm.org/route/v1/driving/${startLng},${startLat};${endLng},${endLat}?overview=full&geometries=geojson`;
 
@@ -83,7 +117,7 @@ export class Map implements AfterViewInit, OnDestroy {
                         geometry: route.geometry
                     };
 
-                    const routeLayer = L.geoJSON(geojson as any, {
+                    this.routeLayer = L.geoJSON(geojson as any, {
                         style: {
                             color: '#5865F2',
                             weight: 5,
@@ -91,9 +125,15 @@ export class Map implements AfterViewInit, OnDestroy {
                         }
                     }).addTo(this.map);
 
-                    this.map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
+                    this.fitBoundsIfRouteExists();
                 }
             })
             .catch(err => console.error('Error fetching route from OSRM:', err));
+    }
+
+    private fitBoundsIfRouteExists() {
+        if (this.routeLayer && this.map) {
+            this.map.fitBounds(this.routeLayer.getBounds(), { padding: [50, 50] });
+        }
     }
 }

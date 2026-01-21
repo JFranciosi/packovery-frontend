@@ -191,14 +191,26 @@
     color: #333;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
+    .main-content {
+        padding: 20px;
+    }
+
     .signal-info {
         grid-template-columns: 1fr;
         gap: 12px;
     }
 
     .signal-card {
-        padding: 20px;
+        padding: 16px;
+    }
+
+    .signal-data {
+        font-size: 13px;
+    }
+
+    .signal-label {
+        font-size: 11px;
     }
 }
 

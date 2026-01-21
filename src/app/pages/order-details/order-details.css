@@ -519,17 +519,37 @@
     transform: scale(1.05);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
+    .main-content {
+        padding: 0 30px;
+    }
+
     .info-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 
     .rider-grid {
         flex-wrap: wrap;
+        gap: 16px;
     }
 
     .input-group {
         min-width: 45%;
+    }
+
+    .input-group label {
+        font-size: 12px;
+    }
+
+    .input-group input {
+        height: 48px;
+        font-size: 14px;
+    }
+
+    .btn-contact {
+        height: 48px;
+        font-size: 14px;
     }
 }
 

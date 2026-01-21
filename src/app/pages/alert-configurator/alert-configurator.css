@@ -449,6 +449,54 @@ input:checked+.slider:before {
     }
 }
 
+@media (max-width: 1280px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .page-header {
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        overflow-x: visible;
+    }
+
+    table {
+        min-width: 0;
+        width: 100%;
+        table-layout: auto;
+    }
+
+    th,
+    td {
+        padding: 8px 6px;
+        font-size: 12px;
+        white-space: normal;
+        word-wrap: break-word;
+        vertical-align: top;
+    }
+
+    th {
+        font-size: 10px;
+        line-height: 1.3;
+    }
+
+    .switch {
+        width: 44px;
+        height: 24px;
+    }
+
+    .slider:before {
+        height: 18px;
+        width: 18px;
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(18px);
+    }
+}
+
 @media (max-width: 768px) {
     :host {
         height: 100vh;

@@ -354,6 +354,32 @@ input:checked+.slider:before {
     color: #333;
 }
 
+@media (max-width: 1280px) {
+    .main-content {
+        padding: 0 30px;
+    }
+
+    .form-container {
+        max-width: 900px;
+        padding: 32px;
+    }
+
+    .type-selector {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    input[type="text"],
+    textarea {
+        font-size: 14px;
+        padding: 12px 18px;
+    }
+}
+
 @media (max-width: 768px) {
     :host {
         height: 100vh;

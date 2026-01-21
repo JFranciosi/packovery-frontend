@@ -12,14 +12,15 @@
         <form class="login-form">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" [(ngModel)]="email" required>
+                <input type="email" id="email" name="email" class="form-control" [value]="email"
+                    (input)="onEmailInput($event)" required>
             </div>
 
             <div class="form-group password-group">
                 <label for="password">Password</label>
                 <div class="input-wrapper">
                     <input [type]="passwordFieldType" id="password" name="password" class="form-control"
-                        [(ngModel)]="password" required>
+                        [value]="password" (input)="onPasswordInput($event)" required>
                     <span class="password-toggle-icon" (click)="togglePasswordVisibility()">
                         @if (passwordFieldType === 'password') {
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"

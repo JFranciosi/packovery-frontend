@@ -1,19 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-forgotpassword',
     standalone: true,
-    imports: [CommonModule, RouterLink, FormsModule],
+    imports: [CommonModule, RouterLink],
     templateUrl: './forgotpassword.html',
     styleUrls: ['./forgotpassword.css']
 })
 export class Forgotpassword {
     email: string = '';
     isLoading: boolean = false;
+    onEmailInput(event: any) {
+        this.email = event.target.value;
+    }
     private authService = inject(AuthService);
     private router = inject(Router);
 

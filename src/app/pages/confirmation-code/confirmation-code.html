@@ -14,18 +14,19 @@
             <div class="form-group">
                 <label for="code1">Codice</label>
                 <div class="code-inputs">
-                    <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[0]"
-                        name="digit0" (keyup)="onKeyUp($event, 0)" (paste)="onPaste($event)">
-                    <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[1]"
-                        name="digit1" (keyup)="onKeyUp($event, 1)">
-                    <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[2]"
-                        name="digit2" (keyup)="onKeyUp($event, 2)">
-                    <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[3]"
-                        name="digit3" (keyup)="onKeyUp($event, 3)">
-                    <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[4]"
-                        name="digit4" (keyup)="onKeyUp($event, 4)">
-                    <input type="text" maxlength="1" class="form-control code-input" [(ngModel)]="digits[5]"
-                        name="digit5" (keyup)="onKeyUp($event, 5)">
+                    <input type="text" maxlength="1" class="form-control code-input" [value]="digits[0]"
+                        (input)="onDigitInput($event, 0)" name="digit0" (keyup)="onKeyUp($event, 0)"
+                        (paste)="onPaste($event)">
+                    <input type="text" maxlength="1" class="form-control code-input" [value]="digits[1]"
+                        (input)="onDigitInput($event, 1)" name="digit1" (keyup)="onKeyUp($event, 1)">
+                    <input type="text" maxlength="1" class="form-control code-input" [value]="digits[2]"
+                        (input)="onDigitInput($event, 2)" name="digit2" (keyup)="onKeyUp($event, 2)">
+                    <input type="text" maxlength="1" class="form-control code-input" [value]="digits[3]"
+                        (input)="onDigitInput($event, 3)" name="digit3" (keyup)="onKeyUp($event, 3)">
+                    <input type="text" maxlength="1" class="form-control code-input" [value]="digits[4]"
+                        (input)="onDigitInput($event, 4)" name="digit4" (keyup)="onKeyUp($event, 4)">
+                    <input type="text" maxlength="1" class="form-control code-input" [value]="digits[5]"
+                        (input)="onDigitInput($event, 5)" name="digit5" (keyup)="onKeyUp($event, 5)">
                 </div>
             </div>
 

@@ -1,13 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-reset-password',
     standalone: true,
-    imports: [CommonModule, RouterLink, FormsModule],
+    imports: [CommonModule, RouterLink],
     templateUrl: './reset-password.html',
     styleUrls: ['./reset-password.css']
 })
@@ -54,6 +53,14 @@ export class ResetPassword implements OnInit {
                 alert('Errore: ' + (err.error?.message || err.message));
             }
         });
+    }
+
+    onPasswordInput(event: any) {
+        this.password = event.target.value;
+    }
+
+    onConfirmPasswordInput(event: any) {
+        this.confirmPassword = event.target.value;
     }
 
     togglePasswordVisibility(): void {

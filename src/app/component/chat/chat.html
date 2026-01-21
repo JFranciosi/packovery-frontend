@@ -26,7 +26,8 @@
     </div>
 
     <div class="chat-input-area">
-        <input type="text" placeholder="Scrivi un messaggio..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
+        <input type="text" placeholder="Scrivi un messaggio..." [value]="newMessage" (input)="onInputChange($event)"
+            (keyup.enter)="sendMessage()">
         <button class="btn-send" (click)="sendMessage()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">

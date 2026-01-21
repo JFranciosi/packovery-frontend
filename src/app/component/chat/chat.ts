@@ -1,11 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-chat',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule],
     templateUrl: './chat.html',
     styleUrls: ['./chat.css']
 })
@@ -33,7 +32,13 @@ export class Chat implements OnInit {
         this.close.emit();
     }
 
-    sendMessage() {
+    onInputChange(event: any) {
+        this.newMessage = event.target.value;
+    }
+
+    sendMessage(val?: string) {
+        // If called from button click or enter, we use newMessage.
+        // If we want to support passing value directly we could, but let's stick to state.
         if (!this.newMessage.trim()) return;
 
         this.messages.push({

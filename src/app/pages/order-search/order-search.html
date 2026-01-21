@@ -31,7 +31,7 @@
             <div class="filter-group">
                 <label>ID ordine</label>
                 <div class="input-wrapper">
-                    <input type="text" placeholder="..." [(ngModel)]="filters.orderId">
+                    <input type="text" placeholder="..." [value]="filters.orderId" (input)="onOrderIdInput($event)">
                     @if (filters.orderId) {
                     <span class="clear-field" (click)="filters.orderId = ''">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"

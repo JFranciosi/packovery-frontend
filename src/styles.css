@@ -1,6 +1,31 @@
 @import 'leaflet/dist/leaflet.css';
 
-/* Global Mobile Optimization - Prevent Horizontal Scroll */
+:root {
+    --color-bg-primary: #F7F7F7;
+    --color-bg-surface: #FFFFFF;
+    --color-text-primary: #262626;
+    --color-text-secondary: #75757D;
+    --color-border: #E4E4E7;
+    --color-primary: #5767AE;
+    --color-primary-light: #DADFF3;
+    --color-secondary: #B1CB18;
+    --color-secondary-light: #EDF2D0;
+    --color-status-green: #22C55E;
+}
+
+[data-theme="dark"] {
+    --color-bg-primary: #121212;
+    --color-bg-surface: #1E1E1E;
+    --color-text-primary: #E8E8E8;
+    --color-text-secondary: #A0A0A0;
+    --color-border: #2C2C2C;
+    --color-primary: #6B7BC8;
+    --color-primary-light: #2A3254;
+    --color-secondary: #B1CB18;
+    --color-secondary-light: #252E1F;
+    --color-status-green: #22C55E;
+}
+
 html,
 body {
     overflow-x: hidden;
@@ -12,6 +37,10 @@ body {
 *::before,
 *::after {
     box-sizing: border-box;
+    transition: background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 body {
@@ -19,4 +48,6 @@ body {
     padding: 0;
     overflow: hidden;
     user-select: none;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
 }

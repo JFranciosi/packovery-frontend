@@ -1,16 +1,16 @@
 :host {
     display: block;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #262626;
+    color: var(--color-text-primary);
     height: 100vh;
     overflow: hidden;
-    background-color: #F7F7F7;
+    background-color: var(--color-bg-primary);
 }
 
 .layout-container {
     display: flex;
     height: 100vh;
-    background-color: #F7F7F7;
+    background-color: var(--color-bg-primary);
     position: relative;
 }
 
@@ -75,13 +75,13 @@
 }
 
 .error-container h2 {
-    color: #262626;
+    color: var(--color-text-primary);
     font-size: 20px;
     margin-bottom: 12px;
 }
 
 .error-container p {
-    color: #75757D;
+    color: var(--color-text-secondary);
     margin-bottom: 24px;
 }
 
@@ -107,7 +107,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #262626;
+    color: var(--color-text-primary);
     margin: 0;
     letter-spacing: -0.5px;
 }
@@ -117,10 +117,10 @@
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    background: white;
-    border: 1px solid #E4E4E7;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
     border-radius: 16px;
-    color: #75757D;
+    color: var(--color-text-secondary);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -129,15 +129,15 @@
 }
 
 .btn-back:hover {
-    background-color: #fff;
+    background-color: var(--color-bg-surface);
     border-color: #d0d0d0;
     transform: translateX(-4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    color: #262626;
+    color: var(--color-text-primary);
 }
 
 .btn-back svg {
-    color: #75757D;
+    color: var(--color-text-secondary);
 }
 
 .map-section {
@@ -145,7 +145,7 @@
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 32px;
-    background-color: #fff;
+    background-color: var(--color-bg-surface);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 
@@ -170,7 +170,7 @@
     padding: 12px 24px;
     border-radius: 16px;
     font-size: 13px;
-    color: #262626;
+    color: var(--color-text-primary);
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -197,7 +197,7 @@
     display: block;
     font-size: 12px;
     font-weight: 700;
-    color: #75757D;
+    color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 8px;
@@ -205,7 +205,7 @@
 
 .info-segment .value {
     font-size: 15px;
-    color: #262626;
+    color: var(--color-text-primary);
     font-weight: 500;
     line-height: 1.4;
 }
@@ -213,7 +213,7 @@
 .section-title {
     font-size: 18px;
     font-weight: 700;
-    color: #262626;
+    color: var(--color-text-primary);
     margin-bottom: 20px;
     margin-top: 10px;
     display: flex;
@@ -256,7 +256,7 @@
 .input-group label {
     font-size: 13px;
     font-weight: 600;
-    color: #75757D;
+    color: var(--color-text-secondary);
     margin-left: 4px;
 }
 
@@ -267,8 +267,8 @@
     border-radius: 16px;
     padding: 0 20px;
     font-size: 15px;
-    color: #262626;
-    background-color: #fff;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-surface);
     outline: none;
     box-sizing: border-box;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
@@ -277,7 +277,7 @@
 }
 
 .input-group input:read-only {
-    background-color: #fff;
+    background-color: var(--color-bg-surface);
     cursor: default;
 }
 
@@ -336,7 +336,7 @@
     border: none;
     padding: 8px;
     cursor: pointer;
-    color: #262626;
+    color: var(--color-text-primary);
 }
 
 .chat-overlay {
@@ -364,7 +364,7 @@
     right: 0;
     bottom: 0;
     width: 400px;
-    background: white;
+    background: var(--color-bg-surface);
     z-index: 2001;
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
@@ -383,27 +383,27 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--color-bg-surface);
 }
 
 .chat-info h3 {
     margin: 0;
     font-size: 18px;
     font-weight: 700;
-    color: #262626;
+    color: var(--color-text-primary);
 }
 
 .chat-info p {
     margin: 4px 0 0;
     font-size: 14px;
-    color: #75757D;
+    color: var(--color-text-secondary);
 }
 
 .close-chat {
     background: #f5f5f7;
     border: none;
     cursor: pointer;
-    color: #75757D;
+    color: var(--color-text-secondary);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -454,14 +454,14 @@
 }
 
 .message.user .msg-bubble {
-    background-color: #5767AE;
+    background-color: var(--color-primary);
     color: white;
     border-bottom-right-radius: 4px;
 }
 
 .message.rider .msg-bubble {
     background-color: #ffffff;
-    color: #262626;
+    color: var(--color-text-primary);
     border-bottom-left-radius: 4px;
 }
 
@@ -478,13 +478,13 @@
     display: flex;
     gap: 12px;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--color-bg-surface);
 }
 
 .chat-input-area input {
     flex: 1;
     height: 48px;
-    border: 1px solid #E4E4E7;
+    border: 1px solid var(--color-border);
     border-radius: 16px;
     padding: 0 20px;
     font-size: 15px;
@@ -494,13 +494,13 @@
 }
 
 .chat-input-area input:focus {
-    border-color: #5767AE;
+    border-color: var(--color-primary);
     background: #fff;
     box-shadow: 0 0 0 4px rgba(87, 103, 174, 0.1);
 }
 
 .btn-send {
-    background-color: #5767AE;
+    background-color: var(--color-primary);
     color: white;
     border: none;
     width: 48px;

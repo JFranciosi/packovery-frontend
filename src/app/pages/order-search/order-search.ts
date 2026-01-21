@@ -2,7 +2,7 @@ import { Component, HostListener, ElementRef, inject, OnInit } from '@angular/co
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { SidebarComponent } from '../sidebar/sidebar';
+import { SidebarComponent } from '../../component/sidebar/sidebar';
 
 import { LocationsService } from '../../services/locations.service';
 import { OrderService } from '../../services/order.service';
@@ -120,7 +120,7 @@ export class OrderSearch implements OnInit {
 
     // Pagination properties
     offset = 0;
-    limit = 6;
+    limit = 5;
     currentPage = 1;
     hasMoreOrders = true; // To track if there are more orders to load
     isLoading = false; // Loading state

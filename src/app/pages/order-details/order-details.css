@@ -1,24 +1,19 @@
-/* Reuse Sidebar & Layout styles from OrderSearch or duplicate to ensure isolation */
-/* Global reset/defaults for this component */
 :host {
     display: block;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #333;
+    color: #262626;
     height: 100vh;
     overflow: hidden;
-    background-color: #F8F9FB;
+    background-color: #F7F7F7;
 }
 
 .layout-container {
     display: flex;
     height: 100vh;
-    background-color: #F8F9FB;
+    background-color: #F7F7F7;
     position: relative;
 }
 
-/* Sidebar styles removed - using SidebarComponent */
-
-/* Main Content */
 .main-content {
     flex: 1;
     padding: 0 60px;
@@ -30,7 +25,6 @@
     position: relative;
 }
 
-/* Loading & Error states */
 .loading-overlay {
     position: absolute;
     top: 0;
@@ -50,7 +44,7 @@
     width: 48px;
     height: 48px;
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #5865F2;
+    border-top: 4px solid #5767AE;
     border-radius: 50%;
     animation: spin 0.8s ease-in-out infinite;
 }
@@ -81,13 +75,13 @@
 }
 
 .error-container h2 {
-    color: #1a1a1a;
+    color: #262626;
     font-size: 20px;
     margin-bottom: 12px;
 }
 
 .error-container p {
-    color: #666;
+    color: #75757D;
     margin-bottom: 24px;
 }
 
@@ -103,7 +97,6 @@
     }
 }
 
-/* Header */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -114,7 +107,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #111;
+    color: #262626;
     margin: 0;
     letter-spacing: -0.5px;
 }
@@ -125,9 +118,9 @@
     gap: 8px;
     padding: 10px 20px;
     background: white;
-    border: 1px solid #EAEAEA;
+    border: 1px solid #E4E4E7;
     border-radius: 16px;
-    color: #666;
+    color: #75757D;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -140,14 +133,13 @@
     border-color: #d0d0d0;
     transform: translateX(-4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    color: #333;
+    color: #262626;
 }
 
 .btn-back svg {
-    color: #666;
+    color: #75757D;
 }
 
-/* Map Section */
 .map-section {
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 16px;
@@ -178,7 +170,7 @@
     padding: 12px 24px;
     border-radius: 16px;
     font-size: 13px;
-    color: #333;
+    color: #262626;
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -205,7 +197,7 @@
     display: block;
     font-size: 12px;
     font-weight: 700;
-    color: #999;
+    color: #75757D;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 8px;
@@ -213,16 +205,15 @@
 
 .info-segment .value {
     font-size: 15px;
-    color: #333;
+    color: #262626;
     font-weight: 500;
     line-height: 1.4;
 }
 
-/* Forms Sections */
 .section-title {
     font-size: 18px;
     font-weight: 700;
-    color: #333;
+    color: #262626;
     margin-bottom: 20px;
     margin-top: 10px;
     display: flex;
@@ -234,7 +225,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: #EAEAEA;
+    background: #E4E4E7;
 }
 
 .info-grid,
@@ -265,11 +256,10 @@
 .input-group label {
     font-size: 13px;
     font-weight: 600;
-    color: #666;
+    color: #75757D;
     margin-left: 4px;
 }
 
-/* Styled inputs as cards/boxes */
 .input-group input {
     width: 100%;
     height: 52px;
@@ -277,7 +267,7 @@
     border-radius: 16px;
     padding: 0 20px;
     font-size: 15px;
-    color: #333;
+    color: #262626;
     background-color: #fff;
     outline: none;
     box-sizing: border-box;
@@ -303,7 +293,7 @@
     gap: 10px;
     height: 52px;
     padding: 0 28px;
-    background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
+    background: linear-gradient(135deg, #5767AE 0%, #4752c4 100%);
     color: white;
     border: none;
     border-radius: 16px;
@@ -312,19 +302,18 @@
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+    box-shadow: 0 4px 12px rgba(87, 103, 174, 0.3);
 }
 
 .btn-contact:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
+    box-shadow: 0 8px 20px rgba(87, 103, 174, 0.4);
 }
 
 .btn-contact:active {
     transform: scale(0.98);
 }
 
-/* Mobile Header & Responsive styles */
 .mobile-header {
     display: none;
     align-items: center;
@@ -347,10 +336,9 @@
     border: none;
     padding: 8px;
     cursor: pointer;
-    color: #333;
+    color: #262626;
 }
 
-/* Chat Drawer */
 .chat-overlay {
     position: fixed;
     top: 0;
@@ -402,20 +390,20 @@
     margin: 0;
     font-size: 18px;
     font-weight: 700;
-    color: #111;
+    color: #262626;
 }
 
 .chat-info p {
     margin: 4px 0 0;
     font-size: 14px;
-    color: #666;
+    color: #75757D;
 }
 
 .close-chat {
     background: #f5f5f7;
     border: none;
     cursor: pointer;
-    color: #555;
+    color: #75757D;
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -466,14 +454,14 @@
 }
 
 .message.user .msg-bubble {
-    background-color: #5865F2;
+    background-color: #5767AE;
     color: white;
     border-bottom-right-radius: 4px;
 }
 
 .message.rider .msg-bubble {
     background-color: #ffffff;
-    color: #333;
+    color: #262626;
     border-bottom-left-radius: 4px;
 }
 
@@ -496,7 +484,7 @@
 .chat-input-area input {
     flex: 1;
     height: 48px;
-    border: 1px solid #EAEAEA;
+    border: 1px solid #E4E4E7;
     border-radius: 16px;
     padding: 0 20px;
     font-size: 15px;
@@ -506,13 +494,13 @@
 }
 
 .chat-input-area input:focus {
-    border-color: #5865F2;
+    border-color: #5767AE;
     background: #fff;
-    box-shadow: 0 0 0 4px rgba(88, 101, 242, 0.1);
+    box-shadow: 0 0 0 4px rgba(87, 103, 174, 0.1);
 }
 
 .btn-send {
-    background-color: #5865F2;
+    background-color: #5767AE;
     color: white;
     border: none;
     width: 48px;
@@ -523,7 +511,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+    box-shadow: 0 4px 12px rgba(87, 103, 174, 0.3);
 }
 
 .btn-send:hover {
@@ -531,7 +519,6 @@
     transform: scale(1.05);
 }
 
-/* Responsive Queries */
 @media (max-width: 1024px) {
     .info-grid {
         grid-template-columns: repeat(2, 1fr);

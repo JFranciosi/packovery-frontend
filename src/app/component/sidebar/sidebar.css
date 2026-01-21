@@ -5,7 +5,6 @@
     bottom: 0;
     width: 280px;
     background-color: white;
-    /* Clean white sidebar */
     z-index: 1000;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -19,7 +18,6 @@
 .sidebar.open {
     transform: translateX(0);
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
-    /* Shadow when open on mobile */
 }
 
 @media (min-width: 1024px) {
@@ -28,10 +26,6 @@
         position: static;
         height: 100vh;
         box-shadow: none;
-        background-color: #F8F9FB;
-        /* Match main bg or slight difference */
-        /* Actually let's make it white or transparent to blend? */
-        /* Let's keep it white for contrast if main is light gray */
         background-color: #ffffff;
     }
 }
@@ -49,7 +43,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Optional: Add a subtle glow or bg */
     background: #F8F9FA;
     border-radius: 16px;
 }
@@ -71,9 +64,8 @@
     display: flex;
     align-items: center;
     padding: 14px 20px;
-    color: #555;
+    color: #75757D;
     background-color: transparent;
-    /* Cleaner look, only active has bg */
     text-decoration: none;
     border-radius: 16px;
     transition: all 0.2s;
@@ -85,7 +77,7 @@
 
 .nav-item:hover {
     background-color: #F8F9FA;
-    color: #333;
+    color: #262626;
     transform: translateX(4px);
 }
 
@@ -95,9 +87,9 @@
 }
 
 .nav-item.active {
-    background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
+    background: linear-gradient(135deg, #5767AE 0%, #4752c4 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+    box-shadow: 0 4px 12px rgba(87, 103, 174, 0.3);
 }
 
 .nav-item .icon {

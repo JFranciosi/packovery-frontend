@@ -1,22 +1,20 @@
 :host {
     display: block;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #333;
+    color: #262626;
     height: 100vh;
     overflow: hidden;
-    background-color: #F8F9FB;
-    /* Softer light gray background */
+    background-color: #F7F7F7;
 }
 
 .layout-container {
     display: flex;
     height: 100vh;
-    background-color: #F8F9FB;
+    background-color: #F7F7F7;
     position: relative;
     overflow: visible;
 }
 
-/* Mobile Header */
 .mobile-header {
     display: none;
     justify-content: space-between;
@@ -39,14 +37,13 @@
     border: none;
     padding: 8px;
     cursor: pointer;
-    color: #333;
+    color: #262626;
 }
 
 .main-content {
     flex: 1;
     padding: 40px 60px;
     overflow: visible;
-    /* Changed from overflow-y: auto to visible */
     animation: fadeInPage 0.5s ease-out;
 }
 
@@ -66,11 +63,10 @@
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 32px;
-    color: #111;
+    color: #262626;
     letter-spacing: -0.5px;
 }
 
-/* Filters */
 .filters-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -91,10 +87,8 @@
     flex-direction: column;
     gap: 8px;
     position: relative;
-    /* Removed static z-index to prevents stacking context trapping */
 }
 
-/* Elevate the group when interacting so dropdowns sit on top of siblings */
 .filter-group:focus-within {
     z-index: 50;
 }
@@ -102,7 +96,7 @@
 .filter-group label {
     font-size: 13px;
     font-weight: 600;
-    color: #555;
+    color: #75757D;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -111,12 +105,12 @@
 .select-wrapper {
     width: 100%;
     height: 48px;
-    border: 1px solid #EAEAEA;
+    border: 1px solid #E4E4E7;
     border-radius: 16px;
     padding: 0 16px;
     font-size: 15px;
-    color: #333;
-    background-color: #FAFAFA;
+    color: #262626;
+    background-color: #F7F7F7;
     outline: none;
     transition: all 0.2s ease;
     display: flex;
@@ -131,9 +125,9 @@
 
 .filter-group input:focus,
 .select-wrapper:focus-within {
-    border-color: #5865F2;
+    border-color: #5767AE;
     background-color: #fff;
-    box-shadow: 0 0 0 4px rgba(88, 101, 242, 0.1);
+    box-shadow: 0 0 0 4px rgba(87, 103, 174, 0.1);
 }
 
 .select-wrapper select {
@@ -147,7 +141,7 @@
     -webkit-appearance: none;
     cursor: pointer;
     font-size: 15px;
-    color: #333;
+    color: #262626;
     outline: none;
 }
 
@@ -161,7 +155,7 @@
 }
 
 .select-wrapper:focus-within .chevron {
-    color: #5865F2;
+    color: #5767AE;
     transform: rotate(180deg);
 }
 
@@ -174,7 +168,6 @@
     padding-right: 40px;
 }
 
-/* Hide native date icon */
 input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
@@ -184,7 +177,6 @@ input[type="date"] {
     position: relative;
 }
 
-/* Calendar icon style */
 .calendar-icon {
     position: absolute;
     right: 16px;
@@ -198,7 +190,7 @@ input[type="date"] {
 }
 
 .calendar-icon:hover {
-    color: #5865F2;
+    color: #5767AE;
 }
 
 .input-wrapper .icon-right {
@@ -212,7 +204,7 @@ input[type="date"] {
 }
 
 .input-wrapper input:focus+.icon-right {
-    color: #5865F2;
+    color: #5767AE;
 }
 
 .filter-action {
@@ -297,20 +289,20 @@ input[type="date"] {
     padding: 12px 16px;
     font-size: 14px;
     cursor: pointer;
-    color: #333;
+    color: #262626;
     transition: all 0.2s;
     border-radius: 16px;
 }
 
 .custom-dropdown-options .option:hover {
-    background-color: #F0F2FD;
-    color: #5865F2;
+    background-color: #DADFF3;
+    color: #5767AE;
 }
 
 .btn-search {
     width: 100%;
     height: 48px;
-    background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
+    background: linear-gradient(135deg, #5767AE 0%, #4752c4 100%);
     color: white;
     border: none;
     border-radius: 16px;
@@ -318,12 +310,12 @@ input[type="date"] {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.25);
+    box-shadow: 0 4px 12px rgba(87, 103, 174, 0.25);
 }
 
 .btn-search:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(88, 101, 242, 0.35);
+    box-shadow: 0 6px 16px rgba(87, 103, 174, 0.35);
 }
 
 .btn-search:active {
@@ -347,7 +339,7 @@ table {
 }
 
 thead tr {
-    background-color: #F8F9FA;
+    background-color: #F7F7F7;
     height: 56px;
 }
 
@@ -356,10 +348,10 @@ th {
     padding: 0 24px;
     font-size: 13px;
     font-weight: 600;
-    color: #666;
+    color: #75757D;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #E4E4E7;
 }
 
 tbody tr {
@@ -369,7 +361,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background-color: #FAFAFB;
+    background-color: #F7F7F7;
     transform: scale(1.002);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     z-index: 10;
@@ -379,15 +371,14 @@ tbody tr:hover {
 td {
     padding: 0 24px;
     font-size: 15px;
-    color: #333;
-    border-bottom: 1px solid #f5f5f5;
+    color: #262626;
+    border-bottom: 1px solid #E4E4E7;
 }
 
-/* Specific styling for table content */
 td[data-label="ID ordine"] {
     font-family: 'SF Mono', 'Roboto Mono', monospace;
     font-weight: 500;
-    color: #555;
+    color: #75757D;
     letter-spacing: -0.5px;
 }
 
@@ -406,16 +397,16 @@ td.action-cell {
     width: 36px;
     height: 36px;
     border-radius: 16px;
-    color: #5865F2;
-    background-color: #EEF0FD;
+    color: #5767AE;
+    background-color: #DADFF3;
     transition: all 0.2s;
 }
 
 .doc-icon:hover {
-    background-color: #5865F2;
+    background-color: #5767AE;
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(88, 101, 242, 0.2);
+    box-shadow: 0 4px 10px rgba(87, 103, 174, 0.2);
 }
 
 .pagination {
@@ -438,7 +429,7 @@ td.action-cell {
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    color: #555;
+    color: #75757D;
     border-radius: 16px;
     transition: all 0.2s;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
@@ -452,9 +443,9 @@ td.action-cell {
 }
 
 .page-num.active {
-    background-color: #5865F2;
+    background-color: #5767AE;
     color: white;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+    box-shadow: 0 4px 12px rgba(87, 103, 174, 0.3);
 }
 
 .page-nav.disabled {
@@ -464,7 +455,6 @@ td.action-cell {
     box-shadow: none;
 }
 
-/* Spinner Styles */
 .loading-overlay {
     position: absolute;
     top: 0;
@@ -483,9 +473,9 @@ td.action-cell {
 .spinner {
     width: 48px;
     height: 48px;
-    border: 4px solid rgba(88, 101, 242, 0.1);
+    border: 4px solid rgba(87, 103, 174, 0.1);
     border-radius: 50%;
-    border-top-color: #5865F2;
+    border-top-color: #5767AE;
     animation: spin 0.8s ease-in-out infinite;
 }
 
@@ -595,7 +585,7 @@ td.action-cell {
         left: 0;
         right: 0;
         height: 6px;
-        background: linear-gradient(90deg, #5865F2, #7C8AFF);
+        background: linear-gradient(90deg, #5767AE, #7C8AFF);
     }
 
     td {
@@ -625,11 +615,10 @@ td.action-cell {
         color: #111;
         border-bottom: 1px solid #f5f5f5;
         margin-top: 6px;
-        /* Space for color strip */
     }
 
     td:first-child:before {
-        color: #5865F2;
+        color: #5767AE;
         margin-bottom: 4px;
     }
 
@@ -666,7 +655,7 @@ td.action-cell {
         width: 48px;
         height: 48px;
         border-radius: 16px;
-        background-color: #5865F2;
+        background-color: #5767AE;
         color: white;
     }
 

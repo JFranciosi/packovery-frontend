@@ -66,7 +66,7 @@
 .error-container {
     text-align: center;
     padding: 40px;
-    background: #fff;
+    background: var(--color-bg-surface);
     border: 1px solid #ffebeb;
     border-radius: 16px;
     max-width: 500px;
@@ -306,6 +306,11 @@
     .btn-contact {
         height: 48px;
         font-size: 14px;
+    }
+
+    .map-container {
+        height: 60vh !important;
+        min-height: 500px !important;
     }
 }
 

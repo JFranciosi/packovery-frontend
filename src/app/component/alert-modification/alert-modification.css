@@ -292,7 +292,7 @@ textarea {
 }
 
 input:checked+.slider {
-    background-color: #B1CB18;
+    background-color: #22C55E;
 }
 
 input:checked+.slider:before {

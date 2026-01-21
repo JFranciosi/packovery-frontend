@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 import { AlertService } from '../../services/alert.service';
 import { AlertResponse } from '../../model/models';
+import { AlertFilterComponent } from '../../component/alert-filter/alert-filter';
 
 @Component({
     selector: 'app-alert-configurator',
     standalone: true,
-    imports: [CommonModule, FormsModule, SidebarComponent],
+    imports: [CommonModule, FormsModule, SidebarComponent, AlertFilterComponent],
     templateUrl: './alert-configurator.html',
     styleUrls: ['./alert-configurator.css']
 })
@@ -40,10 +41,6 @@ export class AlertConfigurator implements OnInit, OnDestroy {
         status: ''
     };
 
-    selectedTypologyLabel = '';
-    selectedStatusLabel = '';
-    isTypologyOpen = false;
-    isStatusOpen = false;
     isDeleteModalOpen = false;
     alertToDeleteIdNum: number | null = null;
 
@@ -69,6 +66,11 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     }
 
     filteredAlerts: AlertResponse[] = [];
+
+    onFilterChange(newFilters: { global: string, typology: string, status: string }) {
+        this.filters = newFilters;
+        this.applyFilters();
+    }
 
     applyFilters() {
         this.offset = 0;
@@ -118,56 +120,6 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-    }
-
-    toggleDropdown(type: 'typology' | 'status') {
-        if (type === 'typology') {
-            this.isStatusOpen = false;
-            this.isTypologyOpen = !this.isTypologyOpen;
-        } else {
-            this.isTypologyOpen = false;
-            this.isStatusOpen = !this.isStatusOpen;
-        }
-    }
-
-    selectOption(type: 'typology' | 'status', option: { label: string, value: string }) {
-        if (type === 'typology') {
-            this.filters.typology = option.value;
-            this.selectedTypologyLabel = option.label;
-            this.isTypologyOpen = false;
-        } else if (type === 'status') {
-            this.filters.status = option.value;
-            this.selectedStatusLabel = option.label;
-            this.isStatusOpen = false;
-        }
-        this.applyFilters();
-    }
-
-    clearFilter(type: 'typology' | 'status' | 'global') {
-        if (type === 'typology') {
-            this.filters.typology = '';
-            this.selectedTypologyLabel = '';
-            this.isTypologyOpen = false;
-        } else if (type === 'status') {
-            this.filters.status = '';
-            this.selectedStatusLabel = '';
-            this.isStatusOpen = false;
-        } else {
-            this.filters.global = '';
-        }
-        this.applyFilters();
-    }
-
-    filter() {
-        this.applyFilters();
-    }
-
-    @HostListener('document:click', ['$event'])
-    clickout(event: any) {
-        if (!event.target.closest('.select-wrapper')) {
-            this.isTypologyOpen = false;
-            this.isStatusOpen = false;
-        }
     }
 
     toggleSidebar() {

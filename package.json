@@ -46,5 +46,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.2"
+  },
+  "overrides": {
+    "glob": "^10.4.5",
+    "rimraf": "^6.0.1"
   }
 }

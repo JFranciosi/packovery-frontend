@@ -1,0 +1,79 @@
+<div class="filters-container">
+    <div class="filter-group">
+        <label>Cerca</label>
+        <div class="input-wrapper">
+            <input type="text" placeholder="Nome, descrizione..." [(ngModel)]="filters.global"
+                (input)="onSearchInput()">
+            @if (filters.global) {
+            <span class="clear-field" (click)="clearFilter('global')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </span>
+            }
+        </div>
+    </div>
+
+    <div class="filter-group relative">
+        <label>Tipologia</label>
+        <div class="select-wrapper" (click)="toggleDropdown('typology'); $event.stopPropagation()">
+            <div class="custom-select-trigger">
+                {{ selectedTypologyLabel || 'Tutte' }}
+            </div>
+            @if (filters.typology) {
+            <span class="clear-field" (click)="clearFilter('typology'); $event.stopPropagation()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </span>
+            }
+            <span class="chevron">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </span>
+        </div>
+        @if (isTypologyOpen) {
+        <div class="custom-dropdown-options">
+            @for (opt of typologyOptions; track opt.value) {
+            <div class="option" (click)="selectOption('typology', opt)">
+                {{ opt.label }}
+            </div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="filter-group relative">
+        <label>Stato</label>
+        <div class="select-wrapper" (click)="toggleDropdown('status'); $event.stopPropagation()">
+            <div class="custom-select-trigger">
+                {{ selectedStatusLabel || 'Tutti' }}
+            </div>
+            @if (filters.status) {
+            <span class="clear-field" (click)="clearFilter('status'); $event.stopPropagation()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </span>
+            }
+            <span class="chevron">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </span>
+        </div>
+        @if (isStatusOpen) {
+        <div class="custom-dropdown-options">
+            @for (opt of statusOptions; track opt.value) {
+            <div class="option" (click)="selectOption('status', opt)">
+                {{ opt.label }}
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

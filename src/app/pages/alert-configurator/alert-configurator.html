@@ -35,82 +35,10 @@
         </div>
 
         <!-- Filters (Inspired by order-search) -->
-        <div class="filters-container">
-            <!-- Global Search -->
-            <div class="filter-group">
-                <label>Cerca</label>
-                <div class="input-wrapper">
-                    <input type="text" placeholder="Nome, descrizione..." [(ngModel)]="filters.global"
-                        (input)="filter()">
-                    <span *ngIf="filters.global" class="clear-field" (click)="clearFilter('global')">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </span>
-                </div>
-            </div>
-
-            <!-- Typology Filter -->
-            <div class="filter-group relative">
-                <label>Tipologia</label>
-                <div class="select-wrapper" (click)="toggleDropdown('typology'); $event.stopPropagation()">
-                    <div class="custom-select-trigger">
-                        {{ selectedTypologyLabel || 'Tutte' }}
-                    </div>
-                    <span *ngIf="filters.typology" class="clear-field"
-                        (click)="clearFilter('typology'); $event.stopPropagation()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </span>
-                    <span class="chevron">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </span>
-                </div>
-                <!-- Custom Dropdown -->
-                <div *ngIf="isTypologyOpen" class="custom-dropdown-options">
-                    <div class="option" *ngFor="let opt of typologyOptions" (click)="selectOption('typology', opt)">
-                        {{ opt.label }}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Status Filter -->
-            <div class="filter-group relative">
-                <label>Stato</label>
-                <div class="select-wrapper" (click)="toggleDropdown('status'); $event.stopPropagation()">
-                    <div class="custom-select-trigger">
-                        {{ selectedStatusLabel || 'Tutti' }}
-                    </div>
-                    <span *ngIf="filters.status" class="clear-field"
-                        (click)="clearFilter('status'); $event.stopPropagation()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </span>
-                    <span class="chevron">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </span>
-                </div>
-                <div *ngIf="isStatusOpen" class="custom-dropdown-options">
-                    <div class="option" *ngFor="let opt of statusOptions" (click)="selectOption('status', opt)">
-                        {{ opt.label }}
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Filters -->
+        <app-alert-filter [typologyOptions]="typologyOptions" [statusOptions]="statusOptions"
+            (filterChange)="onFilterChange($event)">
+        </app-alert-filter>
 
         <div class="table-container">
             <div *ngIf="isLoading" class="loading-overlay">

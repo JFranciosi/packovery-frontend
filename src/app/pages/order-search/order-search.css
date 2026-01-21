@@ -44,7 +44,7 @@
 
 .main-content {
     flex: 1;
-    padding: 40px 60px;
+    padding: 24px 40px;
     overflow: visible;
     /* Changed from overflow-y: auto to visible */
     animation: fadeInPage 0.5s ease-out;
@@ -65,7 +65,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
     color: #111;
     letter-spacing: -0.5px;
 }
@@ -74,10 +74,10 @@
 .filters-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    column-gap: 24px;
-    row-gap: 20px;
-    margin-bottom: 40px;
-    padding: 24px;
+    column-gap: 16px;
+    row-gap: 16px;
+    margin-bottom: 16px;
+    padding: 20px;
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
@@ -110,9 +110,9 @@
 .filter-group input,
 .select-wrapper {
     width: 100%;
-    height: 48px;
+    height: 40px;
     border: 1px solid #EAEAEA;
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 0 16px;
     font-size: 15px;
     color: #333;
@@ -309,7 +309,7 @@ input[type="date"] {
 
 .btn-search {
     width: 100%;
-    height: 48px;
+    height: 40px;
     background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
     color: white;
     border: none;
@@ -381,6 +381,10 @@ td {
     font-size: 15px;
     color: #333;
     border-bottom: 1px solid #f5f5f5;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* Specific styling for table content */

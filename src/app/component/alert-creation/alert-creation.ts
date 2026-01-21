@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 import { AlertService } from '../../services/alert.service';
@@ -8,7 +7,7 @@ import { AlertService } from '../../services/alert.service';
 @Component({
     selector: 'app-alert-creation',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent],
+    imports: [CommonModule, RouterLink, SidebarComponent],
     templateUrl: './alert-creation.html',
     styleUrls: ['./alert-creation.css']
 })
@@ -64,6 +63,23 @@ export class AlertCreation {
         const mStr = m < 10 ? '0' + m : '' + m;
 
         this.alert.threshold = `${hStr}:${mStr}`;
+        this.alert.threshold = `${hStr}:${mStr}`;
+    }
+
+    updateName(event: any) {
+        this.alert.name = event.target.value;
+    }
+
+    updateDescription(event: any) {
+        this.alert.description = event.target.value;
+    }
+
+    updateThreshold(event: any) {
+        this.alert.threshold = event.target.value;
+    }
+
+    updateActive(event: any) {
+        this.alert.active = event.target.checked;
     }
 
     private mapTypology(type: string): string {

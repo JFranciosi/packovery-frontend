@@ -54,31 +54,32 @@
             <div class="form-row">
                 <div class="form-group flex-1">
                     <label>ID alert</label>
-                    <input type="text" [(ngModel)]="alert.id" readonly class="readonly-input">
+                    <input type="text" [value]="alert.id" readonly class="readonly-input">
                 </div>
                 <div class="form-group flex-1">
                     <label>Tipologia</label>
-                    <input type="text" [(ngModel)]="alert.type" readonly class="readonly-input">
+                    <input type="text" [value]="alert.type" readonly class="readonly-input">
                 </div>
             </div>
 
             <!-- Nome -->
             <div class="form-group">
                 <label>Nome</label>
-                <input type="text" [(ngModel)]="alert.name" readonly class="readonly-input">
+                <input type="text" [value]="alert.name" readonly class="readonly-input">
             </div>
 
             <!-- Descrizione -->
             <div class="form-group">
                 <label>Descrizione</label>
-                <textarea [(ngModel)]="alert.description" rows="5" readonly class="readonly-input"></textarea>
+                <textarea [value]="alert.description" rows="5" readonly class="readonly-input"></textarea>
             </div>
 
             <!-- Soglia -->
             <div class="form-group">
                 <label>Soglia</label>
                 <div class="threshold-wrapper">
-                    <input type="text" [(ngModel)]="alert.threshold" class="threshold-input">
+                    <input type="text" [value]="alert.threshold" (input)="updateThreshold($event)"
+                        class="threshold-input">
                     <div class="quick-add-buttons">
                         <button type="button" (click)="addTime(0.5)">+0.5h</button>
                         <button type="button" (click)="addTime(1)">+1h</button>
@@ -92,7 +93,7 @@
                 <label>Stato</label>
                 <div class="status-toggle-wrapper">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="alert.active">
+                        <input type="checkbox" [checked]="alert.active" (change)="updateActive($event)">
                         <span class="slider round"></span>
                     </label>
                     <span class="status-label">{{ alert.active ? 'Attivo' : 'Non attivo' }}</span>

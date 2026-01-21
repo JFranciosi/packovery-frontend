@@ -2,8 +2,8 @@
     <div class="filter-group">
         <label>Cerca</label>
         <div class="input-wrapper">
-            <input type="text" placeholder="Nome, descrizione..." [(ngModel)]="filters.global"
-                (input)="onSearchInput()">
+            <input type="text" placeholder="Nome, descrizione..." [value]="filters.global"
+                (input)="onGlobalSearchChange($event)">
             @if (filters.global) {
             <span class="clear-field" (click)="clearFilter('global')">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

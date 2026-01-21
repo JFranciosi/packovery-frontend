@@ -41,9 +41,11 @@
         </app-alert-filter>
 
         <div class="table-container">
-            <div *ngIf="isLoading" class="loading-overlay">
+            @if (isLoading) {
+            <div class="loading-overlay">
                 <div class="spinner"></div>
             </div>
+            }
 
             <table class="row-border hover">
                 <thead>
@@ -57,7 +59,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let alert of paginatedAlerts">
+                    @for (alert of paginatedAlerts; track alert.id) {
+                    <tr>
                         <td class="col-name">
                             <strong>{{ alert.alertName }}</strong><br>
                             <span style="font-size:13px; color:#888;">{{ alert.alertDescription }}</span>
@@ -95,6 +98,7 @@
                             </div>
                         </td>
                     </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -119,7 +123,8 @@
     </main>
 
     <!-- Delete Modal (Keep existing) -->
-    <div class="modal-overlay" *ngIf="isDeleteModalOpen">
+    @if (isDeleteModalOpen) {
+    <div class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="warning-icon">
@@ -144,4 +149,5 @@
             </div>
         </div>
     </div>
+    }
 </div>

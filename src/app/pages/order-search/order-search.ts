@@ -1,6 +1,5 @@
 import { Component, HostListener, ElementRef, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 
@@ -14,7 +13,7 @@ import { DatePickerComponent } from '../../component/date-picker/date-picker';
 @Component({
     selector: 'app-order-search',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent, DatePipe, DatePickerComponent],
+    imports: [CommonModule, RouterLink, SidebarComponent, DatePipe, DatePickerComponent],
     templateUrl: './order-search.html',
     styleUrls: ['./order-search.css']
 })
@@ -346,6 +345,10 @@ export class OrderSearch implements OnInit {
             this.selectedSizeLabel = option.label;
             this.isSizeDropdownOpen = false;
         }
+    }
+
+    onOrderIdInput(event: any) {
+        this.filters.orderId = event.target.value;
     }
 
     onOriginCityInput(event: any) {

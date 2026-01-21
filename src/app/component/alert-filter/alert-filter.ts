@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-alert-filter',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule],
     templateUrl: './alert-filter.html',
     styleUrls: ['./alert-filter.css']
 })
@@ -64,7 +63,9 @@ export class AlertFilterComponent {
         this.emitFilters();
     }
 
-    onSearchInput() {
+    onGlobalSearchChange(event: Event) {
+        const input = event.target as HTMLInputElement;
+        this.filters.global = input.value;
         this.emitFilters();
     }
 

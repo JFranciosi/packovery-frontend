@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 import { AlertService } from '../../services/alert.service';
@@ -9,7 +8,7 @@ import { AlertResponse, AlertRequest } from '../../model/models';
 @Component({
     selector: 'app-alert-modification',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent],
+    imports: [CommonModule, RouterLink, SidebarComponent],
     templateUrl: './alert-modification.html',
     styleUrls: ['./alert-modification.css']
 })
@@ -154,6 +153,14 @@ export class AlertModification implements OnInit {
         const mStr = m < 10 ? '0' + m : '' + m;
 
         this.alert.threshold = `${hStr}:${mStr}`;
+    }
+
+    updateThreshold(event: any) {
+        this.alert.threshold = event.target.value;
+    }
+
+    updateActive(event: any) {
+        this.alert.active = event.target.checked;
     }
 
     modifyAlert() {

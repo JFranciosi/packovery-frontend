@@ -1,13 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-confirmation-code',
     standalone: true,
-    imports: [CommonModule, RouterLink, FormsModule],
+    imports: [CommonModule, RouterLink],
     templateUrl: './confirmation-code.html',
     styleUrls: ['./confirmation-code.css']
 })
@@ -24,6 +23,11 @@ export class ConfirmationCode implements OnInit {
         this.route.queryParams.subscribe(params => {
             this.email = params['email'];
         });
+    }
+
+
+    onDigitInput(event: any, index: number) {
+        this.digits[index] = event.target.value;
     }
 
     resendCode() {

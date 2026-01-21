@@ -19,11 +19,10 @@ export class AlertCreation {
 
     private alertService = inject(AlertService);
 
-    // Form Model
     alert = {
         type: 'Ritardo consegna ordine',
-        name: 'Alert1',
-        description: 'Lorem ipsum dolor sit amet consectetur. Nec sed pharetra sed cum viverra fames.',
+        name: '',
+        description: '',
         threshold: '00:00',
         active: true
     };

@@ -22,47 +22,127 @@
 
     <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <header class="page-header">
-            <h2 class="page-title">Configuratore alert</h2>
-            <button class="btn-new" routerLink="/alert-creation">
-                Nuovo alert
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
+        <div class="page-header">
+            <h1 class="page-title">Configurazione Alert</h1>
+            <button class="btn-new" (click)="openNewAlert()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
+                Nuovo Alert
             </button>
-        </header>
+        </div>
+
+        <!-- Filters (Inspired by order-search) -->
+        <div class="filters-container">
+            <!-- Global Search -->
+            <div class="filter-group">
+                <label>Cerca</label>
+                <div class="input-wrapper">
+                    <input type="text" placeholder="Nome, descrizione..." [(ngModel)]="filters.global"
+                        (input)="filter()">
+                    <span *ngIf="filters.global" class="clear-field" (click)="clearFilter('global')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Typology Filter -->
+            <div class="filter-group relative">
+                <label>Tipologia</label>
+                <div class="select-wrapper" (click)="toggleDropdown('typology'); $event.stopPropagation()">
+                    <div class="custom-select-trigger">
+                        {{ selectedTypologyLabel || 'Tutte' }}
+                    </div>
+                    <span *ngIf="filters.typology" class="clear-field"
+                        (click)="clearFilter('typology'); $event.stopPropagation()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </span>
+                    <span class="chevron">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                </div>
+                <!-- Custom Dropdown -->
+                <div *ngIf="isTypologyOpen" class="custom-dropdown-options">
+                    <div class="option" *ngFor="let opt of typologyOptions" (click)="selectOption('typology', opt)">
+                        {{ opt.label }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="filter-group relative">
+                <label>Stato</label>
+                <div class="select-wrapper" (click)="toggleDropdown('status'); $event.stopPropagation()">
+                    <div class="custom-select-trigger">
+                        {{ selectedStatusLabel || 'Tutti' }}
+                    </div>
+                    <span *ngIf="filters.status" class="clear-field"
+                        (click)="clearFilter('status'); $event.stopPropagation()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </span>
+                    <span class="chevron">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                </div>
+                <div *ngIf="isStatusOpen" class="custom-dropdown-options">
+                    <div class="option" *ngFor="let opt of statusOptions" (click)="selectOption('status', opt)">
+                        {{ opt.label }}
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="table-container">
-            @if (isLoading) {
-            <div class="loading-overlay">
+            <div *ngIf="isLoading" class="loading-overlay">
                 <div class="spinner"></div>
             </div>
-            }
-            <table>
+
+            <table class="row-border hover">
                 <thead>
                     <tr>
-                        <th class="col-name">Nome</th>
-                        <th class="col-date">Data creazione</th>
+                        <th class="col-name">Nome Alert</th>
+                        <th class="col-date">Data Creazione</th>
                         <th class="col-type">Tipologia</th>
                         <th class="col-threshold">Soglia</th>
                         <th class="col-status">Stato</th>
-                        <th class="col-actions"></th>
+                        <th class="col-actions">Azioni</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (alert of alerts; track alert.id) {
-                    <tr>
-                        <td class="col-name" data-label="Nome">{{ alert.alertName }}</td>
-                        <td class="col-date" data-label="Data creazione">{{ alert.alertCreatedDate | date:'dd/MM/yyyy'
-                            }}</td>
-                        <td class="col-type" data-label="Tipologia">{{ getTypologyLabel(alert.alertTypology) }}</td>
-                        <td class="col-threshold" data-label="Soglia">{{ formatDuration(alert.alertTheshold) }}</td>
-                        <td class="col-status" data-label="Stato">
-                            <label class="switch">
-                                <input type="checkbox" [checked]="alert.alertStatus" (change)="toggleStatus(alert)">
+                    <tr *ngFor="let alert of paginatedAlerts">
+                        <td class="col-name">
+                            <strong>{{ alert.alertName }}</strong><br>
+                            <span style="font-size:13px; color:#888;">{{ alert.alertDescription }}</span>
+                        </td>
+                        <td class="col-date">{{ alert.alertCreatedDate | date:'dd/MM/yyyy' }}</td>
+                        <td class="col-type">
+                            {{ getTypologyLabel(alert.alertTypology) }}
+                        </td>
+                        <td class="col-threshold">{{ formatDuration(alert.alertTheshold) }}</td>
+                        <td class="col-status">
+                            <label class="switch" (click)="$event.stopPropagation()">
+                                <input type="checkbox" [checked]="alert.alertStatus"
+                                    (change)="toggleStatus(alert, $event)">
                                 <span class="slider"></span>
                             </label>
                         </td>
@@ -75,7 +155,7 @@
                                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                     </svg>
                                 </button>
-                                <button class="action-btn delete" (click)="openDeleteModal(alert)">
+                                <button class="action-btn delete" (click)="confirmDelete(alert.id)">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="3 6 5 6 21 6"></polyline>
@@ -87,18 +167,35 @@
                             </div>
                         </td>
                     </tr>
-                    }
                 </tbody>
             </table>
         </div>
+
+        <div class="pagination">
+            <button class="page-nav prev" (click)="prevPage()" [disabled]="offset === 0"
+                [class.disabled]="offset === 0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="page-num active">{{ currentPage }}</button>
+            <button class="page-nav next" (click)="nextPage()" [disabled]="offset + limit >= filteredAlerts.length"
+                [class.disabled]="offset + limit >= filteredAlerts.length">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
     </main>
 
-    @if (isDeleteModalOpen) {
-    <div class="modal-overlay" (click)="closeDeleteModal()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Delete Modal (Keep existing) -->
+    <div class="modal-overlay" *ngIf="isDeleteModalOpen">
+        <div class="modal-content">
             <div class="modal-header">
                 <div class="warning-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path
                             d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
@@ -107,17 +204,16 @@
                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
                     </svg>
                 </div>
-                <h3>Elimina alert</h3>
+                <h3>Elimina Alert</h3>
             </div>
             <div class="modal-body">
-                <p>Sei sicuro di voler eliminare l'alert <strong>"{{ alertToDelete?.alertName }}"</strong>?</p>
+                <p>Sei sicuro di voler eliminare questo alert?</p>
                 <p class="modal-subtitle">Questa azione non può essere annullata.</p>
             </div>
             <div class="modal-footer">
-                <button class="btn-cancel" (click)="closeDeleteModal()">Annulla</button>
-                <button class="btn-confirm-delete" (click)="confirmDelete()">Elimina</button>
+                <button class="btn-cancel" (click)="cancelDelete()">Annulla</button>
+                <button class="btn-confirm-delete" (click)="deleteAlert()">Elimina</button>
             </div>
         </div>
     </div>
-    }
 </div>

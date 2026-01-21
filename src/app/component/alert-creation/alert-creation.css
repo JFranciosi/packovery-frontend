@@ -214,7 +214,6 @@ textarea {
 
 .status-toggle-wrapper {
     display: flex;
-    align-items: center;
     gap: 16px;
     padding: 16px;
     background: var(--color-bg-primary);
@@ -278,7 +277,7 @@ input:checked+.slider:before {
     color: var(--color-text-primary);
     line-height: 1;
     position: relative;
-    top: 1px;
+    top: 6.4px;
 }
 
 .form-actions {

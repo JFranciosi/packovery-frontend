@@ -76,15 +76,21 @@ export class Map implements AfterViewInit, OnDestroy {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.map);
 
+        const escapeHtml = (text: string) => {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        };
+
         if (this.departure && this.departure.lat) {
             L.marker([this.departure.lat, this.departure.lng]).addTo(this.map)
-                .bindPopup(`Punto di partenza: ${this.departure.address || ''}`)
+                .bindPopup(`Punto di partenza: ${escapeHtml(this.departure.address || '')}`)
                 .openPopup();
         }
 
         if (this.arrival && this.arrival.lat) {
             L.marker([this.arrival.lat, this.arrival.lng]).addTo(this.map)
-                .bindPopup(`Destinazione: ${this.arrival.address || ''}`);
+                .bindPopup(`Destinazione: ${escapeHtml(this.arrival.address || '')}`);
         }
 
         if (this.currentPosition && this.currentPosition.lat) {

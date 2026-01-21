@@ -103,7 +103,7 @@ export interface AlertResponse {
     alertDescription: string;
     alertStatus: boolean;
     alertCreatedDate: string;
-    alertTheshold: string; // ISO-8601 duration
+    alertTheshold: number;
 }
 
 

@@ -1,52 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
-
-import { AlertResponse } from '../../model/models';
 import { AlertService } from '../../services/alert.service';
-import { OnInit } from '@angular/core';
+import { AlertResponse } from '../../model/models';
 
 @Component({
     selector: 'app-alert-configurator',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent],
+    imports: [CommonModule, FormsModule, SidebarComponent],
     templateUrl: './alert-configurator.html',
     styleUrls: ['./alert-configurator.css']
 })
-export class AlertConfigurator implements OnInit {
-
-    isSidebarOpen = false;
-    alerts: AlertResponse[] = [
-        {
-            id: 1,
-            alertName: 'Ritardo Consegna Milano',
-            alertTypology: 'ORDER_DELIVERY_DELAY',
-            alertDescription: 'Monitoraggio ritardi zona urbana Milano',
-            alertStatus: true,
-            alertCreatedDate: new Date().toISOString(),
-            alertTheshold: 'PT1H'
-        },
-        {
-            id: 2,
-            alertName: 'GPS Stop Roma',
-            alertTypology: 'GPS_SIGNAL_INTERRUPTED',
-            alertDescription: 'Allerta per perdita segnale in galleria',
-            alertStatus: false,
-            alertCreatedDate: new Date().toISOString(),
-            alertTheshold: 'PT30M'
-        }
-    ];
+export class AlertConfigurator implements OnInit, OnDestroy {
+    alerts: AlertResponse[] = [];
+    allAlerts: AlertResponse[] = [];
+    paginatedAlerts: AlertResponse[] = [];
     isLoading = false;
+    offset = 0;
+    limit = 7;
+    currentPage = 1;
+    isSidebarOpen = false;
 
-    constructor(
-        private router: Router,
-        private alertService: AlertService
-    ) { }
+    typologyOptions = [
+        { label: 'Ritardo Partenza', value: 'ORDER_DEPARTURE_DELAY' },
+        { label: 'Ritardo Consegna', value: 'ORDER_DELIVERY_DELAY' },
+        { label: 'Segnale GPS Interrotto', value: 'GPS_SIGNAL_INTERRUPTED' }
+    ];
+
+    statusOptions = [
+        { label: 'Attivo', value: 'true' },
+        { label: 'Non attivo', value: 'false' }
+    ];
+
+    filters = {
+        global: '',
+        typology: '',
+        status: ''
+    };
+
+    selectedTypologyLabel = '';
+    selectedStatusLabel = '';
+    isTypologyOpen = false;
+    isStatusOpen = false;
+    isDeleteModalOpen = false;
+    alertToDeleteIdNum: number | null = null;
+
+    constructor(private alertService: AlertService, private router: Router) { }
 
     ngOnInit() {
-        // Proviamo comunque a caricare, ma abbiamo già i dati locali come fallback
         this.loadAlerts();
     }
 
@@ -54,112 +57,181 @@ export class AlertConfigurator implements OnInit {
         this.isLoading = true;
         this.alertService.getAlerts().subscribe({
             next: (data) => {
-                if (data && data.length > 0) {
-                    this.alerts = data;
-                }
+                this.allAlerts = data;
+                this.applyFilters();
                 this.isLoading = false;
             },
             error: (err) => {
-                console.warn('Backend non raggiungibile, uso dati locali', err);
+                console.error('Failed to load alerts', err);
                 this.isLoading = false;
             }
         });
     }
 
-    isDeleteModalOpen = false;
-    alertToDelete: AlertResponse | null = null;
+    filteredAlerts: AlertResponse[] = [];
+
+    applyFilters() {
+        this.offset = 0;
+        this.currentPage = 1;
+        this.filteredAlerts = this.allAlerts.filter(alert => {
+            if (this.filters.global) {
+                const search = this.filters.global.toLowerCase();
+                const typoLabel = this.getTypologyLabel(alert.alertTypology).toLowerCase();
+                const text = (alert.alertName + ' ' + alert.alertDescription + ' ' + typoLabel).toLowerCase();
+                if (!text.includes(search)) return false;
+            }
+
+            if (this.filters.typology && alert.alertTypology !== this.filters.typology) {
+                return false;
+            }
+
+            if (this.filters.status) {
+                const isActiveStr = this.filters.status === 'true';
+                if (alert.alertStatus !== isActiveStr) return false;
+            }
+            return true;
+        });
+
+        this.updateView();
+    }
+
+    updateView() {
+        const startIndex = this.offset;
+        const endIndex = this.offset + this.limit;
+        this.paginatedAlerts = this.filteredAlerts.slice(startIndex, endIndex);
+    }
+
+    nextPage() {
+        if (this.offset + this.limit < this.filteredAlerts.length) {
+            this.offset += this.limit;
+            this.currentPage++;
+            this.updateView();
+        }
+    }
+
+    prevPage() {
+        if (this.offset > 0) {
+            this.offset -= this.limit;
+            this.currentPage--;
+            this.updateView();
+        }
+    }
+
+    ngOnDestroy(): void {
+    }
+
+    toggleDropdown(type: 'typology' | 'status') {
+        if (type === 'typology') {
+            this.isStatusOpen = false;
+            this.isTypologyOpen = !this.isTypologyOpen;
+        } else {
+            this.isTypologyOpen = false;
+            this.isStatusOpen = !this.isStatusOpen;
+        }
+    }
+
+    selectOption(type: 'typology' | 'status', option: { label: string, value: string }) {
+        if (type === 'typology') {
+            this.filters.typology = option.value;
+            this.selectedTypologyLabel = option.label;
+            this.isTypologyOpen = false;
+        } else if (type === 'status') {
+            this.filters.status = option.value;
+            this.selectedStatusLabel = option.label;
+            this.isStatusOpen = false;
+        }
+        this.applyFilters();
+    }
+
+    clearFilter(type: 'typology' | 'status' | 'global') {
+        if (type === 'typology') {
+            this.filters.typology = '';
+            this.selectedTypologyLabel = '';
+            this.isTypologyOpen = false;
+        } else if (type === 'status') {
+            this.filters.status = '';
+            this.selectedStatusLabel = '';
+            this.isStatusOpen = false;
+        } else {
+            this.filters.global = '';
+        }
+        this.applyFilters();
+    }
+
+    filter() {
+        this.applyFilters();
+    }
+
+    @HostListener('document:click', ['$event'])
+    clickout(event: any) {
+        if (!event.target.closest('.select-wrapper')) {
+            this.isTypologyOpen = false;
+            this.isStatusOpen = false;
+        }
+    }
 
     toggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen;
     }
 
-    logout() {
-        this.router.navigate(['/']);
+    getTypologyLabel(value: string): string {
+        const option = this.typologyOptions.find(o => o.value === value);
+        return option ? option.label : value;
     }
 
-    toggleStatus(alert: AlertResponse) {
-        const newStatus = !alert.alertStatus;
-        this.alertService.updateAlertStatus(alert.id, newStatus).subscribe({
-            next: () => {
-                alert.alertStatus = newStatus;
-            },
-            error: (err) => {
-                console.error('Error updating alert status', err);
-            }
-        });
+    formatDuration(seconds: number): string {
+        if (!seconds && seconds !== 0) return '0s';
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+
+        const parts = [];
+        if (h > 0) parts.push(`${h}h`);
+        if (m > 0) parts.push(`${m}m`);
+        if (s > 0) parts.push(`${s}s`);
+        return parts.length > 0 ? parts.join(' ') : '0s';
+    }
+
+    openNewAlert() {
+        this.router.navigate(['/alert-creation']);
     }
 
     editAlert(alert: AlertResponse) {
         this.router.navigate(['/alert-modification', alert.id]);
     }
 
-    openDeleteModal(alert: AlertResponse) {
-        this.alertToDelete = alert;
+    toggleStatus(alert: AlertResponse, event: any) {
+        const newStatus = event.target.checked;
+        this.alertService.updateAlertStatus(alert.id, newStatus).subscribe({
+            next: () => {
+                alert.alertStatus = newStatus;
+            },
+            error: (err) => {
+                console.error('Error updating alert status', err);
+                event.target.checked = !newStatus;
+            }
+        });
+    }
+
+    confirmDelete(id: number) {
+        this.alertToDeleteIdNum = id;
         this.isDeleteModalOpen = true;
     }
 
-    closeDeleteModal() {
-        this.isDeleteModalOpen = false;
-        this.alertToDelete = null;
-    }
-
-    confirmDelete() {
-        if (this.alertToDelete) {
-            this.alertService.deleteAlert(this.alertToDelete.id).subscribe({
+    deleteAlert() {
+        if (this.alertToDeleteIdNum !== null) {
+            this.alertService.deleteAlert(this.alertToDeleteIdNum).subscribe({
                 next: () => {
-                    this.alerts = this.alerts.filter(a => a.id !== this.alertToDelete?.id);
-                    this.closeDeleteModal();
+                    this.cancelDelete();
+                    this.loadAlerts();
                 },
-                error: (err) => {
-                    console.error('Error deleting alert', err);
-                    // Anche in caso di errore, se siamo offline cancelliamo localmente per UX
-                    this.alerts = this.alerts.filter(a => a.id !== this.alertToDelete?.id);
-                    this.closeDeleteModal();
-                }
+                error: (err) => console.error(err)
             });
         }
     }
 
-    getTypologyLabel(typology: string): string {
-        switch (typology) {
-            case 'ORDER_DEPARTURE_DELAY': return 'Ritardo partenza ordine';
-            case 'ORDER_DELIVERY_DELAY': return 'Ritardo consegna ordine';
-            case 'GPS_SIGNAL_INTERRUPTED': return 'Segnale GPS interrotto';
-            default: return typology;
-        }
-    }
-
-    formatDuration(duration: any): string {
-        if (duration === null || duration === undefined) return '00:00';
-
-        // Se è già nel formato HH:mm
-        if (typeof duration === 'string' && /^\d{2}:\d{2}$/.test(duration)) return duration;
-
-        // Se è un numero (assumiamo secondi, formato Jackson standard per Duration)
-        if (typeof duration === 'number') {
-            const totalMinutes = Math.floor(duration / 60);
-            const h = Math.floor(totalMinutes / 60);
-            const m = totalMinutes % 60;
-            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-        }
-
-        // Se è un oggetto {seconds, nanos}
-        if (typeof duration === 'object' && 'seconds' in duration) {
-            const totalMinutes = Math.floor(duration.seconds / 60);
-            const h = Math.floor(totalMinutes / 60);
-            const m = totalMinutes % 60;
-            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-        }
-
-        // Se è una stringa ISO-8601 (es: PT1H30M)
-        if (typeof duration === 'string' && duration.startsWith('PT')) {
-            const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-            if (!match) return duration;
-            const hours = (match[1] || '0').padStart(2, '0');
-            const minutes = (match[2] || '0').padStart(2, '0');
-            return `${hours}:${minutes}`;
-        }
-
-        return String(duration);
+    cancelDelete() {
+        this.isDeleteModalOpen = false;
+        this.alertToDeleteIdNum = null;
     }
 }

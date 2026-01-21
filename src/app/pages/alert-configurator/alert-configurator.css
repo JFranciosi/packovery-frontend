@@ -453,9 +453,19 @@ tbody tr:last-child td {
     background-color: #FFFBEB;
 }
 
+:host-context([data-theme="dark"]) .action-btn.edit {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #FBBF24;
+}
+
 .action-btn.edit:hover {
     background-color: #FCD34D;
     color: #78350F;
+}
+
+:host-context([data-theme="dark"]) .action-btn.edit:hover {
+    background-color: rgba(245, 158, 11, 0.3);
+    color: #FCD34D;
 }
 
 .action-btn.delete {
@@ -463,9 +473,19 @@ tbody tr:last-child td {
     background-color: #FEF2F2;
 }
 
+:host-context([data-theme="dark"]) .action-btn.delete {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #F87171;
+}
+
 .action-btn.delete:hover {
     background-color: #FCA5A5;
     color: #7F1D1D;
+}
+
+:host-context([data-theme="dark"]) .action-btn.delete:hover {
+    background-color: rgba(239, 68, 68, 0.3);
+    color: #FCA5A5;
 }
 
 .switch {
@@ -495,6 +515,10 @@ tbody tr:last-child td {
     border-radius: 16px;
 }
 
+:host-context([data-theme="dark"]) .slider {
+    background-color: #4B5563;
+}
+
 .slider:before {
     position: absolute;
     content: "";
@@ -508,8 +532,17 @@ tbody tr:last-child td {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+:host-context([data-theme="dark"]) .slider:before {
+    background-color: #E0E0E0;
+}
+
 input:checked+.slider {
     background-color: #22C55E;
+}
+
+:host-context([data-theme="dark"]) input:checked+.slider {
+    background-color: #22C55E;
+    /* Keep green in dark mode */
 }
 
 input:checked+.slider:before {
@@ -558,6 +591,11 @@ input:checked+.slider:before {
     align-items: center;
 }
 
+:host-context([data-theme="dark"]) .warning-icon {
+    background: rgba(239, 68, 68, 0.1);
+    color: #F87171;
+}
+
 .modal-header h3 {
     font-size: 22px;
     font-weight: 700;
@@ -589,7 +627,16 @@ input:checked+.slider:before {
     color: #374151;
 }
 
+:host-context([data-theme="dark"]) .btn-cancel {
+    background: #374151;
+    color: #E5E7EB;
+}
+
 .btn-confirm-delete {
     background: #EF4444;
     color: white;
+}
+
+:host-context([data-theme="dark"]) .btn-confirm-delete {
+    background: #DC2626;
 }

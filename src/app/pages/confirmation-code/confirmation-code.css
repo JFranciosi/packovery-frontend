@@ -7,6 +7,11 @@
     justify-content: center;
     padding-top: 140px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s;
+}
+
+:host-context([data-theme="dark"]) .login-container {
+    background-color: #121212;
 }
 
 .shape {
@@ -54,11 +59,19 @@
     font-weight: 500;
 }
 
+:host-context([data-theme="dark"]) .title {
+    color: #e0e0e0;
+}
+
 .subtitle {
     font-size: 0.9rem;
     color: #75757d;
     margin-bottom: 30px;
     line-height: 1.5;
+}
+
+:host-context([data-theme="dark"]) .subtitle {
+    color: #b0b0b0;
 }
 
 /* Removed .btn-link styles as they are replaced by .resend-section */
@@ -80,6 +93,10 @@
     font-size: 0.9rem;
 }
 
+:host-context([data-theme="dark"]) .form-group label {
+    color: #b0b0b0;
+}
+
 .form-control {
     width: 100%;
     padding: 12px 15px;
@@ -90,7 +107,13 @@
     outline: none;
     background-color: #fff;
     box-sizing: border-box;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+}
+
+:host-context([data-theme="dark"]) .form-control {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #e0e0e0;
 }
 
 .form-control:focus {
@@ -134,8 +157,19 @@
     color: #75757d;
 }
 
+:host-context([data-theme="dark"]) .btn-cancel {
+    background-color: transparent;
+    border-color: #333;
+    color: #b0b0b0;
+}
+
 .btn-cancel:hover {
     background-color: #f5f5f5;
+}
+
+:host-context([data-theme="dark"]) .btn-cancel:hover {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
 }
 
 .btn-submit {
@@ -153,6 +187,10 @@
     text-align: center;
     font-size: 0.9rem;
     color: #666;
+}
+
+:host-context([data-theme="dark"]) .resend-section {
+    color: #888;
 }
 
 .resend-section p {

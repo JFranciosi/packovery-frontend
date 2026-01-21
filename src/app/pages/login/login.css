@@ -7,6 +7,11 @@
     justify-content: center;
     padding-top: 140px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s;
+}
+
+:host-context([data-theme="dark"]) .login-container {
+    background-color: #121212;
 }
 
 .shape {
@@ -53,6 +58,10 @@
     font-weight: 500;
 }
 
+:host-context([data-theme="dark"]) .title {
+    color: #e0e0e0;
+}
+
 .login-form {
     width: 100%;
 }
@@ -87,11 +96,24 @@
     color: #5C6BC0;
 }
 
+:host-context([data-theme="dark"]) .password-toggle-icon {
+    color: #b0b0b0;
+}
+
+:host-context([data-theme="dark"]) .password-toggle-icon:hover {
+    color: #5C6BC0;
+}
+
+
 .form-group label {
     display: block;
     color: #888;
     margin-bottom: 8px;
     font-size: 0.9rem;
+}
+
+:host-context([data-theme="dark"]) .form-group label {
+    color: #b0b0b0;
 }
 
 .form-control {
@@ -104,7 +126,13 @@
     outline: none;
     background-color: #fff;
     box-sizing: border-box;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+}
+
+:host-context([data-theme="dark"]) .form-control {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #e0e0e0;
 }
 
 .form-control:focus {
@@ -121,6 +149,10 @@
     text-decoration: underline;
     font-size: 0.85rem;
     transition: color 0.3s ease;
+}
+
+:host-context([data-theme="dark"]) .forgot-password a {
+    color: #b0b0b0;
 }
 
 .forgot-password a:hover {

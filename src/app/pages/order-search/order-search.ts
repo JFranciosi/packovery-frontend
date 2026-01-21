@@ -9,11 +9,12 @@ import { OrderService } from '../../services/order.service';
 import { OrderResponse, Comune, FilterOrderRequest } from '../../model/models';
 
 import { AuthService } from '../../services/auth.service';
+import { DatePickerComponent } from '../../component/date-picker/date-picker';
 
 @Component({
     selector: 'app-order-search',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent, DatePipe],
+    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent, DatePipe, DatePickerComponent],
     templateUrl: './order-search.html',
     styleUrls: ['./order-search.css']
 })
@@ -413,6 +414,7 @@ export class OrderSearch implements OnInit {
         this.isOriginCityOpen = false;
         this.isDestCityOpen = false;
     }
+
     getStatusLabel(status: string): string {
         switch (status) {
             case 'PENDING': return 'In attesa';

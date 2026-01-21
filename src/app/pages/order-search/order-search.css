@@ -165,32 +165,8 @@
 }
 
 .input-wrapper input {
+
     padding-right: 40px;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-}
-
-input[type="date"] {
-    position: relative;
-}
-
-.calendar-icon {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #999;
-    pointer-events: auto;
-    cursor: pointer;
-    display: flex;
-    transition: color 0.2s;
-}
-
-.calendar-icon:hover {
-    color: var(--color-primary);
 }
 
 .input-wrapper .icon-right {

@@ -78,7 +78,7 @@
 .form-container {
     max-width: 1000px;
     background: var(--color-bg-surface);
-    border-radius: 24px;
+    border-radius: 16px;
     padding: 40px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
     border: 1px solid var(--color-border);
@@ -99,7 +99,7 @@
     justify-content: center;
     align-items: center;
     z-index: 100;
-    border-radius: 24px;
+    border-radius: 16px;
 }
 
 .spinner {
@@ -199,7 +199,7 @@ textarea {
     gap: 16px;
     background: var(--color-bg-primary);
     padding: 8px;
-    border-radius: 20px;
+    border-radius: 16px;
     border: 1px solid var(--color-border);
     width: fit-content;
 }
@@ -226,7 +226,7 @@ textarea {
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     padding: 8px 16px;
-    border-radius: 12px;
+    border-radius: 16px;
     font-size: 13px;
     font-weight: 600;
     color: var(--color-text-secondary);
@@ -275,7 +275,7 @@ textarea {
     bottom: 0;
     background-color: #E2E8F0;
     transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-radius: 34px;
+    border-radius: 16px;
 }
 
 .slider:before {
@@ -323,7 +323,7 @@ input:checked+.slider:before {
     color: white;
     border: none;
     padding: 14px 40px;
-    border-radius: 24px;
+    border-radius: 16px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -418,7 +418,7 @@ input:checked+.slider:before {
 
     .form-container {
         padding: 24px;
-        border-radius: 20px;
+        border-radius: 16px;
     }
 
     .form-row {

@@ -42,6 +42,28 @@ export class AuthService {
         return this.http.post(`${this.apiUrl}/reset-password`, { email, code, newPassword }, { responseType: 'text' });
     }
 
+    refreshToken(): Observable<any> {
+        const refreshToken = localStorage.getItem('refreshToken');
+        return this.http.post(`${this.apiUrl}/refresh`, {}, {
+            headers: {
+                Authorization: `Bearer ${refreshToken}`
+            }
+        }).pipe(
+            tap((response: any) => {
+                if (response && response.accessToken) {
+                    localStorage.setItem('accessToken', response.accessToken);
+                }
+                if (response && response.refreshToken) {
+                    localStorage.setItem('refreshToken', response.refreshToken);
+                }
+            })
+        );
+    }
+
+    getAccessToken(): string | null {
+        return localStorage.getItem('accessToken');
+    }
+
     logout() {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');

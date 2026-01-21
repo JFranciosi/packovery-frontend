@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { OrderResponse, FilterOrderRequest, SelectOptionsResponse } from '../model/models';
+import { OrderResponse, FilterOrderRequest, SelectOptionsResponse, OrderDetailsResponse } from '../model/models';
 
 @Injectable({
     providedIn: 'root'
@@ -25,6 +25,10 @@ export class OrderService {
 
         // Backend is now POST. Send filter as body.
         return this.http.post<OrderResponse[]>(`${this.apiUrl}/filter`, filter, { params });
+    }
+
+    getOrderById(orderId: string): Observable<OrderDetailsResponse> {
+        return this.http.get<OrderDetailsResponse>(`${this.apiUrl}/${orderId}`);
     }
 
     getSelectOptions(): Observable<SelectOptionsResponse> {

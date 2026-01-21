@@ -39,6 +39,8 @@ export class OrderSearch implements OnInit {
 
     // Dropdown options
     statusOptions: { label: string, value: string }[] = [];
+    weightOptions: { label: string, value: string }[] = [];
+    sizeOptions: { label: string, value: string }[] = [];
 
     readonly defaultStatusOptions = [
         { label: 'In transito', value: 'SHIPPED' },
@@ -48,14 +50,14 @@ export class OrderSearch implements OnInit {
         { label: 'Reso', value: 'RETURNED' }
     ];
 
-    weightOptions = [
+    readonly defaultWeightOptions = [
         { label: 'S (1g - 90g)', value: 'S' },
         { label: 'M (1kg - 3kg)', value: 'M' },
         { label: 'L (3kg - 5kg)', value: 'L' },
         { label: 'XL (6kg - 10kg)', value: 'XL' }
     ];
 
-    sizeOptions = [
+    readonly defaultSizeOptions = [
         { label: 'S (1cm - 15cm)', value: 'S' },
         { label: 'M (16cm - 30cm)', value: 'M' },
         { label: 'L (31cm - 45cm)', value: 'L' },
@@ -191,15 +193,28 @@ export class OrderSearch implements OnInit {
                     this.statusOptions = [];
                 }
 
-                // Map Package Scales (assuming they map to Size options for now, or just logging them)
-                // If packageScales corresponds to the S/M/L/XL logic
-                // Note: The UI has separate Weight and Size dropdowns, but usually they share the same 'Scale' (S, M, L, XL).
-                // We will update both if the values match the expected S,M,L,XL keys, or just keep hardcoded if they need specific ranges text.
-                // For now, let's just stick to updating statuses as requested, but we have the data.
+                // Map Package Scales for Weight and Size
+                if (data.packageScales && data.packageScales.length > 0) {
+                    // Use the same scales for both weight and size
+                    this.weightOptions = data.packageScales.map(scale => ({
+                        label: this.getWeightLabel(scale),
+                        value: scale
+                    }));
+                    this.sizeOptions = data.packageScales.map(scale => ({
+                        label: this.getSizeLabel(scale),
+                        value: scale
+                    }));
+                } else {
+                    // Fallback to default options
+                    this.weightOptions = this.defaultWeightOptions;
+                    this.sizeOptions = this.defaultSizeOptions;
+                }
             },
             error: (err) => {
-                console.warn('Failed to load select options', err);
+                console.warn('Failed to load select options, using defaults', err);
                 this.statusOptions = [];
+                this.weightOptions = this.defaultWeightOptions;
+                this.sizeOptions = this.defaultSizeOptions;
             }
         });
     }
@@ -406,6 +421,26 @@ export class OrderSearch implements OnInit {
             case 'CANCELLED': return 'Cancellato';
             case 'RETURNED': return 'Reso';
             default: return status;
+        }
+    }
+
+    getWeightLabel(scale: string): string {
+        switch (scale) {
+            case 'S': return 'S (1g - 90g)';
+            case 'M': return 'M (1kg - 3kg)';
+            case 'L': return 'L (3kg - 5kg)';
+            case 'XL': return 'XL (6kg - 10kg)';
+            default: return scale;
+        }
+    }
+
+    getSizeLabel(scale: string): string {
+        switch (scale) {
+            case 'S': return 'S (1cm - 15cm)';
+            case 'M': return 'M (16cm - 30cm)';
+            case 'L': return 'L (31cm - 45cm)';
+            case 'XL': return 'XL (46cm - 100cm)';
+            default: return scale;
         }
     }
 }

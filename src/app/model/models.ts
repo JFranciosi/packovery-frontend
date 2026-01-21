@@ -51,8 +51,32 @@ export interface OrderResponse {
     overWeight: boolean;
     actualSize?: number;
     actualWeight?: number;
-    departureLocation: string;
-    deliveryLocation: string;
+    departureLocation: string | null;
+    deliveryLocation: string | null;
+    createdBy?: {
+        id: number;
+        email: string;
+        firstName: string;
+        lastName: string;
+    };
+}
+
+export interface MapGpsData {
+    orderId: string;
+    rider: string | null;
+    riderLatitude: number | null;
+    riderLongitude: number | null;
+    positionTimestamp: string | null;
+    pickupLatitude: number | null;
+    pickupLongitude: number | null;
+    deliveryLatitude: number | null;
+    deliveryLongitude: number | null;
+    distanceTraveled: number | null;
+}
+
+export interface OrderDetailsResponse {
+    order: OrderResponse;
+    mapGps: MapGpsData;
 }
 
 export interface FilterOrderRequest {
@@ -86,4 +110,11 @@ export interface AlertResponse {
 export interface SelectOptionsResponse {
     orderStatuses: string[];
     packageScales: string[];
+}
+
+export interface UserResponse {
+    id: string;
+    name: string;
+    surname: string;
+    email?: string;
 }

@@ -59,10 +59,10 @@ export class OrderDetails implements OnInit {
 
     private fetchOrder(id: string) {
         this.isLoading = true;
-        this.orderService.getFilteredOrders({ id }, 0, 1).subscribe({
-            next: (orders) => {
-                if (orders && orders.length > 0) {
-                    this.processOrder(orders[0]);
+        this.orderService.getOrderById(id).subscribe({
+            next: (response) => {
+                if (response && response.order) {
+                    this.processOrder(response.order, response.mapGps);
                 } else {
                     console.warn('Backend non trovato, uso mock per ID:', id);
                     this.useMockOrder(id);
@@ -75,26 +75,39 @@ export class OrderDetails implements OnInit {
         });
     }
 
-    private processOrder(raw: OrderResponse) {
+    private processOrder(raw: OrderResponse, mapGps?: any) {
+        // Format coordinates as readable strings
+        const formatCoords = (lat: number | null, lng: number | null): string => {
+            if (lat && lng) {
+                return `${lat.toFixed(3)}°N ${lng.toFixed(3)}°E`;
+            }
+            return '';
+        };
+
         this.order = {
             id: raw.id,
-            creatorName: 'Utente',
-            creatorSurname: 'Packovery',
+            creatorName: raw.createdBy?.firstName || 'Utente',
+            creatorSurname: raw.createdBy?.lastName || 'Packovery',
             status: this.getStatusLabel(raw.status),
             creationDate: new Date(raw.plannedDeliveryTime).toLocaleDateString('it-IT'),
-            weight: raw.packageWeight,
-            size: raw.packageSize,
+            weight: this.getWeightLabel(raw.packageWeight),
+            size: this.getSizeLabel(raw.packageSize),
             departure: {
-                address: raw.departureLocation,
-                lat: 45.6120, lng: 8.8515
+                address: raw.departureLocation || formatCoords(mapGps?.pickupLatitude, mapGps?.pickupLongitude) || 'Coordinate non disponibili',
+                lat: mapGps?.pickupLatitude || 45.6120,
+                lng: mapGps?.pickupLongitude || 8.8515
             },
             currentPosition: {
-                coords: '45°37\'05.8"N 9°00\'41.4"E',
-                lat: 45.6183, lng: 9.0115
+                coords: mapGps?.riderLatitude && mapGps?.riderLongitude
+                    ? formatCoords(mapGps.riderLatitude, mapGps.riderLongitude)
+                    : '45°37\'05.8"N 9°00\'41.4"E',
+                lat: mapGps?.riderLatitude || 45.6183,
+                lng: mapGps?.riderLongitude || 9.0115
             },
             arrival: {
-                address: raw.deliveryLocation,
-                lat: 45.6577, lng: 8.9733
+                address: raw.deliveryLocation || formatCoords(mapGps?.deliveryLatitude, mapGps?.deliveryLongitude) || 'Coordinate non disponibili',
+                lat: mapGps?.deliveryLatitude || 45.6577,
+                lng: mapGps?.deliveryLongitude || 8.9733
             }
         };
         this.isLoading = false;
@@ -107,8 +120,8 @@ export class OrderDetails implements OnInit {
             creatorSurname: 'Bianchi',
             status: 'In transito',
             creationDate: '20/01/2026',
-            weight: '2.5kg',
-            size: 'M',
+            weight: this.getWeightLabel('M'),
+            size: this.getSizeLabel('M'),
             departure: {
                 address: 'Via Garibaldi 10, Busto Arsizio',
                 lat: 45.6120, lng: 8.8515
@@ -133,6 +146,26 @@ export class OrderDetails implements OnInit {
             case 'CANCELLED': return 'Cancellato';
             case 'RETURNED': return 'Reso';
             default: return status;
+        }
+    }
+
+    getWeightLabel(scale: string): string {
+        switch (scale) {
+            case 'S': return 'S (1g - 90g)';
+            case 'M': return 'M (1kg - 3kg)';
+            case 'L': return 'L (3kg - 5kg)';
+            case 'XL': return 'XL (6kg - 10kg)';
+            default: return scale; // Return as-is if already formatted or unknown
+        }
+    }
+
+    getSizeLabel(scale: string): string {
+        switch (scale) {
+            case 'S': return 'S (1cm - 15cm)';
+            case 'M': return 'M (16cm - 30cm)';
+            case 'L': return 'L (31cm - 45cm)';
+            case 'XL': return 'XL (46cm - 100cm)';
+            default: return scale; // Return as-is if already formatted or unknown
         }
     }
 }

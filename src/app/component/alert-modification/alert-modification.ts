@@ -157,11 +157,6 @@ export class AlertModification implements OnInit {
     }
 
     modifyAlert() {
-        if (!this.alert.name) {
-            this.errorMessage = 'Il nome è obbligatorio';
-            return;
-        }
-
         const parts = this.alert.threshold.split(':');
         const minutes = (parseInt(parts[0]) || 0) * 60 + (parseInt(parts[1]) || 0);
 

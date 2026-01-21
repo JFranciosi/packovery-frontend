@@ -65,13 +65,13 @@
             <!-- Nome -->
             <div class="form-group">
                 <label>Nome</label>
-                <input type="text" [(ngModel)]="alert.name">
+                <input type="text" [(ngModel)]="alert.name" readonly class="readonly-input">
             </div>
 
             <!-- Descrizione -->
             <div class="form-group">
                 <label>Descrizione</label>
-                <textarea [(ngModel)]="alert.description" rows="5"></textarea>
+                <textarea [(ngModel)]="alert.description" rows="5" readonly class="readonly-input"></textarea>
             </div>
 
             <!-- Soglia -->

@@ -23,7 +23,6 @@ export class ThemeService {
     if (saved === 'light' || saved === 'dark') {
       return saved;
     }
-    // Default to light mode if no preference
     return 'light';
   }
 

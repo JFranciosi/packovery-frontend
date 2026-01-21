@@ -40,8 +40,6 @@ export class DatePickerComponent {
 
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
-        // We handle the click outside logic here if needed, or rely on stopPropagation in the template
-        // Ideally we check if the click target is inside the component
         this.closeCalendar();
     }
 
@@ -112,7 +110,6 @@ export class DatePickerComponent {
             });
         }
 
-        // Next month days to fill grid (42 cells total usually covers all months)
         const remainingDays = 42 - this.calendarDays.length;
         for (let i = 1; i <= remainingDays; i++) {
             this.calendarDays.push({
@@ -169,7 +166,6 @@ export class DatePickerComponent {
             if (this.years.length === 0) {
                 this.generateYears();
             }
-            // Scroll to current year could be nice but requires ElementRef/ViewChild logic which is overkill for now
         }
     }
 

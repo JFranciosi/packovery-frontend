@@ -3,13 +3,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OrderResponse, FilterOrderRequest, SelectOptionsResponse, OrderDetailsResponse } from '../model/models';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class OrderService {
     private http = inject(HttpClient);
-    private apiUrl = '/order';
+    private apiUrl = `${environment.apiUrl}/order`;
 
     getOrders(offset: number, limit: number): Observable<OrderResponse[]> {
         const params = new HttpParams()

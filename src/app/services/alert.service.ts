@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { AlertRequest, AlertResponse } from '../model/models';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AlertService {
     private http = inject(HttpClient);
-    private apiUrl = '/alert';
+    private apiUrl = `${environment.apiUrl}/alert`;
 
     createAlert(request: AlertRequest): Observable<string> {
         return this.http.post(this.apiUrl, request, { responseType: 'text' });

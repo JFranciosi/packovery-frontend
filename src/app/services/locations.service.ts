@@ -10,8 +10,6 @@ import { Comune } from '../model/models';
 export class LocationsService {
     private http = inject(HttpClient);
     private jsonUrl = '/gi_comuni.json';
-
-    // Cache the data to avoid multiple requests
     private comuniCache$: Observable<Comune[]> | null = null;
 
     getAllComuni(): Observable<Comune[]> {
@@ -21,7 +19,7 @@ export class LocationsService {
                     nome: item.denominazione_ita,
                     sigla: item.sigla_provincia,
                     codice: item.codice_istat,
-                    provincia: { nome: '', codice: '' }, // Placeholder if needed
+                    provincia: { nome: '', codice: '' },
                     cap: [],
                     zona: { nome: '', codice: '' },
                     regione: { nome: '', codice: '' },
@@ -34,7 +32,6 @@ export class LocationsService {
         return this.comuniCache$;
     }
 
-    // Helper to search (filters local data after fetching)
     searchComuni(term: string): Observable<Comune[]> {
         if (!term || term.length < 2) return of([]);
         const lowerTerm = term.toLowerCase();

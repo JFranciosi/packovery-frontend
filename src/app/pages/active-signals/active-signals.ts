@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 
@@ -9,7 +8,7 @@ import { Signal } from '../../model/models';
 @Component({
     selector: 'app-active-signals',
     standalone: true,
-    imports: [CommonModule, FormsModule, SidebarComponent],
+    imports: [CommonModule, SidebarComponent],
     templateUrl: './active-signals.html',
     styleUrls: ['./active-signals.css']
 })
@@ -36,6 +35,5 @@ export class ActiveSignals {
 
     resolveSignal(signal: Signal) {
         console.log('Resolving signal:', signal);
-        // Logic to resolve/remove signal
     }
 }

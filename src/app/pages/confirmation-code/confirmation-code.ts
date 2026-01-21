@@ -19,16 +19,23 @@ export class ConfirmationCode implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
 
+    onFormSubmit(v0: string, v1: string, v2: string, v3: string, v4: string, v5: string, event: Event) {
+        event.preventDefault();
+        this.digits[0] = v0;
+        this.digits[1] = v1;
+        this.digits[2] = v2;
+        this.digits[3] = v3;
+        this.digits[4] = v4;
+        this.digits[5] = v5;
+        this.onSubmit();
+    }
+
     ngOnInit() {
         this.route.queryParams.subscribe(params => {
             this.email = params['email'];
         });
     }
 
-
-    onDigitInput(event: any, index: number) {
-        this.digits[index] = event.target.value;
-    }
 
     resendCode() {
         if (!this.email) {
@@ -71,7 +78,6 @@ export class ConfirmationCode implements OnInit {
         });
     }
 
-    // Helper to auto-focus next input
     onKeyUp(event: any, index: number) {
         if (event.key >= '0' && event.key <= '9') {
             const nextInput = event.target.nextElementSibling;
@@ -94,7 +100,6 @@ export class ConfirmationCode implements OnInit {
                     this.digits[i] = chars[i];
                 }
             }
-            // Focus the last filled input or the first empty one
             setTimeout(() => {
                 const inputs = document.querySelectorAll('.code-input');
                 const lastIndex = Math.min(chars.length, 6) - 1;

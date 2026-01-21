@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 import { AlertService } from '../../services/alert.service';
+import { AuthService } from '../../services/auth.service';
 import { AlertResponse } from '../../model/models';
 import { AlertFilterComponent } from '../../component/alert-filter/alert-filter';
 
 @Component({
     selector: 'app-alert-configurator',
     standalone: true,
-    imports: [CommonModule, FormsModule, SidebarComponent, AlertFilterComponent],
+    imports: [CommonModule, SidebarComponent, AlertFilterComponent],
     templateUrl: './alert-configurator.html',
     styleUrls: ['./alert-configurator.css']
 })
@@ -44,10 +44,32 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     isDeleteModalOpen = false;
     alertToDeleteIdNum: number | null = null;
 
-    constructor(private alertService: AlertService, private router: Router) { }
+    constructor(private alertService: AlertService, private router: Router, private authService: AuthService) { }
 
     ngOnInit() {
+        this.loadSavedFilters();
         this.loadAlerts();
+    }
+
+    loadSavedFilters() {
+        const user = this.authService.getUserEmail();
+        if (user) {
+            const saved = localStorage.getItem(`alertFilters_${user}`);
+            if (saved) {
+                try {
+                    this.filters = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error parsing saved alert filters', e);
+                }
+            }
+        }
+    }
+
+    saveFilters() {
+        const user = this.authService.getUserEmail();
+        if (user) {
+            localStorage.setItem(`alertFilters_${user}`, JSON.stringify(this.filters));
+        }
     }
 
     loadAlerts() {
@@ -69,6 +91,7 @@ export class AlertConfigurator implements OnInit, OnDestroy {
 
     onFilterChange(newFilters: { global: string, typology: string, status: string }) {
         this.filters = newFilters;
+        this.saveFilters();
         this.applyFilters();
     }
 

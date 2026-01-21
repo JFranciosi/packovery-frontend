@@ -1,8 +1,6 @@
 <div class="layout-container">
-    <!-- Mobile Header -->
     <header class="mobile-header">
         <div class="logo-mobile">
-            <!-- Simplified Logo for mobile header -->
             <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="60" height="60" rx="12" fill="white" />
                 <path d="M10 20C10 14.4772 14.4772 10 20 10H40C45.5228 10 50 14.4772 50 20V30H10V20Z" fill="#A4D05F" />
@@ -22,11 +20,9 @@
 
     <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
 
-    <!-- Main Content -->
     <main class="main-content">
         <h1 class="page-title">Ricerca ordine</h1>
 
-        <!-- Filters -->
         <div class="filters-container">
             <div class="filter-group">
                 <label>ID ordine</label>
@@ -67,7 +63,6 @@
                         </svg>
                     </span>
                 </div>
-                <!-- Custom Dropdown -->
                 @if (isStatusOpen) {
                 <div class="custom-dropdown-options">
                     @for (opt of statusOptions; track opt.value) {
@@ -94,7 +89,6 @@
                     </span>
                     }
                 </div>
-                <!-- City Autocomplete Dropdown -->
                 @if (isOriginCityOpen && filteredOriginCities.length > 0) {
                 <div class="custom-dropdown-options">
                     @for (city of filteredOriginCities; track city.nome) {
@@ -121,7 +115,6 @@
                     </span>
                     }
                 </div>
-                <!-- City Autocomplete Dropdown -->
                 @if (isDestCityOpen && filteredDestCities.length > 0) {
                 <div class="custom-dropdown-options">
                     @for (city of filteredDestCities; track city.nome) {
@@ -162,7 +155,6 @@
                         </svg>
                     </span>
                 </div>
-                <!-- Custom Dropdown -->
                 @if (isWeightOpen) {
                 <div class="custom-dropdown-options">
                     @for (opt of weightOptions; track opt.value) {
@@ -197,7 +189,6 @@
                         </svg>
                     </span>
                 </div>
-                <!-- Custom Dropdown for demonstration/screenshot match -->
                 @if (isSizeDropdownOpen) {
                 <div class="custom-dropdown-options">
                     @for (opt of sizeOptions; track opt.value) {
@@ -208,13 +199,14 @@
                 </div>
                 }
             </div>
-            <div class="filter-action">
 
+            <!-- Actions -->
+            <div class="filter-group filter-action">
+                <label>&nbsp;</label>
                 <button class="btn-search" (click)="searchOrders()">Cerca</button>
             </div>
         </div>
 
-        <!-- Table -->
         <div class="table-container">
             @if (isLoading) {
             <div class="loading-overlay">
@@ -224,71 +216,64 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Stato</th>
-                        <th>Partenza</th>
-                        <th>Destinazione</th>
-                        <th>Data</th>
-                        <th>Peso</th>
-                        <th>Dimensione</th>
-                        <th></th> <!-- Icon -->
+                        <th style="width: 10%;">ID ordine</th>
+                        <th style="width: 12%;">Stato</th>
+                        <th style="width: 20%;">Partenza</th>
+                        <th style="width: 20%;">Arrivo</th>
+                        <th style="width: 12%;">Data</th>
+                        <th style="width: 10%;">Peso</th>
+                        <th style="width: 12%;">Dimensione</th>
+                        <th style="width: 4%; text-align: right;">Azioni</th>
                     </tr>
                 </thead>
                 <tbody>
                     @for (order of orders; track order.id) {
                     <tr>
-                        <td data-label="ID ordine">{{ order.id }}</td>
-                        <td data-label="Stato">{{ getStatusLabel(order.status) }}</td>
-                        <td data-label="Partenza">{{ order.departureLocation }}</td>
-                        <td data-label="Destinazione">{{ order.deliveryLocation }}</td>
-                        <td data-label="Data creazione">{{ order.plannedDeliveryTime | date:'dd/MM/yyyy' }}</td>
-                        <td data-label="Peso">{{ order.packageWeight }}</td>
-                        <td data-label="Dimensione">{{ order.packageSize }}</td>
+                        <td [attr.data-label]="'ID ordine'">{{ order.id }}</td>
+                        <td [attr.data-label]="'Stato'">
+                            <span class="status-badge" [class]="order.status.toLowerCase().replace(' ', '-')">
+                                {{ getStatusLabel(order.status) }}
+                            </span>
+                        </td>
+                        <td [attr.data-label]="'Partenza'">{{ order.departureLocation }}</td>
+                        <td [attr.data-label]="'Arrivo'">{{ order.deliveryLocation }}</td>
+                        <td [attr.data-label]="'Data'">{{ order.plannedDeliveryTime | date:'dd/MM/yyyy' }}</td>
+                        <td [attr.data-label]="'Peso'">{{ getWeightLabel(order.packageWeight) }}</td>
+                        <td [attr.data-label]="'Dimensione'">{{ getSizeLabel(order.packageSize) }}</td>
                         <td class="action-cell">
-                            <a [routerLink]="['/order-details', order.id]" class="doc-icon">
+                            <a [routerLink]="['/order-details', order.id]" class="doc-icon" title="Vedi dettagli">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
                                 </svg>
                             </a>
                         </td>
                     </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">Nessun ordine trovato
+                        </td>
+                    </tr>
                     }
-                    <!-- Empty rows filler removed -->
                 </tbody>
             </table>
         </div>
 
-        <div class="table-background-lines"></div>
-
-        <!-- Pagination -->
         <div class="pagination">
-            <button class="page-nav prev" (click)="prevPage()" [disabled]="offset === 0"
-                [class.disabled]="offset === 0">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            <button class="page-nav" [disabled]="offset === 0" [class.disabled]="offset === 0" (click)="prevPage()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
-            <button class="page-num active">{{ currentPage }}</button>
-            <!-- 
-            <button class="page-num">2</button>
-            <button class="page-num">3</button>
-            <span class="ellipsis">...</span>
-            <button class="page-num">10</button> 
-            -->
-            <button class="page-nav next" (click)="nextPage()" [disabled]="orders.length < limit"
-                [class.disabled]="orders.length < limit">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            <div class="page-num active">{{ currentPage }}</div>
+            <button class="page-nav" [disabled]="!hasMoreOrders" [class.disabled]="!hasMoreOrders" (click)="nextPage()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
             </button>
         </div>
-
     </main>
 </div>

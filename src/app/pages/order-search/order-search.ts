@@ -24,7 +24,6 @@ export class OrderSearch implements OnInit {
     private orderService = inject(OrderService);
     private authService = inject(AuthService);
 
-    // Filter models
     filters = {
         orderId: '',
         status: '',
@@ -37,7 +36,6 @@ export class OrderSearch implements OnInit {
 
     initialFilters = { ...this.filters };
 
-    // Dropdown options
     statusOptions: { label: string, value: string }[] = [];
     weightOptions: { label: string, value: string }[] = [];
     sizeOptions: { label: string, value: string }[] = [];
@@ -64,13 +62,11 @@ export class OrderSearch implements OnInit {
         { label: 'XL (46cm - 100cm)', value: 'XL' }
     ];
 
-    // Autocomplete data
     filteredOriginCities: Comune[] = [];
     filteredDestCities: Comune[] = [];
     isOriginCityOpen = false;
     isDestCityOpen = false;
 
-    // Data
     orders: OrderResponse[] = [];
     private mockOrders: OrderResponse[] = [
         {
@@ -118,17 +114,15 @@ export class OrderSearch implements OnInit {
     isWeightOpen = false;
     isSizeDropdownOpen = false;
 
-    // Selected labels for display
     selectedStatusLabel = '';
     selectedWeightLabel = '';
     selectedSizeLabel = '';
 
-    // Pagination properties
     offset = 0;
     limit = 5;
     currentPage = 1;
-    hasMoreOrders = true; // To track if there are more orders to load
-    isLoading = false; // Loading state
+    hasMoreOrders = true; 
+    isLoading = false; 
 
     ngOnInit() {
         this.loadSelectOptions();
@@ -145,11 +139,7 @@ export class OrderSearch implements OnInit {
                     const parsedFilters = JSON.parse(saved);
                     this.filters = { ...this.initialFilters, ...parsedFilters };
 
-                    // Restore labels for dropdowns
                     if (this.filters.status) {
-                        // We might need to wait for statusOptions to load, but for now just use the value or try basic matching if available
-                        // Since statusOptions load async, we will retry setting label in loadSelectOptions or just rely on getStatusLabel usage in template if applicable
-                        // Actually template uses selectedStatusLabel variable.
                         this.selectedStatusLabel = this.getStatusLabel(this.filters.status);
                     }
                     if (this.filters.weight) {
@@ -161,7 +151,6 @@ export class OrderSearch implements OnInit {
                         if (opt) this.selectedSizeLabel = opt.label;
                     }
 
-                    // If we have saved filters, trigger search immediately
                     this.searchOrders();
                     return;
                 } catch (e) {
@@ -169,7 +158,6 @@ export class OrderSearch implements OnInit {
                 }
             }
         }
-        // If no saved filters, default search
         this.clearFilters();
     }
 
@@ -183,7 +171,6 @@ export class OrderSearch implements OnInit {
     loadSelectOptions() {
         this.orderService.getSelectOptions().subscribe({
             next: (data) => {
-                // Map Statuses
                 if (data.orderStatuses && data.orderStatuses.length > 0) {
                     this.statusOptions = data.orderStatuses.map(status => ({
                         label: this.getStatusLabel(status),
@@ -193,9 +180,7 @@ export class OrderSearch implements OnInit {
                     this.statusOptions = [];
                 }
 
-                // Map Package Scales for Weight and Size
                 if (data.packageScales && data.packageScales.length > 0) {
-                    // Use the same scales for both weight and size
                     this.weightOptions = data.packageScales.map(scale => ({
                         label: this.getWeightLabel(scale),
                         value: scale
@@ -205,9 +190,20 @@ export class OrderSearch implements OnInit {
                         value: scale
                     }));
                 } else {
-                    // Fallback to default options
                     this.weightOptions = this.defaultWeightOptions;
                     this.sizeOptions = this.defaultSizeOptions;
+                }
+
+                if (this.filters.status) {
+                    this.selectedStatusLabel = this.getStatusLabel(this.filters.status);
+                }
+                if (this.filters.weight) {
+                    const opt = this.weightOptions.find(o => o.value === this.filters.weight);
+                    if (opt) this.selectedWeightLabel = opt.label;
+                }
+                if (this.filters.size) {
+                    const opt = this.sizeOptions.find(o => o.value === this.filters.size);
+                    if (opt) this.selectedSizeLabel = opt.label;
                 }
             },
             error: (err) => {
@@ -215,6 +211,15 @@ export class OrderSearch implements OnInit {
                 this.statusOptions = [];
                 this.weightOptions = this.defaultWeightOptions;
                 this.sizeOptions = this.defaultSizeOptions;
+
+                if (this.filters.weight) {
+                    const opt = this.weightOptions.find(o => o.value === this.filters.weight);
+                    if (opt) this.selectedWeightLabel = opt.label;
+                }
+                if (this.filters.size) {
+                    const opt = this.sizeOptions.find(o => o.value === this.filters.size);
+                    if (opt) this.selectedSizeLabel = opt.label;
+                }
             }
         });
     }
@@ -266,7 +271,6 @@ export class OrderSearch implements OnInit {
         if (this.filters.size) request.size = this.filters.size;
 
         if (this.filters.date) {
-            // Invio nel formato YYYY-MM-DDTHH:mm:ss richiesto da Quarkus per LocalDateTime
             request.orderCreationDate = `${this.filters.date}T00:00:00`;
         }
 
@@ -276,7 +280,6 @@ export class OrderSearch implements OnInit {
                     this.orders = data;
                     this.hasMoreOrders = data.length === this.limit;
                 } else {
-                    // Se filtriamo e non troviamo nulla, mostriamo mock filtrati solo per ID per test
                     if (request.id) {
                         this.orders = this.mockOrders.filter(o => o.id.includes(request.id!));
                     } else {
@@ -302,30 +305,26 @@ export class OrderSearch implements OnInit {
 
     nextPage() {
         if (this.orders.length < this.limit) return;
-        this.offset += this.limit; // Ora va di 6 in 6 (0, 6, 12...)
+        this.offset += this.limit; 
         this.currentPage++;
         this.loadOrders();
     }
 
     prevPage() {
         if (this.offset > 0) {
-            this.offset -= this.limit; // Torna indietro di 6
+            this.offset -= this.limit; 
             this.currentPage--;
             this.loadOrders();
         }
     }
 
     toggleDropdown(type: 'status' | 'weight' | 'size') {
-        // Close others
         if (type !== 'status') this.isStatusOpen = false;
         if (type !== 'weight') this.isWeightOpen = false;
         if (type !== 'size') this.isSizeDropdownOpen = false;
-
-        // Close city dropdowns
         this.isOriginCityOpen = false;
         this.isDestCityOpen = false;
 
-        // Toggle current
         if (type === 'status') this.isStatusOpen = !this.isStatusOpen;
         if (type === 'weight') this.isWeightOpen = !this.isWeightOpen;
         if (type === 'size') this.isSizeDropdownOpen = !this.isSizeDropdownOpen;
@@ -366,7 +365,7 @@ export class OrderSearch implements OnInit {
     }
 
     selectOriginCity(city: Comune) {
-        this.filters.originCity = city.nome; // Invio solo il nome per match più probabile
+        this.filters.originCity = city.nome; 
         this.isOriginCityOpen = false;
     }
 
@@ -385,7 +384,7 @@ export class OrderSearch implements OnInit {
     }
 
     selectDestCity(city: Comune) {
-        this.filters.destCity = city.nome; // Invio solo il nome
+        this.filters.destCity = city.nome; 
         this.isDestCityOpen = false;
     }
 
@@ -405,7 +404,6 @@ export class OrderSearch implements OnInit {
     }
 
     logout() {
-        // Here you would typically clear session/tokens
         this.router.navigate(['/']);
     }
 

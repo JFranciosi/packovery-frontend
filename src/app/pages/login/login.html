@@ -9,18 +9,17 @@
 
         <h2 class="title">Accedi</h2>
 
-        <form class="login-form">
+        <form class="login-form" (submit)="onFormSubmit(emailInput.value, passwordInput.value, $event)">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" [value]="email"
-                    (input)="onEmailInput($event)" required>
+                <input type="email" id="email" name="email" class="form-control" #emailInput [value]="email" required>
             </div>
 
             <div class="form-group password-group">
                 <label for="password">Password</label>
                 <div class="input-wrapper">
-                    <input [type]="passwordFieldType" id="password" name="password" class="form-control"
-                        [value]="password" (input)="onPasswordInput($event)" required>
+                    <input [type]="passwordFieldType" id="password" name="password" class="form-control" #passwordInput
+                        [value]="password" required>
                     <span class="password-toggle-icon" (click)="togglePasswordVisibility()">
                         @if (passwordFieldType === 'password') {
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -52,7 +51,7 @@
             </div>
             }
 
-            <button type="submit" class="btn-submit" (click)="login()" [disabled]="isLoading">
+            <button type="submit" class="btn-submit" [disabled]="isLoading">
                 @if (isLoading) {
                 <div class="spinner"></div>
                 }
@@ -60,7 +59,7 @@
             </button>
 
             <div class="forgot-password">
-                <a href="/forgot-password">Password Dimenticata?</a>
+                <a routerLink="/forgot-password">Password Dimenticata?</a>
             </div>
         </form>
     </div>

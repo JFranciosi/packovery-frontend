@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 import { Map } from '../../component/map/map';
@@ -11,7 +10,7 @@ import { OrderResponse } from '../../model/models';
 @Component({
     selector: 'app-order-details',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, SidebarComponent, Map, Chat],
+    imports: [CommonModule, RouterLink, SidebarComponent, Map, Chat],
     templateUrl: './order-details.html',
     styleUrls: ['./order-details.css']
 })
@@ -76,7 +75,6 @@ export class OrderDetails implements OnInit {
     }
 
     private processOrder(raw: OrderResponse, mapGps?: any) {
-        // Format coordinates as readable strings
         const formatCoords = (lat: number | null, lng: number | null): string => {
             if (lat && lng) {
                 return `${lat.toFixed(3)}°N ${lng.toFixed(3)}°E`;
@@ -155,7 +153,7 @@ export class OrderDetails implements OnInit {
             case 'M': return 'M (1kg - 3kg)';
             case 'L': return 'L (3kg - 5kg)';
             case 'XL': return 'XL (6kg - 10kg)';
-            default: return scale; // Return as-is if already formatted or unknown
+            default: return scale;
         }
     }
 
@@ -165,7 +163,7 @@ export class OrderDetails implements OnInit {
             case 'M': return 'M (16cm - 30cm)';
             case 'L': return 'L (31cm - 45cm)';
             case 'XL': return 'XL (46cm - 100cm)';
-            default: return scale; // Return as-is if already formatted or unknown
+            default: return scale;
         }
     }
 }

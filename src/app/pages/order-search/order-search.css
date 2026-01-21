@@ -99,6 +99,9 @@
     color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    height: 16px;
+    line-height: 16px;
+    display: block;
 }
 
 .filter-group input,
@@ -184,9 +187,7 @@
 }
 
 .filter-action {
-    display: flex;
-    align-items: flex-end;
-    gap: 12px;
+    gap: 8px;
 }
 
 .clear-field {
@@ -280,13 +281,19 @@
     height: 48px;
     background: linear-gradient(135deg, #5767AE 0%, #4752c4 100%);
     color: white;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 16px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(87, 103, 174, 0.25);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-search:hover {

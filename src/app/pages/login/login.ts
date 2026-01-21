@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -20,12 +20,11 @@ export class Login {
   passwordFieldType: string = 'password';
   isLoading: boolean = false;
 
-  onEmailInput(event: any) {
-    this.email = event.target.value;
-  }
-
-  onPasswordInput(event: any) {
-    this.password = event.target.value;
+  onFormSubmit(emailValue: string, passwordValue: string, event: Event) {
+    event.preventDefault();
+    this.email = emailValue;
+    this.password = passwordValue;
+    this.login();
   }
 
   togglePasswordVisibility(): void {

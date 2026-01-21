@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
+import { Component, EventEmitter, Input, Output, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,9 +8,10 @@ import { CommonModule } from '@angular/common';
     templateUrl: './alert-filter.html',
     styleUrls: ['./alert-filter.css']
 })
-export class AlertFilterComponent {
+export class AlertFilterComponent implements OnInit {
     @Input() typologyOptions: { label: string, value: string }[] = [];
     @Input() statusOptions: { label: string, value: string }[] = [];
+    @Input() initialFilters: { global: string, typology: string, status: string } | null = null;
 
     @Output() filterChange = new EventEmitter<{ global: string, typology: string, status: string }>();
 
@@ -24,6 +25,21 @@ export class AlertFilterComponent {
     selectedStatusLabel = '';
     isTypologyOpen = false;
     isStatusOpen = false;
+
+    ngOnInit() {
+        if (this.initialFilters) {
+            this.filters = { ...this.initialFilters };
+            // Set initial labels
+            if (this.filters.typology) {
+                const opt = this.typologyOptions.find(o => o.value === this.filters.typology);
+                if (opt) this.selectedTypologyLabel = opt.label;
+            }
+            if (this.filters.status) {
+                const opt = this.statusOptions.find(o => o.value === this.filters.status);
+                if (opt) this.selectedStatusLabel = opt.label;
+            }
+        }
+    }
 
     toggleDropdown(type: 'typology' | 'status') {
         if (type === 'typology') {

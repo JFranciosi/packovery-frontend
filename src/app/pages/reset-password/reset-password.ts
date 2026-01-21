@@ -25,6 +25,7 @@ export class ResetPassword implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
 
+
     ngOnInit() {
         this.route.queryParams.subscribe(params => {
             this.email = params['email'];
@@ -55,12 +56,11 @@ export class ResetPassword implements OnInit {
         });
     }
 
-    onPasswordInput(event: any) {
-        this.password = event.target.value;
-    }
-
-    onConfirmPasswordInput(event: any) {
-        this.confirmPassword = event.target.value;
+    onFormSubmit(passValue: string, confirmValue: string, event: Event) {
+        event.preventDefault();
+        this.password = passValue;
+        this.confirmPassword = confirmValue;
+        this.onSubmit();
     }
 
     togglePasswordVisibility(): void {

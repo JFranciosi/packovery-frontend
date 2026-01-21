@@ -13,11 +13,14 @@ import { AuthService } from '../../services/auth.service';
 export class Forgotpassword {
     email: string = '';
     isLoading: boolean = false;
-    onEmailInput(event: any) {
-        this.email = event.target.value;
-    }
     private authService = inject(AuthService);
     private router = inject(Router);
+
+    onFormSubmit(emailValue: string, event: Event) {
+        event.preventDefault();
+        this.email = emailValue;
+        this.onSubmit();
+    }
 
     onSubmit() {
         if (!this.email) {

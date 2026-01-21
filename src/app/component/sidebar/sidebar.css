@@ -4,19 +4,22 @@
     left: 0;
     bottom: 0;
     width: 280px;
-    background-color: #F8F9FA;
+    background-color: white;
+    /* Clean white sidebar */
     z-index: 1000;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
-    border-right: none;
-    padding: 20px;
+    border-right: 1px solid rgba(0, 0, 0, 0.03);
+    padding: 24px;
     box-sizing: border-box;
 }
 
 .sidebar.open {
     transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
+    /* Shadow when open on mobile */
 }
 
 @media (min-width: 1024px) {
@@ -24,6 +27,12 @@
         transform: translateX(0);
         position: static;
         height: 100vh;
+        box-shadow: none;
+        background-color: #F8F9FB;
+        /* Match main bg or slight difference */
+        /* Actually let's make it white or transparent to blend? */
+        /* Let's keep it white for contrast if main is light gray */
+        background-color: #ffffff;
     }
 }
 
@@ -35,11 +44,14 @@
 }
 
 .logo {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Optional: Add a subtle glow or bg */
+    background: #F8F9FA;
+    border-radius: 16px;
 }
 
 .logo img {
@@ -52,48 +64,47 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
-    padding: 16px 20px;
-    color: #333;
-    background-color: white;
+    padding: 14px 20px;
+    color: #555;
+    background-color: transparent;
+    /* Cleaner look, only active has bg */
     text-decoration: none;
-    border-radius: 12px;
+    border-radius: 16px;
     transition: all 0.2s;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     border: 1px solid transparent;
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 .nav-item:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    
+    background-color: #F8F9FA;
+    color: #333;
+    transform: translateX(4px);
 }
-.logout-item:hover{
-    background-color: #CD5656;
-    color: white;
+
+.logout-item:hover {
+    background-color: #FEF2F2;
+    color: #EF4444;
 }
+
 .nav-item.active {
-    background-color: #4A69BD;
+    background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(74, 105, 189, 0.3);
+    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
 }
 
 .nav-item .icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
+    margin-right: 16px;
 }
 
 .sidebar-footer {
@@ -103,4 +114,7 @@
 
 .nav-item svg {
     stroke: currentColor;
+    stroke-width: 2;
+    width: 22px;
+    height: 22px;
 }

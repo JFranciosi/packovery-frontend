@@ -16,7 +16,7 @@
 
 .main-content {
     flex: 1;
-    padding: 0 60px;
+    padding: 40px 60px;
     overflow-y: auto;
     animation: fadeInPage 0.5s ease-out;
     display: flex;

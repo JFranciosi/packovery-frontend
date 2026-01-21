@@ -42,6 +42,44 @@ export class AuthService {
         return this.http.post(`${this.apiUrl}/reset-password`, { email, code, newPassword }, { responseType: 'text' });
     }
 
+    refreshToken(): Observable<any> {
+        const refreshToken = localStorage.getItem('refreshToken');
+        return this.http.post(`${this.apiUrl}/refresh`, {}, {
+            headers: {
+                Authorization: `Bearer ${refreshToken}`
+            }
+        }).pipe(
+            tap((response: any) => {
+                if (response && response.accessToken) {
+                    localStorage.setItem('accessToken', response.accessToken);
+                }
+                if (response && response.refreshToken) {
+                    localStorage.setItem('refreshToken', response.refreshToken);
+                }
+            })
+        );
+    }
+
+    getAccessToken(): string | null {
+        return localStorage.getItem('accessToken');
+    }
+
+    getUserEmail(): string | null {
+        const token = this.getAccessToken();
+        if (!token) return null;
+        try {
+            const payload = token.split('.')[1];
+            // Fix Base64Url to Base64
+            const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+            const decoded = atob(base64);
+            const json = JSON.parse(decoded);
+            return json.sub || json.email || json.upn || json.preferred_username || json.username || null;
+        } catch (e) {
+            console.error('Error parsing token user:', e);
+            return null;
+        }
+    }
+
     logout() {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');

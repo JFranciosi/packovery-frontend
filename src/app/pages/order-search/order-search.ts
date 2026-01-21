@@ -2,11 +2,13 @@ import { Component, HostListener, ElementRef, inject, OnInit } from '@angular/co
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { SidebarComponent } from '../sidebar/sidebar';
+import { SidebarComponent } from '../../component/sidebar/sidebar';
 
 import { LocationsService } from '../../services/locations.service';
 import { OrderService } from '../../services/order.service';
 import { OrderResponse, Comune, FilterOrderRequest } from '../../model/models';
+
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-order-search',
@@ -20,6 +22,7 @@ export class OrderSearch implements OnInit {
     private eRef = inject(ElementRef);
     private locationsService = inject(LocationsService);
     private orderService = inject(OrderService);
+    private authService = inject(AuthService);
 
     // Filter models
     filters = {
@@ -120,14 +123,59 @@ export class OrderSearch implements OnInit {
 
     // Pagination properties
     offset = 0;
-    limit = 6;
+    limit = 5;
     currentPage = 1;
     hasMoreOrders = true; // To track if there are more orders to load
     isLoading = false; // Loading state
 
     ngOnInit() {
         this.loadSelectOptions();
+        this.loadSavedFilters();
+    }
+
+    loadSavedFilters() {
+        const user = this.authService.getUserEmail();
+        if (user) {
+            console.log('Loading filters for user:', user);
+            const saved = localStorage.getItem(`orderFilters_${user}`);
+            if (saved) {
+                try {
+                    const parsedFilters = JSON.parse(saved);
+                    this.filters = { ...this.initialFilters, ...parsedFilters };
+
+                    // Restore labels for dropdowns
+                    if (this.filters.status) {
+                        // We might need to wait for statusOptions to load, but for now just use the value or try basic matching if available
+                        // Since statusOptions load async, we will retry setting label in loadSelectOptions or just rely on getStatusLabel usage in template if applicable
+                        // Actually template uses selectedStatusLabel variable.
+                        this.selectedStatusLabel = this.getStatusLabel(this.filters.status);
+                    }
+                    if (this.filters.weight) {
+                        const opt = this.weightOptions.find(o => o.value === this.filters.weight);
+                        if (opt) this.selectedWeightLabel = opt.label;
+                    }
+                    if (this.filters.size) {
+                        const opt = this.sizeOptions.find(o => o.value === this.filters.size);
+                        if (opt) this.selectedSizeLabel = opt.label;
+                    }
+
+                    // If we have saved filters, trigger search immediately
+                    this.searchOrders();
+                    return;
+                } catch (e) {
+                    console.error('Error loading saved filters', e);
+                }
+            }
+        }
+        // If no saved filters, default search
         this.clearFilters();
+    }
+
+    saveFilters() {
+        const user = this.authService.getUserEmail();
+        if (user) {
+            localStorage.setItem(`orderFilters_${user}`, JSON.stringify(this.filters));
+        }
     }
 
     loadSelectOptions() {
@@ -157,10 +205,13 @@ export class OrderSearch implements OnInit {
     }
 
     searchOrders() {
+        this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
         this.loadOrders();
     }
+
+
 
     loadOrders() {
         this.isLoading = true;
@@ -330,6 +381,7 @@ export class OrderSearch implements OnInit {
         this.selectedStatusLabel = '';
         this.selectedWeightLabel = '';
         this.selectedSizeLabel = '';
+        this.saveFilters();
         this.searchOrders();
     }
 

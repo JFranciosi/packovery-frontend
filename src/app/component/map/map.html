@@ -1,0 +1,20 @@
+<div class="map-section">
+    <div class="map-container">
+        <!-- Leaflet Map -->
+        <div id="map" style="height: 100%; width: 100%;"></div>
+    </div>
+    <div class="map-info-bar">
+        <div class="info-segment">
+            <label>Luogo di partenza</label>
+            <div class="value">{{ departure?.address }}</div>
+        </div>
+        <div class="info-segment">
+            <label>Posizione attuale</label>
+            <div class="value">{{ currentPosition?.coords }}</div>
+        </div>
+        <div class="info-segment">
+            <label>Luogo di arrivo</label>
+            <div class="value">{{ arrival?.address }}</div>
+        </div>
+    </div>
+</div>

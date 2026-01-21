@@ -1,0 +1,92 @@
+:host {
+    display: block;
+}
+
+.map-section {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    background-color: var(--color-bg-surface);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.map-container {
+    height: 280px;
+    background-color: var(--color-secondary-light);
+    position: relative;
+    background-image: repeating-linear-gradient(45deg, var(--color-secondary-light) 0, var(--color-secondary-light) 10px, rgba(255, 255, 255, 0.5) 10px, rgba(255, 255, 255, 0.5) 20px);
+}
+
+:host-context([data-theme="dark"]) .map-container {
+    background-image: repeating-linear-gradient(45deg, var(--color-bg-primary) 0, var(--color-bg-primary) 10px, var(--color-bg-surface) 10px, var(--color-bg-surface) 20px);
+    border-color: var(--color-border);
+}
+
+:host-context([data-theme="dark"]) .leaflet-layer,
+:host-context([data-theme="dark"]) .leaflet-control-zoom-in,
+:host-context([data-theme="dark"]) .leaflet-control-zoom-out,
+:host-context([data-theme="dark"]) .leaflet-control-attribution {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+:host-context([data-theme="dark"]) .leaflet-marker-icon,
+:host-context([data-theme="dark"]) .leaflet-marker-shadow,
+:host-context([data-theme="dark"]) .leaflet-popup-content-wrapper,
+:host-context([data-theme="dark"]) .leaflet-popup-tip {
+    filter: none;
+}
+
+:host-context([data-theme="dark"]) .leaflet-popup-content-wrapper,
+:host-context([data-theme="dark"]) .leaflet-popup-tip {
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+}
+
+.map-info-bar {
+    display: flex;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+}
+
+.info-segment {
+    flex: 1;
+    padding: 4px;
+    text-align: center;
+    border-right: 1px solid var(--color-border);
+    position: relative;
+}
+
+.info-segment:last-child {
+    border-right: none;
+}
+
+.info-segment label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.info-segment .value {
+    font-size: 15px;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .map-info-bar {
+        flex-direction: column;
+    }
+
+    .info-segment {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        padding: 16px;
+        text-align: left;
+    }
+}

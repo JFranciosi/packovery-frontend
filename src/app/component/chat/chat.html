@@ -1,0 +1,38 @@
+<div class="chat-overlay" [class.open]="isOpen" (click)="closeChat()"></div>
+<div class="chat-drawer" [class.open]="isOpen">
+    <div class="chat-header">
+        <div class="chat-info">
+            <h3>Ordine {{ orderId }}</h3>
+            <p>Chat con {{ riderName }} {{ riderSurname }}</p>
+        </div>
+        <button class="close-chat" (click)="closeChat()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div class="chat-messages">
+        @for (msg of messages; track $index) {
+        <div class="message" [class.user]="msg.sender === 'user'" [class.rider]="msg.sender === 'rider'">
+            <div class="msg-bubble">
+                {{ msg.text }}
+            </div>
+            <div class="msg-time">{{ msg.time }}</div>
+        </div>
+        }
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" placeholder="Scrivi un messaggio..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
+        <button class="btn-send" (click)="sendMessage()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+        </button>
+    </div>
+</div>

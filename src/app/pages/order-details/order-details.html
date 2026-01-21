@@ -59,26 +59,8 @@
         </div>
 
         <!-- Map Section -->
-        <div class="map-section">
-            <div class="map-container">
-                <!-- Leaflet Map -->
-                <div id="map" style="height: 100%; width: 100%;"></div>
-            </div>
-            <div class="map-info-bar">
-                <div class="info-segment">
-                    <label>Luogo di partenza</label>
-                    <div class="value">{{ order.departure.address }}</div>
-                </div>
-                <div class="info-segment">
-                    <label>Posizione attuale</label>
-                    <div class="value">{{ order.currentPosition.coords }}</div>
-                </div>
-                <div class="info-segment">
-                    <label>Luogo di arrivo</label>
-                    <div class="value">{{ order.arrival.address }}</div>
-                </div>
-            </div>
-        </div>
+        <app-map [departure]="order.departure" [arrival]="order.arrival" [currentPosition]="order.currentPosition">
+        </app-map>
 
         <!-- Section: Informazioni sull'ordine -->
         <h2 class="section-title">Informazioni sull'ordine</h2>
@@ -145,43 +127,7 @@
     </main>
 
     <!-- Chat Drawer -->
-    <div class="chat-overlay" [class.open]="isChatOpen" (click)="toggleChat()"></div>
-    <div class="chat-drawer" [class.open]="isChatOpen">
-        <div class="chat-header">
-            <div class="chat-info">
-                <h3>Ordine {{ order.id }}</h3>
-                <p>Chat con {{ rider.name }} {{ rider.surname }}</p>
-            </div>
-            <button class="close-chat" (click)="toggleChat()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-
-        <div class="chat-messages">
-            @for (msg of messages; track $index) {
-            <div class="message" [class.user]="msg.sender === 'user'" [class.rider]="msg.sender === 'rider'">
-                <div class="msg-bubble">
-                    {{ msg.text }}
-                </div>
-                <div class="msg-time">{{ msg.time }}</div>
-            </div>
-            }
-        </div>
-
-        <div class="chat-input-area">
-            <input type="text" placeholder="Scrivi un messaggio..." [(ngModel)]="newMessage"
-                (keyup.enter)="sendMessage()">
-            <button class="btn-send" (click)="sendMessage()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-            </button>
-        </div>
-    </div>
+    <app-chat [isOpen]="isChatOpen" [orderId]="order.id" [riderName]="rider.name" [riderSurname]="rider.surname"
+        (close)="toggleChat()">
+    </app-chat>
 </div>

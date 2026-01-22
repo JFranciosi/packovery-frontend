@@ -68,47 +68,7 @@ export class OrderSearch implements OnInit {
     isDestCityOpen = false;
 
     orders: OrderResponse[] = [];
-    private mockOrders: OrderResponse[] = [
-        {
-            id: 'ORD-001',
-            trackingCode: 'PKV123456',
-            status: 'SHIPPED',
-            plannedDeliveryTime: new Date().toISOString(),
-            priorityLevel: 'HIGH',
-            packageSize: 'M',
-            packageWeight: '2.5kg',
-            oversize: false,
-            overWeight: false,
-            departureLocation: 'Busto Arsizio',
-            deliveryLocation: 'Cislago'
-        },
-        {
-            id: 'ORD-002',
-            trackingCode: 'PKV789012',
-            status: 'PENDING',
-            plannedDeliveryTime: new Date().toISOString(),
-            priorityLevel: 'MEDIUM',
-            packageSize: 'S',
-            packageWeight: '0.5kg',
-            oversize: false,
-            overWeight: false,
-            departureLocation: 'Milano',
-            deliveryLocation: 'Saronno'
-        },
-        {
-            id: 'ORD-003',
-            trackingCode: 'PKV345678',
-            status: 'DELIVERED',
-            plannedDeliveryTime: new Date().toISOString(),
-            priorityLevel: 'LOW',
-            packageSize: 'L',
-            packageWeight: '4.5kg',
-            oversize: false,
-            overWeight: false,
-            departureLocation: 'Gallarate',
-            deliveryLocation: 'Legnano'
-        }
-    ];
+    private mockOrders: OrderResponse[] = [];
 
     isStatusOpen = false;
     isWeightOpen = false;

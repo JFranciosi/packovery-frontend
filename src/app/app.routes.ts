@@ -10,16 +10,21 @@ import { AlertConfigurator } from './pages/alert-configurator/alert-configurator
 import { AlertCreation } from './component/alert-creation/alert-creation';
 import { AlertModification } from './component/alert-modification/alert-modification';
 
+import { authGuard } from './guards/auth.guard';
+import { resetPasswordGuard } from './guards/reset-password.guard';
+
 export const routes: Routes = [
     {
         title: 'Order Search',
         path: 'order-search',
-        component: OrderSearch
+        component: OrderSearch,
+        canActivate: [authGuard]
     },
     {
         title: 'Order Details',
         path: 'order-details/:id',
-        component: OrderDetails
+        component: OrderDetails,
+        canActivate: [authGuard]
     },
     {
         title: 'Login',
@@ -39,31 +44,37 @@ export const routes: Routes = [
     {
         title: 'Confirmation Code',
         path: 'confirmation-code',
-        component: ConfirmationCode
+        component: ConfirmationCode,
+        canActivate: [resetPasswordGuard]
     },
     {
         title: 'Reset Password',
         path: 'reset-password',
-        component: ResetPassword
+        component: ResetPassword,
+        canActivate: [resetPasswordGuard]
     },
     {
         title: 'Active Signals',
         path: 'active-signals',
-        component: ActiveSignals
+        component: ActiveSignals,
+        canActivate: [authGuard]
     },
     {
         title: 'Alert Configurator',
         path: 'alert-configurator',
-        component: AlertConfigurator
+        component: AlertConfigurator,
+        canActivate: [authGuard]
     },
     {
         title: 'Create Alert',
         path: 'alert-creation',
-        component: AlertCreation
+        component: AlertCreation,
+        canActivate: [authGuard]
     },
     {
         title: 'Modify Alert',
         path: 'alert-modification/:id',
-        component: AlertModification
+        component: AlertModification,
+        canActivate: [authGuard]
     }
 ];

@@ -13,6 +13,7 @@ export class AuthService {
     private http = inject(HttpClient);
     private router = inject(Router);
     private apiUrl = `${environment.apiUrl}/auth`;
+    private resetEmail: string | null = null;
 
     login(credentials: { email: string; password: string }): Observable<any> {
         return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
@@ -70,7 +71,6 @@ export class AuthService {
         if (!token) return null;
         try {
             const payload = token.split('.')[1];
-            // Fix Base64Url to Base64
             const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
             const decoded = atob(base64);
             const json = JSON.parse(decoded);
@@ -79,6 +79,14 @@ export class AuthService {
             console.error('Error parsing token user:', e);
             return null;
         }
+    }
+
+    setResetEmail(email: string) {
+        this.resetEmail = email;
+    }
+
+    getResetEmail(): string | null {
+        return this.resetEmail;
     }
 
     logout() {

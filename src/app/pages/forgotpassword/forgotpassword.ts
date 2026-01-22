@@ -33,6 +33,7 @@ export class Forgotpassword {
         this.authService.forgotPassword(this.email).subscribe({
             next: () => {
                 this.isLoading = false;
+                this.authService.setResetEmail(this.email);
                 this.router.navigate(['/confirmation-code'], { queryParams: { email: this.email } });
             },
             error: (err) => {

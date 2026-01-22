@@ -67,7 +67,6 @@ export class OrderSearch implements OnInit {
     isDestCityOpen = false;
 
     orders: OrderResponse[] = [];
-    private mockOrders: OrderResponse[] = [];
 
     isStatusOpen = false;
     isWeightOpen = false;
@@ -136,7 +135,7 @@ export class OrderSearch implements OnInit {
                         value: status
                     }));
                 } else {
-                    this.statusOptions = [];
+                    this.statusOptions = this.defaultStatusOptions;
                 }
 
                 if (data.packageScales && data.packageScales.length > 0) {
@@ -167,7 +166,7 @@ export class OrderSearch implements OnInit {
             },
             error: (err) => {
                 console.warn('Failed to load select options, using defaults', err);
-                this.statusOptions = [];
+                this.statusOptions = this.defaultStatusOptions;
                 this.weightOptions = this.defaultWeightOptions;
                 this.sizeOptions = this.defaultSizeOptions;
 
@@ -184,6 +183,7 @@ export class OrderSearch implements OnInit {
     }
 
     searchOrders() {
+        console.log('Searching orders with filters:', this.filters);
         this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
@@ -201,24 +201,15 @@ export class OrderSearch implements OnInit {
             this.orderService.getOrders(this.offset, this.limit).subscribe({
                 next: (data) => {
                     if (data && data.length > 0) {
-                        this.orders = [...this.orders, ...data]; // Append
+                        this.orders = [...this.orders, ...data];
                         this.hasMoreOrders = data.length === this.limit;
                     } else {
-                        if (this.offset === 0) {
-                            console.warn('Backend non ha record, uso mock');
-                            this.orders = this.mockOrders;
-                            this.hasMoreOrders = false;
-                        } else {
-                            this.hasMoreOrders = false;
-                        }
+                        this.hasMoreOrders = false;
                     }
                     this.isLoading = false;
                 },
                 error: (err) => {
-                    console.warn('Backend offline, uso dati mock', err);
-                    if (this.offset === 0) {
-                        this.orders = this.mockOrders;
-                    }
+                    console.error('Error loading orders:', err);
                     this.hasMoreOrders = false;
                     this.isLoading = false;
                 }
@@ -228,7 +219,7 @@ export class OrderSearch implements OnInit {
 
         const request: FilterOrderRequest = {};
 
-        if (this.filters.orderId) request.id = this.filters.orderId.toUpperCase();
+        if (this.filters.orderId) request.id = this.filters.orderId;
         if (this.filters.status) request.status = this.filters.status;
         if (this.filters.originCity) request.departureLocation = this.filters.originCity;
         if (this.filters.destCity) request.deliveryLocation = this.filters.destCity;
@@ -242,30 +233,15 @@ export class OrderSearch implements OnInit {
         this.orderService.getFilteredOrders(request, this.offset, this.limit).subscribe({
             next: (data) => {
                 if (data && data.length > 0) {
-                    this.orders = [...this.orders, ...data]; // Append
+                    this.orders = [...this.orders, ...data];
                     this.hasMoreOrders = data.length === this.limit;
                 } else {
-                    if (this.offset === 0) {
-                        if (request.id) {
-                            this.orders = this.mockOrders.filter(o => o.id.includes(request.id!));
-                        } else {
-                            this.orders = [];
-                        }
-                    }
                     this.hasMoreOrders = false;
                 }
                 this.isLoading = false;
             },
             error: (err) => {
-                console.warn('Backend offline, filtraggio locale su mock', err);
-                if (this.offset === 0) {
-                    this.orders = this.mockOrders.filter(o => {
-                        let match = true;
-                        if (request.id && !o.id.includes(request.id)) match = false;
-                        if (request.status && o.status !== request.status) match = false;
-                        return match;
-                    });
-                }
+                console.error('Error filtering orders:', err);
                 this.hasMoreOrders = false;
                 this.isLoading = false;
             }
@@ -366,7 +342,7 @@ export class OrderSearch implements OnInit {
     }
 
     logout() {
-        this.router.navigate(['/']);
+        this.authService.logout().subscribe();
     }
 
     @HostListener('document:click')

@@ -15,6 +15,8 @@ export class AlertCreation {
     isSidebarOpen = false;
     isLoading = false;
     errorMessage = '';
+    isNameInvalid = false;
+    isThresholdInvalid = false;
 
     private alertService = inject(AlertService);
 
@@ -63,11 +65,16 @@ export class AlertCreation {
         const mStr = m < 10 ? '0' + m : '' + m;
 
         this.alert.threshold = `${hStr}:${mStr}`;
-        this.alert.threshold = `${hStr}:${mStr}`;
+        if (this.isThresholdInvalid) {
+            this.isThresholdInvalid = false;
+        }
     }
 
     updateName(event: any) {
         this.alert.name = event.target.value;
+        if (this.isNameInvalid && this.alert.name) {
+            this.isNameInvalid = false;
+        }
     }
 
     updateDescription(event: any) {
@@ -76,6 +83,9 @@ export class AlertCreation {
 
     updateThreshold(event: any) {
         this.alert.threshold = event.target.value;
+        if (this.isThresholdInvalid) {
+            this.isThresholdInvalid = false;
+        }
     }
 
     updateActive(event: any) {
@@ -92,8 +102,12 @@ export class AlertCreation {
     }
 
     createAlert() {
+        this.isNameInvalid = false;
+        this.isThresholdInvalid = false;
+        this.errorMessage = '';
+
         if (!this.alert.name) {
-            this.errorMessage = 'Il nome è obbligatorio';
+            this.isNameInvalid = true;
             return;
         }
 
@@ -101,7 +115,8 @@ export class AlertCreation {
         const minutes = (parseInt(parts[0]) || 0) * 60 + (parseInt(parts[1]) || 0);
 
         if (minutes < 30 || minutes % 30 !== 0) {
-            this.errorMessage = 'La soglia deve essere di almeno 30 minuti e multipli di 30 (es. 00:30, 01:00, 01:30...)';
+            this.isThresholdInvalid = true;
+            // The message provided by user logic was specific, let's put it in HTML.
             return;
         }
 
@@ -114,7 +129,6 @@ export class AlertCreation {
         };
 
         this.isLoading = true;
-        this.errorMessage = '';
 
         this.alertService.createAlert(request).subscribe({
             next: (response) => {

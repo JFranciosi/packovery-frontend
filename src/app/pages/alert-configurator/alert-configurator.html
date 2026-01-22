@@ -60,8 +60,7 @@
                     @for (alert of paginatedAlerts; track alert.id) {
                     <tr>
                         <td class="col-name">
-                            <strong>{{ alert.alertName }}</strong><br>
-                            <span style="font-size:13px; color:#888;">{{ alert.alertDescription }}</span>
+                            <strong>{{ alert.alertName }}</strong>
                         </td>
                         <td class="col-date">{{ alert.alertCreatedDate | date:'dd/MM/yyyy' }}</td>
                         <td class="col-type">

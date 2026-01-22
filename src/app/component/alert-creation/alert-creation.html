@@ -54,7 +54,11 @@
             <!-- Nome -->
             <div class="form-group">
                 <label>Nome</label>
-                <input type="text" [value]="alert.name" (input)="updateName($event)" placeholder="Inserisci nome alert">
+                <input type="text" [value]="alert.name" (input)="updateName($event)" placeholder="Inserisci nome alert"
+                    [class.error]="isNameInvalid">
+                @if (isNameInvalid) {
+                <div class="field-error">Il nome è obbligatorio</div>
+                }
             </div>
 
             <!-- Descrizione -->
@@ -69,13 +73,16 @@
                 <label>Soglia</label>
                 <div class="threshold-wrapper">
                     <input type="text" [value]="alert.threshold" (input)="updateThreshold($event)"
-                        class="threshold-input">
+                        class="threshold-input" [class.error]="isThresholdInvalid">
                     <div class="quick-add-buttons">
                         <button type="button" (click)="addTime(0.5)">+0.5h</button>
                         <button type="button" (click)="addTime(1)">+1h</button>
                         <button type="button" (click)="addTime(2)">+2h</button>
                     </div>
                 </div>
+                @if (isThresholdInvalid) {
+                <div class="field-error">La soglia deve essere di almeno 30m e multipli di 30m</div>
+                }
             </div>
 
             <!-- Stato -->

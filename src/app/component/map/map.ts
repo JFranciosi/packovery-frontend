@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, Input, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
 
@@ -9,7 +9,7 @@ import * as L from 'leaflet';
     templateUrl: './map.html',
     styleUrls: ['./map.css']
 })
-export class Map implements AfterViewInit, OnDestroy {
+export class Map implements AfterViewInit, OnDestroy, OnChanges {
     @Input() departure: any;
     @Input() arrival: any;
     @Input() currentPosition: any;
@@ -17,12 +17,30 @@ export class Map implements AfterViewInit, OnDestroy {
     isFullscreen = false;
 
     private map!: L.Map;
+    private markers: L.Layer[] = [];
 
     ngAfterViewInit(): void {
         this.fixLeafletIcons();
-        if (this.departure && this.arrival && this.currentPosition) {
+        // Try to init if data is already available
+        if (this.isValidLocation(this.departure) || this.isValidLocation(this.arrival)) {
             setTimeout(() => this.initMap(), 100);
         }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['departure'] || changes['arrival'] || changes['currentPosition']) {
+            if (this.map) {
+                this.updateMapContent();
+            } else {
+                if (this.isValidLocation(this.departure) || this.isValidLocation(this.arrival)) {
+                    setTimeout(() => this.initMap(), 100);
+                }
+            }
+        }
+    }
+
+    private isValidLocation(loc: any): boolean {
+        return loc && typeof loc.lat === 'number' && typeof loc.lng === 'number';
     }
 
     ngOnDestroy(): void {
@@ -63,8 +81,16 @@ export class Map implements AfterViewInit, OnDestroy {
     private initMap(): void {
         if (this.map) return;
 
-        const centerLat = 45.635;
-        const centerLng = 8.91;
+        let centerLat = 45.635;
+        let centerLng = 8.91;
+
+        if (this.isValidLocation(this.departure)) {
+            centerLat = this.departure.lat;
+            centerLng = this.departure.lng;
+        } else if (this.isValidLocation(this.arrival)) {
+            centerLat = this.arrival.lat;
+            centerLng = this.arrival.lng;
+        }
 
         this.map = L.map('map', {
             center: [centerLat, centerLng],
@@ -76,34 +102,52 @@ export class Map implements AfterViewInit, OnDestroy {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.map);
 
+        this.updateMapContent();
+    }
+
+    private updateMapContent() {
+        if (!this.map) return;
+
+        this.markers.forEach(layer => this.map.removeLayer(layer));
+        this.markers = [];
+        if (this.routeLayer) {
+            this.map.removeLayer(this.routeLayer);
+            this.routeLayer = null;
+        }
+
         const escapeHtml = (text: string) => {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         };
 
-        if (this.departure && this.departure.lat) {
-            L.marker([this.departure.lat, this.departure.lng]).addTo(this.map)
-                .bindPopup(`Punto di partenza: ${escapeHtml(this.departure.address || '')}`)
-                .openPopup();
+        if (this.isValidLocation(this.departure)) {
+            const m = L.marker([this.departure.lat, this.departure.lng]).addTo(this.map)
+                .bindPopup(`Punto di partenza: ${escapeHtml(this.departure.address || '')}`);
+            this.markers.push(m);
         }
 
-        if (this.arrival && this.arrival.lat) {
-            L.marker([this.arrival.lat, this.arrival.lng]).addTo(this.map)
+        if (this.isValidLocation(this.arrival)) {
+            const m = L.marker([this.arrival.lat, this.arrival.lng]).addTo(this.map)
                 .bindPopup(`Destinazione: ${escapeHtml(this.arrival.address || '')}`);
+            this.markers.push(m);
         }
 
-        if (this.currentPosition && this.currentPosition.lat) {
-            L.circleMarker([this.currentPosition.lat, this.currentPosition.lng], {
+        if (this.isValidLocation(this.currentPosition)) {
+            const m = L.circleMarker([this.currentPosition.lat, this.currentPosition.lng], {
                 color: '#5865F2',
                 fillColor: '#5865F2',
                 fillOpacity: 0.8,
                 radius: 8
             }).addTo(this.map).bindPopup('Posizione attuale');
+            this.markers.push(m);
         }
 
-        if (this.departure && this.departure.lat && this.arrival && this.arrival.lat) {
+        if (this.isValidLocation(this.departure) && this.isValidLocation(this.arrival)) {
             this.getRoute(this.departure.lat, this.departure.lng, this.arrival.lat, this.arrival.lng);
+        } else if (this.markers.length > 0) {
+            const group = L.featureGroup(this.markers as any);
+            this.map.fitBounds(group.getBounds(), { padding: [50, 50] });
         }
     }
 

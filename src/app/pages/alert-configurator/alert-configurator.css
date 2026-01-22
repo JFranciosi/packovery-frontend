@@ -139,7 +139,10 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    height: calc(100vh - 200px);
+    overflow-x: hidden;
+    display: block;
     padding-bottom: 8px;
 }
 

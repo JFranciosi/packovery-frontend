@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
 import { AlertResponse } from '../../model/models';
@@ -10,7 +11,7 @@ import { AlertFilterComponent } from '../../component/alert-filter/alert-filter'
 @Component({
     selector: 'app-alert-configurator',
     standalone: true,
-    imports: [CommonModule, SidebarComponent, AlertFilterComponent],
+    imports: [CommonModule, SidebarComponent, AlertFilterComponent, InfiniteScrollDirective],
     templateUrl: './alert-configurator.html',
     styleUrls: ['./alert-configurator.css']
 })
@@ -19,9 +20,7 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     allAlerts: AlertResponse[] = [];
     paginatedAlerts: AlertResponse[] = [];
     isLoading = false;
-    offset = 0;
-    limit = 5;
-    currentPage = 1;
+    limit = 20;
     isSidebarOpen = false;
 
     typologyOptions = [
@@ -96,8 +95,6 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     }
 
     applyFilters() {
-        this.offset = 0;
-        this.currentPage = 1;
         this.filteredAlerts = this.allAlerts.filter(alert => {
             if (this.filters.global) {
                 const search = this.filters.global.toLowerCase();
@@ -121,24 +118,14 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     }
 
     updateView() {
-        const startIndex = this.offset;
-        const endIndex = this.offset + this.limit;
-        this.paginatedAlerts = this.filteredAlerts.slice(startIndex, endIndex);
+        this.limit = 20;
+        this.paginatedAlerts = this.filteredAlerts.slice(0, this.limit);
     }
 
-    nextPage() {
-        if (this.offset + this.limit < this.filteredAlerts.length) {
-            this.offset += this.limit;
-            this.currentPage++;
-            this.updateView();
-        }
-    }
-
-    prevPage() {
-        if (this.offset > 0) {
-            this.offset -= this.limit;
-            this.currentPage--;
-            this.updateView();
+    onScroll() {
+        if (this.limit < this.filteredAlerts.length) {
+            this.limit += 10;
+            this.paginatedAlerts = this.filteredAlerts.slice(0, this.limit);
         }
     }
 

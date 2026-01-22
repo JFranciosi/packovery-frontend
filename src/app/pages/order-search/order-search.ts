@@ -2,18 +2,17 @@ import { Component, HostListener, ElementRef, inject, OnInit } from '@angular/co
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
-
 import { LocationsService } from '../../services/locations.service';
 import { OrderService } from '../../services/order.service';
 import { OrderResponse, Comune, FilterOrderRequest } from '../../model/models';
-
 import { AuthService } from '../../services/auth.service';
 import { DatePickerComponent } from '../../component/date-picker/date-picker';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 @Component({
     selector: 'app-order-search',
     standalone: true,
-    imports: [CommonModule, RouterLink, SidebarComponent, DatePipe, DatePickerComponent],
+    imports: [CommonModule, RouterLink, SidebarComponent, DatePipe, DatePickerComponent, InfiniteScrollDirective],
     templateUrl: './order-search.html',
     styleUrls: ['./order-search.css']
 })
@@ -79,10 +78,10 @@ export class OrderSearch implements OnInit {
     selectedSizeLabel = '';
 
     offset = 0;
-    limit = 5;
+    limit = 20;
     currentPage = 1;
-    hasMoreOrders = true; 
-    isLoading = false; 
+    hasMoreOrders = true;
+    isLoading = false;
 
     ngOnInit() {
         this.loadSelectOptions();
@@ -188,12 +187,12 @@ export class OrderSearch implements OnInit {
         this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
+        this.orders = []; // Reset orders on new search
         this.loadOrders();
     }
 
-
-
     loadOrders() {
+        if (this.isLoading) return;
         this.isLoading = true;
 
         const hasFilters = Object.values(this.filters).some(v => v !== '');
@@ -202,18 +201,24 @@ export class OrderSearch implements OnInit {
             this.orderService.getOrders(this.offset, this.limit).subscribe({
                 next: (data) => {
                     if (data && data.length > 0) {
-                        this.orders = data;
+                        this.orders = [...this.orders, ...data]; // Append
                         this.hasMoreOrders = data.length === this.limit;
                     } else {
-                        console.warn('Backend non ha record, uso mock');
-                        this.orders = this.mockOrders;
-                        this.hasMoreOrders = false;
+                        if (this.offset === 0) {
+                            console.warn('Backend non ha record, uso mock');
+                            this.orders = this.mockOrders;
+                            this.hasMoreOrders = false;
+                        } else {
+                            this.hasMoreOrders = false;
+                        }
                     }
                     this.isLoading = false;
                 },
                 error: (err) => {
                     console.warn('Backend offline, uso dati mock', err);
-                    this.orders = this.mockOrders;
+                    if (this.offset === 0) {
+                        this.orders = this.mockOrders;
+                    }
                     this.hasMoreOrders = false;
                     this.isLoading = false;
                 }
@@ -237,13 +242,15 @@ export class OrderSearch implements OnInit {
         this.orderService.getFilteredOrders(request, this.offset, this.limit).subscribe({
             next: (data) => {
                 if (data && data.length > 0) {
-                    this.orders = data;
+                    this.orders = [...this.orders, ...data]; // Append
                     this.hasMoreOrders = data.length === this.limit;
                 } else {
-                    if (request.id) {
-                        this.orders = this.mockOrders.filter(o => o.id.includes(request.id!));
-                    } else {
-                        this.orders = [];
+                    if (this.offset === 0) {
+                        if (request.id) {
+                            this.orders = this.mockOrders.filter(o => o.id.includes(request.id!));
+                        } else {
+                            this.orders = [];
+                        }
                     }
                     this.hasMoreOrders = false;
                 }
@@ -251,29 +258,24 @@ export class OrderSearch implements OnInit {
             },
             error: (err) => {
                 console.warn('Backend offline, filtraggio locale su mock', err);
-                this.orders = this.mockOrders.filter(o => {
-                    let match = true;
-                    if (request.id && !o.id.includes(request.id)) match = false;
-                    if (request.status && o.status !== request.status) match = false;
-                    return match;
-                });
+                if (this.offset === 0) {
+                    this.orders = this.mockOrders.filter(o => {
+                        let match = true;
+                        if (request.id && !o.id.includes(request.id)) match = false;
+                        if (request.status && o.status !== request.status) match = false;
+                        return match;
+                    });
+                }
                 this.hasMoreOrders = false;
                 this.isLoading = false;
             }
         });
     }
 
-    nextPage() {
-        if (this.orders.length < this.limit) return;
-        this.offset += this.limit; 
-        this.currentPage++;
-        this.loadOrders();
-    }
-
-    prevPage() {
-        if (this.offset > 0) {
-            this.offset -= this.limit; 
-            this.currentPage--;
+    onScroll() {
+        if (this.hasMoreOrders && !this.isLoading) {
+            this.offset += this.limit;
+            this.currentPage++;
             this.loadOrders();
         }
     }
@@ -325,7 +327,7 @@ export class OrderSearch implements OnInit {
     }
 
     selectOriginCity(city: Comune) {
-        this.filters.originCity = city.nome; 
+        this.filters.originCity = city.nome;
         this.isOriginCityOpen = false;
     }
 
@@ -344,7 +346,7 @@ export class OrderSearch implements OnInit {
     }
 
     selectDestCity(city: Comune) {
-        this.filters.destCity = city.nome; 
+        this.filters.destCity = city.nome;
         this.isDestCityOpen = false;
     }
 

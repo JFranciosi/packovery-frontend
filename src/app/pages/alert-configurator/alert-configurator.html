@@ -38,7 +38,8 @@
             (filterChange)="onFilterChange($event)">
         </app-alert-filter>
 
-        <div class="table-container">
+        <div class="table-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+            [scrollWindow]="false" (scrolled)="onScroll()">
             @if (isLoading) {
             <div class="loading-overlay">
                 <div class="spinner"></div>
@@ -98,24 +99,6 @@
                     }
                 </tbody>
             </table>
-        </div>
-
-        <div class="pagination">
-            <button class="page-nav prev" (click)="prevPage()" [disabled]="offset === 0"
-                [class.disabled]="offset === 0">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-            <button class="page-num active">{{ currentPage }}</button>
-            <button class="page-nav next" (click)="nextPage()" [disabled]="offset + limit >= filteredAlerts.length"
-                [class.disabled]="offset + limit >= filteredAlerts.length">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
         </div>
     </main>
 

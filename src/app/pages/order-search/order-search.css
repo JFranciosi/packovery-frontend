@@ -312,11 +312,13 @@
     background-color: var(--color-bg-surface);
     border: 1px solid rgba(0, 0, 0, 0.03);
     border-radius: 16px;
-    overflow: hidden;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
     position: relative;
     padding-bottom: 8px;
-    max-height: calc(56px + (72px * 5));
+    height: calc(100vh - 280px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
 }
 
 table {

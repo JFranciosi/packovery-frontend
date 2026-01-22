@@ -19,8 +19,7 @@ export class SidebarComponent {
     private router = inject(Router);
 
     logout() {
-        this.authService.logout();
-        this.router.navigate(['/']);
+        this.authService.logout().subscribe();
     }
 
     closeSidebar() {

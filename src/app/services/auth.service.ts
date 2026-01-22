@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
@@ -89,9 +89,13 @@ export class AuthService {
         return this.resetEmail;
     }
 
-    logout() {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        this.router.navigate(['/']);
+    logout(): Observable<any> {
+        return this.http.post(`${this.apiUrl}/logout`, {}).pipe(
+            finalize(() => {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                this.router.navigate(['/']);
+            })
+        );
     }
 }

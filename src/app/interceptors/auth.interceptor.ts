@@ -25,9 +25,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(authReq).pipe(
         catchError((error) => {
-            if (error instanceof HttpErrorResponse && error.status === 401) {
+            if (error instanceof HttpErrorResponse && error.status === 401 && !req.url.includes('/auth/logout')) {
                 if (req.url.includes('/auth/refresh')) {
-                    authService.logout();
+                    authService.logout().subscribe();
                     return throwError(() => error);
                 }
 
@@ -48,7 +48,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                         }),
                         catchError((err) => {
                             isRefreshing = false;
-                            authService.logout();
+                            authService.logout().subscribe();
                             return throwError(() => err);
                         })
                     );

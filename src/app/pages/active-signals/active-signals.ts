@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
-
-import { Signal } from '../../model/models';
+import { ReportService } from '../../services/report.service';
+import { AuthService } from '../../services/auth.service';
+import { ReportResponse } from '../../model/models';
 
 @Component({
     selector: 'app-active-signals',
@@ -12,28 +13,79 @@ import { Signal } from '../../model/models';
     templateUrl: './active-signals.html',
     styleUrls: ['./active-signals.css']
 })
-export class ActiveSignals {
+export class ActiveSignals implements OnInit {
 
     isSidebarOpen = false;
+    reports: ReportResponse[] = [];
+    isLoading = false;
 
-    constructor(private router: Router) { }
+    private reportService = inject(ReportService);
+    private authService = inject(AuthService);
+    private router = inject(Router);
 
-    signals: Signal[] = [
-        { id: 'AB1234', alertId: 'A0001', description: 'Segnale GPS interrotto', time: '00:30', type: 'gps' },
-        { id: 'CD5678', alertId: 'A0002', description: 'Ritardo partenza ordine', time: '01:00', type: 'delay' },
-        { id: 'EF9012', alertId: 'A0003', description: 'Ritardo consegna ordine', time: '02:00', type: 'delay' },
-        { id: 'GH3456', alertId: 'A0004', description: 'Segnale GPS interrotto', time: '00:30', type: 'gps' }
-    ];
+    ngOnInit() {
+        this.loadReports();
+    }
+
+    loadReports() {
+        this.isLoading = true;
+        this.reportService.getReports().subscribe({
+            next: (data) => {
+                this.reports = data.filter(r => !r.resolved);
+                this.isLoading = false;
+            },
+            error: (err) => {
+                console.error('Failed to load reports', err);
+                this.isLoading = false;
+            }
+        });
+    }
 
     toggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen;
     }
 
     logout() {
-        this.router.navigate(['/']);
+        this.authService.logout().subscribe();
     }
 
-    resolveSignal(signal: Signal) {
-        console.log('Resolving signal:', signal);
+    getTypologyLabel(type: string): string {
+        switch (type) {
+            case 'GPS_SIGNAL_INTERRUPTED': return 'Segnale GPS Interrotto';
+            case 'ORDER_DEPARTURE_DELAY': return 'Ritardo Partenza';
+            case 'ORDER_DELIVERY_DELAY': return 'Ritardo Consegna';
+            default: return type;
+        }
+    }
+
+    getTypologyClass(type: string): string {
+        switch (type) {
+            case 'GPS_SIGNAL_INTERRUPTED': return 'type-gps';
+            case 'ORDER_DEPARTURE_DELAY':
+            case 'ORDER_DELIVERY_DELAY': return 'type-delay';
+            default: return 'type-default';
+        }
+    }
+
+    resolveSignal(report: ReportResponse) {
+        // Supponendo che 'RESOLVED' sia un valore valido del tuo enum IssueResolution nel backend
+        this.reportService.resolveReport(report.id, 'RESOLVED_BY_SYSTEM_USER', 'Risolto da interfaccia operatore').subscribe({
+            next: () => {
+                this.loadReports(); // Refresh list
+            },
+            error: (err) => {
+                console.error('Failed to resolve report', err);
+            }
+        });
+    }
+
+    formatDate(dateStr: string): string {
+        try {
+            const date = new Date(dateStr);
+            return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+        } catch (e) {
+            return dateStr;
+        }
     }
 }
+

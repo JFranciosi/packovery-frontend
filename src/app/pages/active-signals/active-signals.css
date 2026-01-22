@@ -74,8 +74,7 @@
     top: 0;
     bottom: 0;
     width: 6px;
-    background: #9ACD32;
-    /* Default signal color, maybe dynamic? assume green for now as per logo */
+    background: #A4D05F;
     border-radius: 16px 0 0 16px;
 }
 
@@ -85,8 +84,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ACD32;
-    background: linear-gradient(135deg, #F7FDE8 0%, #EEF4D8 100%);
+    color: #A4D05F;
+    background: rgba(164, 208, 95, 0.1);
     border-radius: 16px;
 }
 
@@ -204,14 +203,6 @@
     .signal-card {
         padding: 16px;
     }
-
-    .signal-data {
-        font-size: 13px;
-    }
-
-    .signal-label {
-        font-size: 11px;
-    }
 }
 
 @media (max-width: 768px) {
@@ -276,5 +267,32 @@
         width: 100%;
         justify-content: center;
         height: 44px;
+    }
+}
+
+.loading-state,
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    text-align: center;
+    color: var(--color-text-secondary);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
 }

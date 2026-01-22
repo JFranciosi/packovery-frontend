@@ -118,3 +118,20 @@ export interface UserResponse {
     surname: string;
     email?: string;
 }
+
+export interface ReportResponse {
+    id: number;
+    orderId: string;
+    alertId: number;
+    alertTypology: string;
+    alertName: string;
+    issueActivatedTime: string;
+    issueResolvedTime: string | null;
+    issueResolution: string;
+    resolutionDescription: string | null;
+    resolvedById: number | null;
+    resolvedByEmail: string | null;
+    resolved: boolean;
+}
+
+

@@ -43,8 +43,11 @@
 .main-content {
     flex: 1;
     padding: 24px 40px;
-    overflow: visible;
+    overflow-y: auto;
+    overflow-x: hidden;
     animation: fadeInPage 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
 }
 
 @keyframes fadeInPage {
@@ -62,7 +65,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     color: var(--color-text-primary);
     letter-spacing: -0.5px;
 }
@@ -313,6 +316,7 @@
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
     position: relative;
     padding-bottom: 8px;
+    max-height: calc(56px + (72px * 5));
 }
 
 table {
@@ -398,7 +402,7 @@ td.action-cell {
 }
 
 .pagination {
-    margin-top: 32px;
+    margin-top: 16px;
     display: flex;
     justify-content: center;
     align-items: center;

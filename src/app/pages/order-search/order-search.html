@@ -261,15 +261,17 @@
         </div>
 
         <div class="pagination">
-            <button class="page-nav" [disabled]="offset === 0" [class.disabled]="offset === 0" (click)="prevPage()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            <button class="page-nav prev" (click)="prevPage()" [disabled]="offset === 0"
+                [class.disabled]="offset === 0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
-            <div class="page-num active">{{ currentPage }}</div>
-            <button class="page-nav" [disabled]="!hasMoreOrders" [class.disabled]="!hasMoreOrders" (click)="nextPage()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            <button class="page-num active">{{ currentPage }}</button>
+            <button class="page-nav next" (click)="nextPage()" [disabled]="!hasMoreOrders"
+                [class.disabled]="!hasMoreOrders">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>

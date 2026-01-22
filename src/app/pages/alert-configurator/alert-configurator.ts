@@ -20,7 +20,7 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     paginatedAlerts: AlertResponse[] = [];
     isLoading = false;
     offset = 0;
-    limit = 7;
+    limit = 5;
     currentPage = 1;
     isSidebarOpen = false;
 

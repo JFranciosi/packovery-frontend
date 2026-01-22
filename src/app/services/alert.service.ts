@@ -20,7 +20,7 @@ export class AlertService {
     }
 
     updateAlertStatus(id: number, status: boolean): Observable<string> {
-        return this.http.put(`${this.apiUrl}/${id}/status`, status, { responseType: 'text' });
+        return this.http.put(`${this.apiUrl}/${id}/status`, { status }, { responseType: 'text' });
     }
 
     deleteAlert(id: number): Observable<string> {

@@ -192,6 +192,7 @@ textarea:focus {
 textarea {
     resize: vertical;
     min-height: 80px;
+    max-height: 300px;
 }
 
 .threshold-wrapper {

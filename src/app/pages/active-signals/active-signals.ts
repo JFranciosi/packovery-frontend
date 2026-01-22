@@ -68,10 +68,9 @@ export class ActiveSignals implements OnInit {
     }
 
     resolveSignal(report: ReportResponse) {
-        // Supponendo che 'RESOLVED' sia un valore valido del tuo enum IssueResolution nel backend
         this.reportService.resolveReport(report.id, 'RESOLVED_BY_SYSTEM_USER', 'Risolto da interfaccia operatore').subscribe({
             next: () => {
-                this.loadReports(); // Refresh list
+                this.loadReports();
             },
             error: (err) => {
                 console.error('Failed to resolve report', err);

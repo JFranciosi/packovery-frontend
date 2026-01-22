@@ -14,15 +14,15 @@ export class OrderService {
 
     getOrders(offset: number, limit: number): Observable<OrderResponse[]> {
         const params = new HttpParams()
-            .set('offset', offset)
-            .set('limit', limit);
+            .set('offset', offset.toString())
+            .set('limit', limit.toString());
         return this.http.get<OrderResponse[]>(this.apiUrl, { params });
     }
 
     getFilteredOrders(filter: FilterOrderRequest, offset: number, limit: number): Observable<OrderResponse[]> {
         const params = new HttpParams()
-            .set('offset', offset)
-            .set('limit', limit);
+            .set('offset', offset.toString())
+            .set('limit', limit.toString());
 
         // Backend is now POST. Send filter as body.
         return this.http.post<OrderResponse[]>(`${this.apiUrl}/filter`, filter, { params });

@@ -29,12 +29,8 @@ export const routes: Routes = [
     {
         title: 'Login',
         path: '',
-        component: Login
-    },
-    {
-        title: 'Login',
-        path: 'login',
-        component: Login
+        component: Login,
+        pathMatch: 'full'
     },
     {
         title: 'Forgot Password',
@@ -76,5 +72,9 @@ export const routes: Routes = [
         path: 'alert-modification/:id',
         component: AlertModification,
         canActivate: [authGuard]
+    },
+    {
+        path: '**',
+        redirectTo: ''
     }
 ];

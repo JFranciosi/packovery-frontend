@@ -95,7 +95,7 @@ export class ResetPassword implements OnInit {
             next: () => {
                 this.isLoading = false;
                 alert('Password modificata con successo!');
-                this.router.navigate(['/login']);
+                this.router.navigate(['/']);
             },
             error: (err) => {
                 this.isLoading = false;

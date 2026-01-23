@@ -11,6 +11,7 @@ import { AlertCreation } from './component/alert-creation/alert-creation';
 import { AlertModification } from './component/alert-modification/alert-modification';
 
 import { authGuard } from './guards/auth.guard';
+import { noAuthGuard } from './guards/no-auth.guard';
 import { resetPasswordGuard } from './guards/reset-password.guard';
 
 export const routes: Routes = [
@@ -30,12 +31,14 @@ export const routes: Routes = [
         title: 'Login',
         path: '',
         component: Login,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [noAuthGuard]
     },
     {
         title: 'Forgot Password',
         path: 'forgot-password',
-        component: Forgotpassword
+        component: Forgotpassword,
+        canActivate: [noAuthGuard]
     },
     {
         title: 'Confirmation Code',

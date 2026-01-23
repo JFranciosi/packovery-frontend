@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SanitizeService } from '../../services/sanitize.service';
 
 @Component({
     selector: 'app-chat',
@@ -9,6 +10,7 @@ import { CommonModule } from '@angular/common';
     styleUrls: ['./chat.css']
 })
 export class Chat implements OnInit {
+    private sanitizeService = inject(SanitizeService);
     @Input() orderId!: string;
     @Input() riderName!: string;
     @Input() riderSurname!: string;
@@ -37,17 +39,16 @@ export class Chat implements OnInit {
     }
 
     sendMessage(val?: string) {
-        // If called from button click or enter, we use newMessage.
-        // If we want to support passing value directly we could, but let's stick to state.
-        if (!this.newMessage.trim()) return;
+        const sanitizedText = this.sanitizeService.sanitize(this.newMessage);
+        if (!sanitizedText) return;
 
         this.messages.push({
-            text: this.newMessage,
+            text: sanitizedText,
             sender: 'user',
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
 
-        const userMsg = this.newMessage;
+        const userMsg = sanitizedText;
         this.newMessage = '';
 
         setTimeout(() => {

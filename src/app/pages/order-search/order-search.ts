@@ -6,6 +6,7 @@ import { LocationsService } from '../../services/locations.service';
 import { OrderService } from '../../services/order.service';
 import { OrderResponse, Comune, FilterOrderRequest } from '../../model/models';
 import { AuthService } from '../../services/auth.service';
+import { SanitizeService } from '../../services/sanitize.service';
 import { DatePickerComponent } from '../../component/date-picker/date-picker';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
@@ -22,6 +23,7 @@ export class OrderSearch implements OnInit {
     private locationsService = inject(LocationsService);
     private orderService = inject(OrderService);
     private authService = inject(AuthService);
+    private sanitizeService = inject(SanitizeService);
 
     filters = {
         orderId: '',
@@ -285,11 +287,11 @@ export class OrderSearch implements OnInit {
     }
 
     onOrderIdInput(event: any) {
-        this.filters.orderId = event.target.value;
+        this.filters.orderId = this.sanitizeService.sanitize(event.target.value, 50);
     }
 
     onOriginCityInput(event: any) {
-        const value = event.target.value;
+        const value = this.sanitizeService.sanitize(event.target.value, 100);
         this.filters.originCity = value;
         if (value.length >= 2) {
             this.locationsService.searchComuni(value).subscribe(cities => {
@@ -308,7 +310,7 @@ export class OrderSearch implements OnInit {
     }
 
     onDestCityInput(event: any) {
-        const value = event.target.value;
+        const value = this.sanitizeService.sanitize(event.target.value, 100);
         this.filters.destCity = value;
         if (value.length >= 2) {
             this.locationsService.searchComuni(value).subscribe(cities => {

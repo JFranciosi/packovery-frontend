@@ -63,7 +63,7 @@
 .signal-card:hover {
     transform: translateX(4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    border-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 1);
 }
 
 .signal-card::before {
@@ -81,7 +81,6 @@
     width: 6px;
 }
 
-/* Tipologie di Alert - Ripristino Verde Originale #A4D05F */
 .signal-card::before {
     background: #A4D05F;
 }

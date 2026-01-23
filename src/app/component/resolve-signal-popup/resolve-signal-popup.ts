@@ -17,13 +17,21 @@ export class ResolveSignalPopup {
 
     resolutionDescription = '';
 
+    private sanitizeInput(input: string): string {
+        if (!input) return '';
+        let sanitized = input.replace(/<[^>]*>/g, '');
+        sanitized = sanitized.replace(/[;'"\\]/g, '');
+        return sanitized.trim().substring(0, 500);
+    }
+
     closePopup() {
         this.resolutionDescription = '';
         this.close.emit();
     }
 
     confirmResolve() {
-        const description = this.resolutionDescription.trim() || 'Risolto da interfaccia operatore';
+        const sanitizedDescription = this.sanitizeInput(this.resolutionDescription);
+        const description = sanitizedDescription || 'Risolto da interfaccia operatore';
         this.confirm.emit(description);
         this.resolutionDescription = '';
     }

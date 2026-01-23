@@ -88,15 +88,24 @@ export class AlertFilterComponent implements OnInit {
         this.emitFilters();
     }
 
+    private sanitizeInput(input: string, maxLength: number = 100): string {
+        if (!input) return '';
+        return input
+            .replace(/<[^>]*>/g, '')
+            .replace(/[;'"\\]/g, '')
+            .trim()
+            .substring(0, maxLength);
+    }
+
     onGlobalSearchChange(event: Event) {
         const input = event.target as HTMLInputElement;
-        this.filters.global = input.value;
+        this.filters.global = this.sanitizeInput(input.value);
         this.emitFilters();
     }
 
     onOrderIdChange(event: Event) {
         const input = event.target as HTMLInputElement;
-        this.filters.orderId = input.value;
+        this.filters.orderId = this.sanitizeInput(input.value, 50);
         this.emitFilters();
     }
 

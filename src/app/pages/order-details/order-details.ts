@@ -28,10 +28,10 @@ export class OrderDetails implements OnInit {
     };
 
     rider = {
-        name: 'Marco',
-        surname: 'Rossi',
-        estimatedArrival: '26 febbraio - 14:30',
-        transport: 'Automobile'
+        name: '',
+        surname: '',
+        estimatedArrival: '',
+        transport: ''
     };
 
     isSidebarOpen = false;
@@ -84,28 +84,28 @@ export class OrderDetails implements OnInit {
 
         this.order = {
             id: raw.id,
-            creatorName: raw.createdBy?.firstName || 'Utente',
-            creatorSurname: raw.createdBy?.lastName || 'Packovery',
+            creatorName: raw.createdBy?.firstName || '',
+            creatorSurname: raw.createdBy?.lastName || '',
             status: this.getStatusLabel(raw.status),
             creationDate: new Date(raw.plannedDeliveryTime).toLocaleDateString('it-IT'),
             weight: this.getWeightLabel(raw.packageWeight),
             size: this.getSizeLabel(raw.packageSize),
             departure: {
-                address: raw.departureLocation || formatCoords(mapGps?.pickupLatitude, mapGps?.pickupLongitude) || 'Coordinate non disponibili',
-                lat: mapGps?.pickupLatitude || 45.6120,
-                lng: mapGps?.pickupLongitude || 8.8515
+                address: raw.departureLocation || formatCoords(mapGps?.pickupLatitude, mapGps?.pickupLongitude) || '',
+                lat: mapGps?.pickupLatitude || 0,
+                lng: mapGps?.pickupLongitude || 0
             },
             currentPosition: {
                 coords: mapGps?.riderLatitude && mapGps?.riderLongitude
                     ? formatCoords(mapGps.riderLatitude, mapGps.riderLongitude)
-                    : '45°37\'05.8"N 9°00\'41.4"E',
-                lat: mapGps?.riderLatitude || 45.6183,
-                lng: mapGps?.riderLongitude || 9.0115
+                    : '',
+                lat: mapGps?.riderLatitude || 0,
+                lng: mapGps?.riderLongitude || 0
             },
             arrival: {
-                address: raw.deliveryLocation || formatCoords(mapGps?.deliveryLatitude, mapGps?.deliveryLongitude) || 'Coordinate non disponibili',
-                lat: mapGps?.deliveryLatitude || 45.6577,
-                lng: mapGps?.deliveryLongitude || 8.9733
+                address: raw.deliveryLocation || formatCoords(mapGps?.deliveryLatitude, mapGps?.deliveryLongitude) || '',
+                lat: mapGps?.deliveryLatitude || 0,
+                lng: mapGps?.deliveryLongitude || 0
             }
         };
         this.isLoading = false;
@@ -114,23 +114,23 @@ export class OrderDetails implements OnInit {
     private useMockOrder(id: string) {
         this.order = {
             id: id,
-            creatorName: 'Marco',
-            creatorSurname: 'Bianchi',
-            status: 'In transito',
-            creationDate: '20/01/2026',
-            weight: this.getWeightLabel('M'),
-            size: this.getSizeLabel('M'),
+            creatorName: '',
+            creatorSurname: '',
+            status: '',
+            creationDate: '',
+            weight: '',
+            size: '',
             departure: {
-                address: 'Via Garibaldi 10, Busto Arsizio',
-                lat: 45.6120, lng: 8.8515
+                address: '',
+                lat: 0, lng: 0
             },
             currentPosition: {
-                coords: '45°37\'05.8"N 9°00\'41.4"E',
-                lat: 45.6183, lng: 9.0115
+                coords: '',
+                lat: 0, lng: 0
             },
             arrival: {
-                address: 'Via Cavour 5, Cislago',
-                lat: 45.6577, lng: 8.9733
+                address: '',
+                lat: 0, lng: 0
             }
         };
         this.isLoading = false;

@@ -108,6 +108,27 @@ export class OrderDetails implements OnInit {
                 lng: mapGps?.deliveryLongitude || 0
             }
         };
+
+        // Aggiorna info Rider dai dati GPS
+        if (mapGps?.rider) {
+            const parts = mapGps.rider.trim().split(' ');
+            this.rider.name = parts[0] || '';
+            this.rider.surname = parts.slice(1).join(' ') || '';
+            // Se abbiamo nome e cognome, il mezzo è sempre Automobile
+            this.rider.transport = (this.rider.name && this.rider.surname) ? 'Automobile' : '';
+        }
+
+        // Arrivo previsto dal campo plannedDeliveryTime dell'ordine
+        if (raw.plannedDeliveryTime) {
+            const date = new Date(raw.plannedDeliveryTime);
+            this.rider.estimatedArrival = date.toLocaleString('it-IT', {
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
         this.isLoading = false;
     }
 

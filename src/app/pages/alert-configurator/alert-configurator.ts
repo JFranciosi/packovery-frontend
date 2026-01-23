@@ -47,7 +47,22 @@ export class AlertConfigurator implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadSavedFilters();
+        this.loadSelectOptions();
         this.loadAlerts();
+    }
+
+    loadSelectOptions() {
+        this.alertService.getSelectOptions().subscribe({
+            next: (data) => {
+                if (data.alertTypologies && data.alertTypologies.length > 0) {
+                    this.typologyOptions = data.alertTypologies.map(t => ({
+                        label: this.getTypologyLabel(t),
+                        value: t
+                    }));
+                }
+            },
+            error: (err) => console.warn('Failed to load alert typology options, using defaults', err)
+        });
     }
 
     loadSavedFilters() {
@@ -137,8 +152,12 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     }
 
     getTypologyLabel(value: string): string {
-        const option = this.typologyOptions.find(o => o.value === value);
-        return option ? option.label : value;
+        switch (value) {
+            case 'ORDER_DEPARTURE_DELAY': return 'Ritardo Partenza';
+            case 'ORDER_DELIVERY_DELAY': return 'Ritardo Consegna';
+            case 'GPS_SIGNAL_INTERRUPTED': return 'Segnale GPS Interrotto';
+            default: return value;
+        }
     }
 
     formatDuration(seconds: number): string {

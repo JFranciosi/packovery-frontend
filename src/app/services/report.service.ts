@@ -25,4 +25,8 @@ export class ReportService {
             resolutionDescription: description
         });
     }
+
+    getSelectOptions(): Observable<import('../model/models').SelectOptionsResponse> {
+        return this.http.get<import('../model/models').SelectOptionsResponse>(`${this.apiUrl}/select-options`);
+    }
 }

@@ -43,7 +43,22 @@ export class ActiveSignals implements OnInit {
 
     ngOnInit() {
         this.loadSavedFilters();
+        this.loadSelectOptions();
         this.loadReports();
+    }
+
+    loadSelectOptions() {
+        this.reportService.getSelectOptions().subscribe({
+            next: (data) => {
+                if (data.alertTypologies && data.alertTypologies.length > 0) {
+                    this.typologyOptions = data.alertTypologies.map(t => ({
+                        label: this.getTypologyLabel(t),
+                        value: t
+                    }));
+                }
+            },
+            error: (err) => console.warn('Failed to load report typology options, using defaults', err)
+        });
     }
 
     loadSavedFilters() {

@@ -37,4 +37,8 @@ export class AlertService {
             map(alerts => alerts.find(a => a.id === id))
         );
     }
+
+    getSelectOptions(): Observable<import('../model/models').SelectOptionsResponse> {
+        return this.http.get<import('../model/models').SelectOptionsResponse>(`${this.apiUrl}/select-options`);
+    }
 }

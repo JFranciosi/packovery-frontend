@@ -108,8 +108,9 @@ export interface AlertResponse {
 
 
 export interface SelectOptionsResponse {
-    orderStatuses: string[];
-    packageScales: string[];
+    orderStatuses?: string[];
+    packageScales?: string[];
+    alertTypologies?: string[];
 }
 
 export interface UserResponse {

@@ -49,40 +49,19 @@
 
 .signal-card {
     background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-left: 6px solid #A4D05F;
     border-radius: 12px;
     padding: 16px 24px;
     display: flex;
     align-items: center;
     gap: 20px;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: background-color 0.2s ease;
     position: relative;
 }
 
 .signal-card:hover {
-    transform: translateX(4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    border-color: rgba(0, 0, 0, 1);
-}
-
-.signal-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    border-radius: 12px 0 0 12px;
-    transition: width 0.2s;
-}
-
-.signal-card:hover::before {
-    width: 6px;
-}
-
-.signal-card::before {
-    background: #A4D05F;
+    background-color: var(--color-bg-primary);
 }
 
 .signal-icon {

@@ -22,12 +22,8 @@ export class Chat implements OnInit {
     messages: { text: string, sender: 'user' | 'rider', time: string }[] = [];
 
     ngOnInit() {
-        if (this.messages.length === 0) {
-            this.messages = [
-                { text: 'Ciao, a che ora è prevista la consegna?', sender: 'user', time: '14:05' },
-                { text: `Ciao! Arriverò verso le 14:30.`, sender: 'rider', time: '14:06' }
-            ];
-        }
+        // La chat inizia vuota
+        this.messages = [];
     }
 
     closeChat() {
@@ -48,15 +44,6 @@ export class Chat implements OnInit {
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
 
-        const userMsg = sanitizedText;
         this.newMessage = '';
-
-        setTimeout(() => {
-            this.messages.push({
-                text: `Ricevuto: "${userMsg}". Sto arrivando!`,
-                sender: 'rider',
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            });
-        }, 2000);
     }
 }

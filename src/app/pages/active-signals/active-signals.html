@@ -39,7 +39,7 @@
             </div>
             } @else {
             @for (s of reports; track s.id) {
-            <div class="signal-card">
+            <div [class]="'signal-card ' + getTypologyClass(s.alertTypology)">
                 <div class="signal-icon">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">

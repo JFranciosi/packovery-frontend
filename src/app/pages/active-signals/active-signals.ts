@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
+import { ResolveSignalPopup } from '../../component/resolve-signal-popup/resolve-signal-popup';
 import { ReportService } from '../../services/report.service';
 import { AuthService } from '../../services/auth.service';
 import { ReportResponse } from '../../model/models';
@@ -9,7 +10,7 @@ import { ReportResponse } from '../../model/models';
 @Component({
     selector: 'app-active-signals',
     standalone: true,
-    imports: [CommonModule, SidebarComponent],
+    imports: [CommonModule, SidebarComponent, ResolveSignalPopup],
     templateUrl: './active-signals.html',
     styleUrls: ['./active-signals.css']
 })
@@ -18,6 +19,8 @@ export class ActiveSignals implements OnInit {
     isSidebarOpen = false;
     reports: ReportResponse[] = [];
     isLoading = false;
+    showResolvePopup = false;
+    selectedReport: ReportResponse | null = null;
 
     private reportService = inject(ReportService);
     private authService = inject(AuthService);
@@ -68,8 +71,25 @@ export class ActiveSignals implements OnInit {
     }
 
     resolveSignal(report: ReportResponse) {
-        this.reportService.resolveReport(report.id, 'RESOLVED_BY_SYSTEM_USER', 'Risolto da interfaccia operatore').subscribe({
+        this.selectedReport = report;
+        this.showResolvePopup = true;
+    }
+
+    closeResolvePopup() {
+        this.showResolvePopup = false;
+        this.selectedReport = null;
+    }
+
+    confirmResolve(description: string) {
+        if (!this.selectedReport) return;
+
+        this.reportService.resolveReport(
+            this.selectedReport.id,
+            'RESOLVED_BY_SYSTEM_USER',
+            description
+        ).subscribe({
             next: () => {
+                this.closeResolvePopup();
                 this.loadReports();
             },
             error: (err) => {

@@ -27,6 +27,10 @@
     <main class="main-content">
         <h2 class="page-title">Segnalazioni attive</h2>
 
+        <app-alert-filter [typologyOptions]="typologyOptions" [initialFilters]="filters" [showOrderId]="true"
+            (filterChange)="onFilterChange($event)">
+        </app-alert-filter>
+
         <div class="signals-list">
             @if (isLoading) {
             <div class="loading-state">

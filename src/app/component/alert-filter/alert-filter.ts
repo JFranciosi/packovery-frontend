@@ -11,14 +11,16 @@ import { CommonModule } from '@angular/common';
 export class AlertFilterComponent implements OnInit {
     @Input() typologyOptions: { label: string, value: string }[] = [];
     @Input() statusOptions: { label: string, value: string }[] = [];
-    @Input() initialFilters: { global: string, typology: string, status: string } | null = null;
+    @Input() showOrderId = false;
+    @Input() initialFilters: { global: string, typology: string, status: string, orderId?: string } | null = null;
 
-    @Output() filterChange = new EventEmitter<{ global: string, typology: string, status: string }>();
+    @Output() filterChange = new EventEmitter<{ global: string, typology: string, status: string, orderId?: string }>();
 
     filters = {
         global: '',
         typology: '',
-        status: ''
+        status: '',
+        orderId: ''
     };
 
     selectedTypologyLabel = '';
@@ -28,7 +30,12 @@ export class AlertFilterComponent implements OnInit {
 
     ngOnInit() {
         if (this.initialFilters) {
-            this.filters = { ...this.initialFilters };
+            this.filters = {
+                global: this.initialFilters.global || '',
+                typology: this.initialFilters.typology || '',
+                status: this.initialFilters.status || '',
+                orderId: this.initialFilters.orderId || ''
+            };
             // Set initial labels
             if (this.filters.typology) {
                 const opt = this.typologyOptions.find(o => o.value === this.filters.typology);
@@ -64,7 +71,7 @@ export class AlertFilterComponent implements OnInit {
         this.emitFilters();
     }
 
-    clearFilter(type: 'typology' | 'status' | 'global') {
+    clearFilter(type: 'typology' | 'status' | 'global' | 'orderId') {
         if (type === 'typology') {
             this.filters.typology = '';
             this.selectedTypologyLabel = '';
@@ -73,6 +80,8 @@ export class AlertFilterComponent implements OnInit {
             this.filters.status = '';
             this.selectedStatusLabel = '';
             this.isStatusOpen = false;
+        } else if (type === 'orderId') {
+            this.filters.orderId = '';
         } else {
             this.filters.global = '';
         }
@@ -82,6 +91,12 @@ export class AlertFilterComponent implements OnInit {
     onGlobalSearchChange(event: Event) {
         const input = event.target as HTMLInputElement;
         this.filters.global = input.value;
+        this.emitFilters();
+    }
+
+    onOrderIdChange(event: Event) {
+        const input = event.target as HTMLInputElement;
+        this.filters.orderId = input.value;
         this.emitFilters();
     }
 

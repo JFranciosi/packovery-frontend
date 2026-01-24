@@ -21,7 +21,6 @@ export class Map implements AfterViewInit, OnDestroy, OnChanges {
 
     ngAfterViewInit(): void {
         this.fixLeafletIcons();
-        // Try to init if data is already available
         if (this.isValidLocation(this.departure) || this.isValidLocation(this.arrival)) {
             setTimeout(() => this.initMap(), 100);
         }
@@ -62,9 +61,6 @@ export class Map implements AfterViewInit, OnDestroy, OnChanges {
     }
 
     private fixLeafletIcons() {
-        const iconRetinaUrl = 'assets/marker-icon-2x.png';
-        const iconUrl = 'assets/marker-icon.png';
-        const shadowUrl = 'assets/marker-shadow.png';
         const DefaultIcon = L.icon({
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
             iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',

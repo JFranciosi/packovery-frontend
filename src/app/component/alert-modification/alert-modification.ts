@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
 import { AlertService } from '../../services/alert.service';
-import { AlertResponse, AlertRequest } from '../../model/models';
+import { AlertRequest } from '../../model/models';
 
 @Component({
     selector: 'app-alert-modification',

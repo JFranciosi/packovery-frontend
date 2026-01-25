@@ -135,8 +135,26 @@
     color: #e0e0e0;
 }
 
+
 .form-control:focus {
     border-color: #5C6BC0;
+}
+
+.form-control.invalid-input {
+    border-color: #dc3545 !important;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.error-message {
+    text-align: center;
+    color: #dc3545;
+    margin-bottom: 10px;
 }
 
 .forgot-password {

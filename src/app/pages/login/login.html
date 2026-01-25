@@ -9,17 +9,26 @@
 
         <h2 class="title">Accedi</h2>
 
-        <form class="login-form" (submit)="onFormSubmit(emailInput.value, passwordInput.value, $event)">
+        <form class="login-form" (ngSubmit)="login()" #loginForm="ngForm">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" #emailInput [value]="email" required>
+                <input type="email" id="email" name="email" class="form-control" [(ngModel)]="email"
+                    #emailModel="ngModel" required email
+                    [class.invalid-input]="emailModel.invalid && (emailModel.dirty || emailModel.touched)">
+                @if (emailModel.invalid && (emailModel.dirty || emailModel.touched)) {
+                <div class="field-error">
+                    @if (emailModel.errors?.['required']) { <span>Campo obbligatorio</span> }
+                    @if (emailModel.errors?.['email']) { <span>Inserisci un'email valida</span> }
+                </div>
+                }
             </div>
 
             <div class="form-group password-group">
                 <label for="password">Password</label>
                 <div class="input-wrapper">
-                    <input [type]="passwordFieldType" id="password" name="password" class="form-control" #passwordInput
-                        [value]="password" required>
+                    <input [type]="passwordFieldType" id="password" name="password" class="form-control"
+                        [(ngModel)]="password" #passwordModel="ngModel" required
+                        [class.invalid-input]="passwordModel.invalid && (passwordModel.dirty || passwordModel.touched)">
                     <span class="password-toggle-icon" (click)="togglePasswordVisibility()">
                         @if (passwordFieldType === 'password') {
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -43,10 +52,15 @@
                         }
                     </span>
                 </div>
+                @if (passwordModel.invalid && (passwordModel.dirty || passwordModel.touched)) {
+                <div class="field-error">
+                    @if (passwordModel.errors?.['required']) { <span>Campo obbligatorio</span> }
+                </div>
+                }
             </div>
 
             @if (errorMessage) {
-            <div class="error-message" style="color: red; margin-bottom: 10px;">
+            <div class="error-message">
                 {{ errorMessage }}
             </div>
             }

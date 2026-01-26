@@ -122,8 +122,17 @@ export class AlertConfigurator implements OnInit, OnDestroy {
             if (this.filters.global) {
                 const search = this.filters.global.toLowerCase();
                 const typoLabel = this.getTypologyLabel(alert.alertTypology).toLowerCase();
-                const text = (alert.alertName + ' ' + alert.alertDescription + ' ' + typoLabel).toLowerCase();
-                if (!text.includes(search)) return false;
+                const text = (alert.alertName + ' ' + alert.alertDescription + ' ' + typoLabel + ' ' + alert.alertTheshold).toLowerCase();
+
+                if (text.includes(search)) return true;
+
+                const searchNums = search.replace(/\D/g, '');
+                if (searchNums) {
+                    const textNums = text.replace(/\D/g, '');
+                    if (textNums.includes(searchNums)) return true;
+                }
+
+                return false;
             }
 
             if (this.filters.typology && alert.alertTypology !== this.filters.typology) {
@@ -147,8 +156,9 @@ export class AlertConfigurator implements OnInit, OnDestroy {
 
     onScroll() {
         if (this.limit < this.filteredAlerts.length) {
+            const nextBatch = this.filteredAlerts.slice(this.limit, this.limit + 10);
+            this.paginatedAlerts = [...this.paginatedAlerts, ...nextBatch];
             this.limit += 10;
-            this.paginatedAlerts = this.filteredAlerts.slice(0, this.limit);
         }
     }
 

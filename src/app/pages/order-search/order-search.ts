@@ -82,7 +82,7 @@ export class OrderSearch implements OnInit {
     selectedSizeLabel = '';
 
     offset = 0;
-    limit = 5;
+    limit = 10;
     currentPage = 1;
     hasMoreOrders = true;
     isLoading = false;
@@ -252,7 +252,11 @@ export class OrderSearch implements OnInit {
             this.orderService.getOrders(this.offset, this.limit).subscribe({
                 next: (data) => {
                     if (data && data.length > 0) {
-                        this.orders = data;
+                        if (this.offset === 0) {
+                            this.orders = data;
+                        } else {
+                            this.orders = [...this.orders, ...data];
+                        }
                         this.hasMoreOrders = data.length === this.limit;
                     } else {
                         console.warn('Backend non ha record, uso mock');
@@ -288,7 +292,11 @@ export class OrderSearch implements OnInit {
         this.orderService.getFilteredOrders(request, this.offset, this.limit).subscribe({
             next: (data) => {
                 if (data && data.length > 0) {
-                    this.orders = data;
+                    if (this.offset === 0) {
+                        this.orders = data;
+                    } else {
+                        this.orders = [...this.orders, ...data];
+                    }
                     this.hasMoreOrders = data.length === this.limit;
                 } else {
                     if (request.id) {

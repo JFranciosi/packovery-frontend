@@ -8,11 +8,12 @@ import { ReportService } from '../../services/report.service';
 import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
 import { ReportResponse } from '../../model/models';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 @Component({
     selector: 'app-active-signals',
     standalone: true,
-    imports: [CommonModule, SidebarComponent, ResolveSignalPopup, AlertFilterComponent],
+    imports: [CommonModule, SidebarComponent, ResolveSignalPopup, AlertFilterComponent, InfiniteScrollDirective],
     templateUrl: './active-signals.html',
     styleUrls: ['./active-signals.css']
 })
@@ -33,11 +34,15 @@ export class ActiveSignals implements OnInit {
 
     allReports: ReportResponse[] = [];
     isSidebarOpen = false;
-    reports: ReportResponse[] = [];
+    filteredReports: ReportResponse[] = [];
+    paginatedReports: ReportResponse[] = [];
+
     isLoading = false;
     isOffline = false;
     showResolvePopup = false;
     selectedReport: ReportResponse | null = null;
+
+    limit = 20;
 
     private alertService = inject(AlertService);
     private reportService = inject(ReportService);
@@ -109,7 +114,7 @@ export class ActiveSignals implements OnInit {
     }
 
     applyFilters() {
-        this.reports = this.allReports.filter(report => {
+        this.filteredReports = this.allReports.filter(report => {
             if (this.filters.global) {
                 const search = this.filters.global.toLowerCase();
                 const text = report.alertName.toLowerCase();
@@ -119,7 +124,18 @@ export class ActiveSignals implements OnInit {
             if (this.filters.orderId) {
                 const search = this.filters.orderId.toLowerCase();
                 const orderIdStr = String(report.orderId).toLowerCase();
-                if (!orderIdStr.includes(search)) return false;
+
+                // Allow match if standard includes OR if numeric parts match
+                // This allows finding "ORD-123" by typing "123" (standard) or "12 3" (numeric)
+                // or if the ID is "12-34" and user types "1234"
+                if (orderIdStr.includes(search)) return true;
+
+                const searchNums = search.replace(/\D/g, '');
+                const orderNums = orderIdStr.replace(/\D/g, '');
+
+                if (searchNums && orderNums.includes(searchNums)) return true;
+
+                return false;
             }
 
             if (this.filters.typology && report.alertTypology !== this.filters.typology) {
@@ -128,6 +144,21 @@ export class ActiveSignals implements OnInit {
 
             return true;
         });
+
+        this.updateView();
+    }
+
+    updateView() {
+        this.limit = 20;
+        this.paginatedReports = this.filteredReports.slice(0, this.limit);
+    }
+
+    onScroll() {
+        if (this.limit < this.filteredReports.length) {
+            const nextBatch = this.filteredReports.slice(this.limit, this.limit + 10);
+            this.paginatedReports = [...this.paginatedReports, ...nextBatch];
+            this.limit += 10;
+        }
     }
 
     toggleSidebar() {

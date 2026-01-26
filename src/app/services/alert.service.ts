@@ -32,7 +32,7 @@ export class AlertService {
     }
 
     getAlertById(id: number): Observable<AlertResponse | undefined> {
-        // Mocking a GET by ID since backend only has listAll
+
         return this.getAlerts().pipe(
             map(alerts => alerts.find(a => a.id === id))
         );

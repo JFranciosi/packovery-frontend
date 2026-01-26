@@ -116,7 +116,7 @@ export class AlertCreation {
 
         if (minutes < 30 || minutes % 30 !== 0) {
             this.isThresholdInvalid = true;
-            // The message provided by user logic was specific, let's put it in HTML.
+
             return;
         }
 

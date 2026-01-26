@@ -23,7 +23,7 @@ export class ThemeService {
     if (saved === 'light' || saved === 'dark') {
       return saved;
     }
-    // Rileva la preferenza del sistema operativo
+
     return this.getSystemTheme();
   }
 

@@ -24,7 +24,7 @@ export class OrderService {
             .set('offset', offset.toString())
             .set('limit', limit.toString());
 
-        // Backend is now POST. Send filter as body.
+
         return this.http.post<OrderResponse[]>(`${this.apiUrl}/filter`, filter, { params });
     }
 

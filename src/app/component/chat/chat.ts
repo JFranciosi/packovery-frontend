@@ -22,7 +22,7 @@ export class Chat implements OnInit {
     messages: { text: string, sender: 'user' | 'rider', time: string }[] = [];
 
     ngOnInit() {
-        // La chat inizia vuota
+
         this.messages = [];
     }
 

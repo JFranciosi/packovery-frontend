@@ -68,13 +68,11 @@ export class DatePickerComponent {
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
 
-        // adjust for Monday start (0=Mon, ..., 6=Sun)
         let startingDayOfWeek = firstDay.getDay() - 1;
         if (startingDayOfWeek === -1) startingDayOfWeek = 6;
 
         const prevMonthLastDay = new Date(year, month, 0).getDate();
 
-        // Previous month days
         for (let i = 0; i < startingDayOfWeek; i++) {
             const day = prevMonthLastDay - startingDayOfWeek + 1 + i;
             this.calendarDays.push({
@@ -85,7 +83,6 @@ export class DatePickerComponent {
             });
         }
 
-        // Current month days
         const today = new Date();
         const selectedDate = this.date ? new Date(this.date) : null;
 

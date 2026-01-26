@@ -62,9 +62,6 @@ export class OrderDetails implements OnInit {
             next: (response) => {
                 if (response && response.order) {
                     this.processOrder(response.order, response.mapGps);
-                } else {
-                    console.warn('Backend non trovato, uso mock per ID:', id);
-                    this.useMockOrder(id);
                 }
             },
             error: (err) => {
@@ -109,16 +106,13 @@ export class OrderDetails implements OnInit {
             }
         };
 
-        // Aggiorna info Rider dai dati GPS
         if (mapGps?.rider) {
             const parts = mapGps.rider.trim().split(' ');
             this.rider.name = parts[0] || '';
             this.rider.surname = parts.slice(1).join(' ') || '';
-            // Se abbiamo nome e cognome, il mezzo è sempre Automobile
             this.rider.transport = (this.rider.name && this.rider.surname) ? 'Automobile' : '';
         }
 
-        // Arrivo previsto dal campo plannedDeliveryTime dell'ordine
         if (raw.plannedDeliveryTime) {
             const date = new Date(raw.plannedDeliveryTime);
             this.rider.estimatedArrival = date.toLocaleString('it-IT', {

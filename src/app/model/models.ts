@@ -1,8 +1,8 @@
 export interface Signal {
-    id: string; // Order ID
+    id: string;
     alertId: string;
-    description: string; // e.g., "Segnale GPS interrotto"
-    time: string; // e.g., "00:30"
+    description: string;
+    time: string;
     type: 'gps' | 'delay' | 'other';
 }
 
@@ -43,7 +43,7 @@ export interface OrderResponse {
     status: string;
     plannedDeliveryTime: string;
     actualDeliveryTime?: string;
-    deliveryDelay?: any; // Duration format might vary
+    deliveryDelay?: any;
     priorityLevel: string;
     packageSize: string;
     packageWeight: string;

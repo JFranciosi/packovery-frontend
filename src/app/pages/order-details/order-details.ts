@@ -48,7 +48,16 @@ export class OrderDetails implements OnInit {
     logout() {
     }
 
+    isOffline = false;
+
     ngOnInit() {
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.fetchOrder(id);
+        }
+    }
+
+    retryFetch() {
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.fetchOrder(id);
@@ -57,6 +66,9 @@ export class OrderDetails implements OnInit {
 
     private fetchOrder(id: string) {
         this.isLoading = true;
+        this.isOffline = false;
+        this.error = '';
+
         this.orderService.getOrderById(id).subscribe({
             next: (response) => {
                 if (response && response.order) {
@@ -64,6 +76,11 @@ export class OrderDetails implements OnInit {
                 }
             },
             error: (err) => {
+                if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                    this.isOffline = true;
+                    this.isLoading = false;
+                    return;
+                }
                 this.useMockOrder(id);
             }
         });

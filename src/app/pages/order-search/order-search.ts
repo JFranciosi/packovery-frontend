@@ -85,6 +85,7 @@ export class OrderSearch implements OnInit {
     currentPage = 1;
     hasMoreOrders = true;
     isLoading = false;
+    isOffline = false;
 
     // Rate limiting per il pulsante Cerca
     searchClickTimes: number[] = [];
@@ -231,6 +232,7 @@ export class OrderSearch implements OnInit {
         this.offset = 0;
         this.currentPage = 1;
         this.orders = []; // Reset orders on new search
+        this.isOffline = false; // Reset stato offline
         this.loadOrders();
     }
 
@@ -252,6 +254,10 @@ export class OrderSearch implements OnInit {
                     this.isLoading = false;
                 },
                 error: (err) => {
+                    // Controlla se l'errore è dovuto a mancanza di connessione
+                    if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                        this.isOffline = true;
+                    }
                     this.hasMoreOrders = false;
                     this.isLoading = false;
                 }
@@ -283,6 +289,10 @@ export class OrderSearch implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
+                // Controlla se l'errore è dovuto a mancanza di connessione
+                if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                    this.isOffline = true;
+                }
                 this.hasMoreOrders = false;
                 this.isLoading = false;
             }

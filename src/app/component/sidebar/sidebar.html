@@ -5,9 +5,9 @@
         </div>
     </div>
 
-    <nav class="nav-menu">
-        <a class="nav-item" routerLink="/order-search" routerLinkActive="active">
-            <span class="icon">
+    <nav class="nav-menu" aria-label="Menu principale">
+        <a class="nav-item" routerLink="/order-search" routerLinkActive="active" title="Ricerca ordine">
+            <span class="icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
@@ -16,8 +16,8 @@
             </span>
             <span>Ricerca ordine</span>
         </a>
-        <a class="nav-item" routerLink="/active-signals" routerLinkActive="active">
-            <span class="icon">
+        <a class="nav-item" routerLink="/active-signals" routerLinkActive="active" title="Segnalazioni attive">
+            <span class="icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
@@ -28,8 +28,8 @@
             </span>
             <span>Segnalazioni attive</span>
         </a>
-        <a class="nav-item" routerLink="/alert-configurator" routerLinkActive="active">
-            <span class="icon">
+        <a class="nav-item" routerLink="/alert-configurator" routerLinkActive="active" title="Configuratore alert">
+            <span class="icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -42,8 +42,8 @@
 
     <div class="sidebar-footer">
         <app-theme-toggle></app-theme-toggle>
-        <a class="nav-item cursor-pointer logout-item" (click)="logout()">
-            <span class="icon">
+        <button class="nav-item logout-item" (click)="logout()" title="Esci" aria-label="Esci">
+            <span class="icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -52,6 +52,6 @@
                 </svg>
             </span>
             <span>Esci</span>
-        </a>
+        </button>
     </div>
 </aside>

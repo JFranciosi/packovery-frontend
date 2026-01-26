@@ -1,13 +1,13 @@
 <div class="chat-overlay" [class.open]="isOpen" (click)="closeChat()"></div>
-<div class="chat-modal" [class.open]="isOpen">
+<div class="chat-modal" [class.open]="isOpen" role="dialog" aria-modal="true" aria-labelledby="chat-title">
     <div class="chat-header">
         <div class="chat-info">
-            <h3>Contatta il Rider</h3>
+            <h3 id="chat-title">Contatta il Rider</h3>
             <p>Invia istruzioni o chiarimenti per l'ordine {{ orderId }}</p>
         </div>
-        <button class="close-chat" (click)="closeChat()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
+        <button class="close-chat" (click)="closeChat()" aria-label="Chiudi finestra">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -15,14 +15,14 @@
     </div>
 
     <div class="chat-body">
-        <label>Contenuto del messaggio</label>
-        <textarea [value]="newMessage" (input)="onInputChange($event)"
+        <label for="rider-message">Contenuto del messaggio</label>
+        <textarea id="rider-message" [value]="newMessage" (input)="onInputChange($event)"
             placeholder="Scrivi qui il tuo messaggio per il rider..."></textarea>
         <p class="note-disclaimer">Il messaggio verrà recapitato istantaneamente al terminale del rider.</p>
     </div>
 
     <div class="chat-footer">
-        <button class="btn-cancel" (click)="closeChat()">Annulla</button>
+        <button class="btn-cancel" (click)="closeChat()" aria-label="Annulla e chiudi">Annulla</button>
         <button class="btn-confirm" (click)="sendMessage()">Invia Messaggio</button>
     </div>
 </div>

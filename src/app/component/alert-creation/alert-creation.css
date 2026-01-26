@@ -291,7 +291,7 @@ input.threshold-input.error {
 
 
 input:checked+.slider {
-    background-color: #22C55E;
+    background-color: var(--color-secondary);
 }
 
 input:checked+.slider:before {

@@ -377,11 +377,11 @@ tbody tr:last-child td {
 }
 
 input:checked+.slider {
-    background-color: #22C55E;
+    background-color: var(--color-secondary);
 }
 
 :host-context([data-theme="dark"]) input:checked+.slider {
-    background-color: #22C55E;
+    background-color: var(--color-secondary);
 }
 
 input:checked+.slider:before {

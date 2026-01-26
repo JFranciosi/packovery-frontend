@@ -8,7 +8,9 @@
         </div>
 
         <h2 class="title">Codice di conferma</h2>
-        <p class="subtitle">Inserisci il codice a 6 che ti abbiamo inviato per email.</p>
+        <p class="subtitle">Inserisci il codice a 6 che ti abbiamo inviato per email.
+            <br>Se l'utente esiste riceverai codice di conferma.
+        </p>
 
         <form class="login-form"
             (submit)="onFormSubmit(d0.value, d1.value, d2.value, d3.value, d4.value, d5.value, $event)">
@@ -29,6 +31,18 @@
                         name="digit5" (keyup)="onKeyUp($event, 5)">
                 </div>
             </div>
+
+            @if (errorMessage) {
+            <div class="error-message">
+                {{ errorMessage }}
+            </div>
+            }
+
+            @if (successMessage) {
+            <div class="success-message">
+                {{ successMessage }}
+            </div>
+            }
 
             <div class="button-group">
                 <button type="button" class="btn btn-cancel" routerLink="/forgot-password">Annulla</button>

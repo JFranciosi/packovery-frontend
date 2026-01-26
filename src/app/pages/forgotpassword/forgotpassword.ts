@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 export class Forgotpassword {
     email: string = '';
     isLoading: boolean = false;
+    errorMessage: string = '';
     private authService = inject(AuthService);
     private router = inject(Router);
 
@@ -23,8 +24,9 @@ export class Forgotpassword {
     }
 
     onSubmit() {
+        this.errorMessage = '';
         if (!this.email) {
-            alert('Inserisci un indirizzo email.');
+            this.errorMessage = 'Inserisci un indirizzo email.';
             return;
         }
         if (this.isLoading) return;
@@ -38,7 +40,9 @@ export class Forgotpassword {
             },
             error: (err) => {
                 this.isLoading = false;
-                alert('Errore durante l\'invio del codice: ' + (err.error?.message || err.message));
+                if (err.status !== 400 && err.status !== 404) {
+                    this.errorMessage = 'Errore durante l\'invio del codice: ' + (err.error?.message || err.message);
+                }
             }
         });
     }

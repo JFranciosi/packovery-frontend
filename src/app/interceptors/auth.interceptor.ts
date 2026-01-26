@@ -10,7 +10,7 @@ const refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const token = localStorage.getItem('accessToken');
-    if (req.url.includes('/auth/login') || req.url.includes('/auth/register') || req.url.includes('/auth/refresh')) {
+    if (req.url.includes('/auth/login') || req.url.includes('/auth/register') || req.url.includes('/auth/refresh') || req.url.includes('/auth/forgot-password') || req.url.includes('/auth/verify-code')) {
         return next(req);
     }
 

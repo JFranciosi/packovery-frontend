@@ -16,7 +16,8 @@ export class ResetPassword implements OnInit {
     email: string = '';
     code: string = '';
     isLoading: boolean = false;
-    isResending: boolean = false;
+    errorMessage: string = '';
+    successMessage: string = '';
 
     passwordFieldType: string = 'password';
     confirmPasswordFieldType: string = 'password';
@@ -33,28 +34,7 @@ export class ResetPassword implements OnInit {
         });
     }
 
-    resendCode() {
-        if (!this.email) {
-            alert('Email non trovata. Riprova la procedura.');
-            this.router.navigate(['/forgot-password']);
-            return;
-        }
 
-        if (this.isResending) return;
-        this.isResending = true;
-
-        this.authService.forgotPassword(this.email).subscribe({
-            next: () => {
-                this.isResending = false;
-                alert('Nuovo codice inviato! Inserisci il nuovo codice.');
-                this.router.navigate(['/confirmation-code'], { queryParams: { email: this.email } });
-            },
-            error: (err) => {
-                this.isResending = false;
-                alert('Errore: ' + (err.error?.message || err.message));
-            }
-        });
-    }
 
     onFormSubmit(passValue: string, confirmValue: string, event: Event) {
         event.preventDefault();
@@ -72,19 +52,21 @@ export class ResetPassword implements OnInit {
     }
 
     onSubmit() {
+        this.errorMessage = '';
+        this.successMessage = '';
+
         if (!this.password || !this.confirmPassword) {
-            alert('Inserisci entrambe le password.');
+            this.errorMessage = 'Inserisci entrambe le password.';
             return;
         }
 
         if (this.password !== this.confirmPassword) {
-            alert('Le password non coincidono.');
+            this.errorMessage = 'Le password non coincidono.';
             return;
         }
 
         if (!this.email || !this.code) {
-            alert('Dati mancanti (email o codice). Riprova la procedura.');
-            this.router.navigate(['/forgot-password']);
+            this.errorMessage = 'Dati mancanti (email o codice). Riprova la procedura.';
             return;
         }
 
@@ -94,12 +76,14 @@ export class ResetPassword implements OnInit {
         this.authService.resetPassword(this.email, this.code, this.password).subscribe({
             next: () => {
                 this.isLoading = false;
-                alert('Password modificata con successo!');
-                this.router.navigate(['/']);
+                this.successMessage = 'Password modificata con successo!';
+                setTimeout(() => {
+                    this.router.navigate(['/']);
+                }, 2000);
             },
             error: (err) => {
                 this.isLoading = false;
-                alert('Errore durante il reset della password: ' + (err.error?.message || err.message));
+                this.errorMessage = err.error || err.message || 'Errore durante il reset della password';
             }
         });
     }

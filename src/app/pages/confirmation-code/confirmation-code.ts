@@ -15,6 +15,9 @@ export class ConfirmationCode implements OnInit {
     email: string = '';
     isLoading: boolean = false;
     isResending: boolean = false;
+    errorMessage: string = '';
+    successMessage: string = '';
+    failedAttempts: number = 0;
     private authService = inject(AuthService);
     private route = inject(ActivatedRoute);
     private router = inject(Router);
@@ -39,28 +42,32 @@ export class ConfirmationCode implements OnInit {
 
     resendCode() {
         if (!this.email) {
-            alert('Email non trovata.');
+            this.errorMessage = 'Email non trovata.';
             return;
         }
         if (this.isResending) return;
         this.isResending = true;
+        this.errorMessage = '';
+        this.successMessage = '';
 
         this.authService.forgotPassword(this.email).subscribe({
             next: () => {
                 this.isResending = false;
-                alert('Codice inviato di nuovo!');
+                this.successMessage = 'Codice inviato di nuovo!';
             },
             error: (err) => {
                 this.isResending = false;
-                alert('Errore: ' + (err.error?.message || err.message));
+                this.errorMessage = (err.error?.message || err.message);
             }
         });
     }
 
     onSubmit() {
         const code = this.digits.join('');
+        this.errorMessage = '';
+
         if (code.length < 6) {
-            alert('Inserisci il codice completo.');
+            this.errorMessage = 'Inserisci il codice completo.';
             return;
         }
         if (this.isLoading) return;
@@ -69,11 +76,21 @@ export class ConfirmationCode implements OnInit {
         this.authService.verifyCode(this.email, code).subscribe({
             next: () => {
                 this.isLoading = false;
-                this.router.navigate(['/reset-password'], { queryParams: { email: this.email, code: code } });
+                this.router.navigate(['/reset-password'], {
+                    queryParams: { email: this.email, code: code },
+                    replaceUrl: true
+                });
             },
             error: (err) => {
                 this.isLoading = false;
-                alert('Codice non valido o scaduto: ' + (err.error?.message || err.message));
+                this.failedAttempts++;
+
+                if (this.failedAttempts >= 3) {
+                    this.router.navigate(['/']);
+                } else {
+                    const attemptsLeft = 3 - this.failedAttempts;
+                    this.errorMessage = `Codice non valido. Hai ancora ${attemptsLeft} tentativi.`;
+                }
             }
         });
     }

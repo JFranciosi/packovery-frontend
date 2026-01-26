@@ -12,7 +12,7 @@
     height: 100vh;
     background-color: var(--color-bg-primary);
     position: relative;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .mobile-header {
@@ -52,7 +52,7 @@
 .main-content {
     flex: 1;
     padding: 24px 40px;
-    overflow: visible;
+    overflow-y: auto;
     animation: fadeInPage 0.5s ease-out;
     display: flex;
     flex-direction: column;
@@ -144,6 +144,13 @@
     overflow-x: hidden;
     display: block;
     padding-bottom: 8px;
+}
+
+@media (max-width: 1023px) {
+    .table-container {
+        height: auto;
+        overflow: visible;
+    }
 }
 
 table {

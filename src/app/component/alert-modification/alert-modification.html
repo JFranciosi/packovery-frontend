@@ -88,23 +88,24 @@
                 </div>
             </div>
 
-            <!-- Stato -->
-            <div class="form-group">
-                <label>Stato</label>
-                <div class="status-toggle-wrapper">
-                    <label class="switch">
-                        <input type="checkbox" [checked]="alert.active" (change)="updateActive($event)">
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="status-label">{{ alert.active ? 'Attivo' : 'Non attivo' }}</span>
+            <!-- Stato & Action Group -->
+            <div class="footer-actions">
+                <div class="form-group status-group">
+                    <label>Stato</label>
+                    <div class="status-toggle-wrapper">
+                        <label class="switch">
+                            <input type="checkbox" [checked]="alert.active" (change)="updateActive($event)">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="status-label">{{ alert.active ? 'Attivo' : 'Non attivo' }}</span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Action -->
-            <div class="form-actions">
-                <button class="btn-modify" (click)="modifyAlert()">
-                    Modifica alert
-                </button>
+                <div class="form-actions">
+                    <button class="btn-modify" (click)="modifyAlert()">
+                        Modifica alert
+                    </button>
+                </div>
             </div>
 
         </div>

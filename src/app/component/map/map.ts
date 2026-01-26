@@ -130,12 +130,16 @@ export class Map implements AfterViewInit, OnDestroy, OnChanges {
         }
 
         if (this.isValidLocation(this.currentPosition)) {
-            const m = L.circleMarker([this.currentPosition.lat, this.currentPosition.lng], {
-                color: '#5865F2',
-                fillColor: '#5865F2',
-                fillOpacity: 0.8,
-                radius: 8
-            }).addTo(this.map).bindPopup('Posizione attuale');
+            const icon = L.divIcon({
+                className: 'rider-position-icon',
+                html: '<div class="pin"><div class="pulse"></div></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            const m = L.marker([this.currentPosition.lat, this.currentPosition.lng], { icon })
+                .addTo(this.map)
+                .bindPopup('Posizione attuale');
             this.markers.push(m);
         }
 

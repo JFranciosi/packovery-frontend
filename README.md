@@ -3,8 +3,6 @@
 > A comprehensive Angular application for efficient order tracking, signal monitoring, and alert configuration.
 
 ![Angular Version](https://img.shields.io/badge/Angular-20.3.0-dd0031.svg?style=flat&logo=angular)
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Overview
 
@@ -29,7 +27,7 @@ This project is built using the latest web technologies:
     *   **Order Search**: Quickly find orders with advanced filtering.
     *   **Order Details**: Detailed view of specific orders, likely including tracking status and history.
 *   **Signal Monitoring**:
-    *   **Active Signals**: Dashboard for monitoring active signals/trackers.
+    *   **Active Signals**: REST API for monitoring active signals/trackers.
 *   **Alert System**:
     *   **Alert Configurator**: Manage and configure system-wide alerts.
     *   **Create & Modify Alerts**: Custom interfaces for defining specific alert conditions.

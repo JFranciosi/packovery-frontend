@@ -43,7 +43,9 @@ export class OrderDetails implements OnInit {
     }
 
     toggleChat() {
-        this.isChatOpen = !this.isChatOpen;
+        if(this.rider.id != '') {
+            this.isChatOpen = !this.isChatOpen;
+        }
     }
 
     logout() {

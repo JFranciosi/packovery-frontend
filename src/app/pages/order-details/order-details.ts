@@ -46,7 +46,6 @@ export class OrderDetails implements OnInit {
     }
 
     logout() {
-        console.log('Logging out...');
     }
 
     ngOnInit() {
@@ -65,7 +64,6 @@ export class OrderDetails implements OnInit {
                 }
             },
             error: (err) => {
-                console.warn('Backend offline, uso mock per ID:', id);
                 this.useMockOrder(id);
             }
         });

@@ -61,7 +61,7 @@ export class AlertConfigurator implements OnInit, OnDestroy {
                     }));
                 }
             },
-            error: (err: any) => console.warn('Failed to load alert typology options, using defaults', err)
+            error: (err: any) => { }
         });
     }
 
@@ -73,7 +73,6 @@ export class AlertConfigurator implements OnInit, OnDestroy {
                 try {
                     this.filters = JSON.parse(saved);
                 } catch (e) {
-                    console.error('Error parsing saved alert filters', e);
                 }
             }
         }
@@ -95,7 +94,6 @@ export class AlertConfigurator implements OnInit, OnDestroy {
                 this.isLoading = false;
             },
             error: (err) => {
-                console.error('Failed to load alerts', err);
                 this.isLoading = false;
             }
         });
@@ -188,7 +186,6 @@ export class AlertConfigurator implements OnInit, OnDestroy {
                 alert.alertStatus = newStatus;
             },
             error: (err) => {
-                console.error('Error updating alert status', err);
                 event.target.checked = !newStatus;
             }
         });
@@ -206,7 +203,7 @@ export class AlertConfigurator implements OnInit, OnDestroy {
                     this.cancelDelete();
                     this.loadAlerts();
                 },
-                error: (err) => console.error(err)
+                error: (err) => { }
             });
         }
     }

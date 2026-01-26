@@ -39,12 +39,10 @@ export class Login {
 
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (response) => {
-        console.log('Login successful', response);
         this.isLoading = false;
         this.router.navigate(['/order-search']);
       },
       error: (err) => {
-        console.error('Login failed', err);
         this.isLoading = false;
         if (err.status === 401) {
           this.errorMessage = 'Credenziali non valide. Riprova.';

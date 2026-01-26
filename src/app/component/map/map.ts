@@ -174,7 +174,7 @@ export class Map implements AfterViewInit, OnDestroy, OnChanges {
                     this.fitBoundsIfRouteExists();
                 }
             })
-            .catch(err => console.error('Error fetching route from OSRM:', err));
+            .catch(err => { });
     }
 
     private fitBoundsIfRouteExists() {

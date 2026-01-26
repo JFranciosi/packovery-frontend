@@ -76,7 +76,6 @@ export class AuthService {
             const json = JSON.parse(decoded);
             return json.sub || json.email || json.upn || json.preferred_username || json.username || null;
         } catch (e) {
-            console.error('Error parsing token user:', e);
             return null;
         }
     }

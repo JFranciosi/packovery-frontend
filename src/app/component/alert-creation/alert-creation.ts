@@ -133,13 +133,11 @@ export class AlertCreation {
         this.alertService.createAlert(request).subscribe({
             next: (response) => {
                 this.isLoading = false;
-                console.log('Alert creato:', response);
                 this.router.navigate(['/alert-configurator']);
             },
             error: (err) => {
                 this.isLoading = false;
                 this.errorMessage = err.error || 'Errore durante la creazione dell\'alert';
-                console.error('Errore creazione alert', err);
             }
         });
     }

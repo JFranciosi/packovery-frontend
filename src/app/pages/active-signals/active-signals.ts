@@ -59,7 +59,7 @@ export class ActiveSignals implements OnInit {
                     }));
                 }
             },
-            error: (err: any) => console.warn('Failed to load alert typology options, using defaults', err)
+            error: (err: any) => { }
         });
     }
 
@@ -71,7 +71,6 @@ export class ActiveSignals implements OnInit {
                 try {
                     this.filters = { ...this.filters, ...JSON.parse(saved) };
                 } catch (e) {
-                    console.error('Error parsing saved report filters', e);
                 }
             }
         }
@@ -93,7 +92,6 @@ export class ActiveSignals implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
-                console.error('Failed to load reports', err);
                 this.isLoading = false;
             }
         });
@@ -176,7 +174,6 @@ export class ActiveSignals implements OnInit {
                 this.loadReports();
             },
             error: (err) => {
-                console.error('Failed to resolve report', err);
             }
         });
     }

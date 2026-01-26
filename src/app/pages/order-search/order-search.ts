@@ -92,7 +92,6 @@ export class OrderSearch implements OnInit {
     loadSavedFilters() {
         const user = this.authService.getUserEmail();
         if (user) {
-            console.log('Loading filters for user:', user);
             const saved = localStorage.getItem(`orderFilters_${user}`);
             if (saved) {
                 try {
@@ -114,7 +113,6 @@ export class OrderSearch implements OnInit {
                     this.searchOrders();
                     return;
                 } catch (e) {
-                    console.error('Error loading saved filters', e);
                 }
             }
         }
@@ -167,7 +165,6 @@ export class OrderSearch implements OnInit {
                 }
             },
             error: (err) => {
-                console.warn('Failed to load select options, using defaults', err);
                 this.statusOptions = this.defaultStatusOptions;
                 this.weightOptions = this.defaultWeightOptions;
                 this.sizeOptions = this.defaultSizeOptions;
@@ -185,7 +182,6 @@ export class OrderSearch implements OnInit {
     }
 
     searchOrders() {
-        console.log('Searching orders with filters:', this.filters);
         this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
@@ -211,7 +207,6 @@ export class OrderSearch implements OnInit {
                     this.isLoading = false;
                 },
                 error: (err) => {
-                    console.error('Error loading orders:', err);
                     this.hasMoreOrders = false;
                     this.isLoading = false;
                 }
@@ -243,7 +238,6 @@ export class OrderSearch implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
-                console.error('Error filtering orders:', err);
                 this.hasMoreOrders = false;
                 this.isLoading = false;
             }

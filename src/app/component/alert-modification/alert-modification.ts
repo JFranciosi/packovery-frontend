@@ -63,7 +63,6 @@ export class AlertModification implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
-                console.warn('Backend non raggiungibile, carico alert di esempio', err);
                 this.alert = {
                     id: id,
                     type: 'Ritardo consegna ordine',

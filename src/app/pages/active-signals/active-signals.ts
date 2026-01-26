@@ -86,7 +86,7 @@ export class ActiveSignals implements OnInit {
 
     loadReports() {
         this.isLoading = true;
-        this.isOffline = false; // Reset stato offline
+        this.isOffline = false;
         this.reportService.getReports().subscribe({
             next: (data) => {
                 this.allReports = data.filter(r => !r.resolved);
@@ -94,7 +94,6 @@ export class ActiveSignals implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
-                // Controlla se l'errore è dovuto a mancanza di connessione
                 if (!navigator.onLine || err.status === 0 || err.status === 504) {
                     this.isOffline = true;
                 }

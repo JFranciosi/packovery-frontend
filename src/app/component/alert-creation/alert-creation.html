@@ -1,5 +1,4 @@
 <div class="layout-container">
-    <!-- Mobile Header -->
     <header class="mobile-header">
         <div class="logo">
             <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,9 +22,7 @@
 
     <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Header -->
         <div class="page-header">
             <h1 class="page-title">Crea nuovo alert</h1>
             <button class="btn-back" routerLink="/alert-configurator">
@@ -39,7 +36,6 @@
         </div>
 
         <div class="form-container">
-            <!-- Tipologia -->
             <div class="form-group">
                 <label>Tipologia</label>
                 <div class="type-selector">
@@ -51,7 +47,6 @@
                 </div>
             </div>
 
-            <!-- Nome -->
             <div class="form-group">
                 <label>Nome</label>
                 <input type="text" [value]="alert.name" (input)="updateName($event)" placeholder="Inserisci nome alert"
@@ -61,14 +56,12 @@
                 }
             </div>
 
-            <!-- Descrizione -->
             <div class="form-group">
                 <label>Descrizione</label>
                 <textarea [value]="alert.description" (input)="updateDescription($event)" rows="4"
                     placeholder="Inserisci una descrizione..."></textarea>
             </div>
 
-            <!-- Soglia -->
             <div class="form-group">
                 <label>Soglia</label>
                 <div class="threshold-wrapper">
@@ -85,7 +78,6 @@
                 }
             </div>
 
-            <!-- Stato -->
             <div class="form-group">
                 <label>Stato</label>
                 <div class="status-toggle-wrapper">
@@ -103,7 +95,6 @@
             </div>
             }
 
-            <!-- Action -->
             <div class="form-actions">
                 <button class="btn-create" (click)="createAlert()" [disabled]="isLoading">
                     @if (isLoading) {

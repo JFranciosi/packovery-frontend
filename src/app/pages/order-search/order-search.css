@@ -401,7 +401,6 @@ tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Specific styling for table content */
 td[data-label="ID ordine"] {
     font-family: 'SF Mono', 'Roboto Mono', monospace;
     font-weight: 500;
@@ -413,7 +412,6 @@ td[data-label="Stato"] {
     font-weight: 600;
 }
 
-/* Tooltip styling for weight and size cells */
 .weight-cell,
 .size-cell {
     cursor: help;

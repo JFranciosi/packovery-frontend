@@ -86,6 +86,15 @@ export class OrderSearch implements OnInit {
     currentPage = 1;
     hasMoreOrders = true;
     isLoading = false;
+    isOffline = false;
+
+    searchClickTimes: number[] = [];
+    isSearchSpamming = false;
+    spamTimeout: any = null;
+    readonly MAX_CLICKS = 3;
+    readonly CLICK_WINDOW = 4000;
+    readonly SPAM_COOLDOWN = 2000;
+
 
     ngOnInit() {
         this.loadSelectOptions();
@@ -188,9 +197,47 @@ export class OrderSearch implements OnInit {
     }
 
     searchOrders() {
+        const now = Date.now();
+
+        if (this.isSearchSpamming) {
+            if (this.spamTimeout) {
+                clearTimeout(this.spamTimeout);
+            }
+
+            this.spamTimeout = setTimeout(() => {
+                this.isSearchSpamming = false;
+                this.searchClickTimes = [];
+            }, this.SPAM_COOLDOWN);
+
+            return;
+        }
+
+        this.searchClickTimes.push(now);
+
+        this.searchClickTimes = this.searchClickTimes.filter(
+            time => now - time < this.CLICK_WINDOW
+        );
+
+        if (this.searchClickTimes.length > this.MAX_CLICKS) {
+            this.isSearchSpamming = true;
+
+            if (this.spamTimeout) {
+                clearTimeout(this.spamTimeout);
+            }
+
+            this.spamTimeout = setTimeout(() => {
+                this.isSearchSpamming = false;
+                this.searchClickTimes = [];
+            }, this.SPAM_COOLDOWN);
+
+            return;
+        }
+
         this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
+        this.orders = [];
+        this.isOffline = false;
         this.loadOrders();
     }
 
@@ -215,8 +262,9 @@ export class OrderSearch implements OnInit {
                     this.isLoading = false;
                 },
                 error: (err) => {
-                    console.warn('Backend offline, uso dati mock', err);
-                    this.orders = this.mockOrders;
+                    if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                        this.isOffline = true;
+                    }
                     this.hasMoreOrders = false;
                     this.isLoading = false;
                 }
@@ -253,13 +301,9 @@ export class OrderSearch implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
-                console.warn('Backend offline, filtraggio locale su mock', err);
-                this.orders = this.mockOrders.filter(o => {
-                    let match = true;
-                    if (request.id && !o.id.includes(request.id)) match = false;
-                    if (request.status && o.status !== request.status) match = false;
-                    return match;
-                });
+                if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                    this.isOffline = true;
+                }
                 this.hasMoreOrders = false;
                 this.isLoading = false;
             }
@@ -446,6 +490,4 @@ export class OrderSearch implements OnInit {
         }
     }
 
-    isSearchSpamming = false;
-    isOffline = false;
 }

@@ -59,7 +59,7 @@
     padding: 8px 16px;
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     color: var(--color-text-secondary);
     font-size: 13px;
     font-weight: 600;
@@ -79,7 +79,7 @@
 .form-container {
     max-width: 1000px;
     background: var(--color-bg-surface);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     padding: 40px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
     border: 1px solid var(--color-border);
@@ -114,7 +114,7 @@
     padding: 16px;
     background: var(--color-bg-primary);
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     font-size: 14px;
     font-weight: 600;
     color: var(--color-text-secondary);
@@ -143,7 +143,7 @@ input[type="text"],
 textarea {
     width: 100%;
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     padding: 14px 20px;
     font-size: 15px;
     color: var(--color-text-primary);
@@ -198,7 +198,7 @@ input.threshold-input.error {
     gap: 16px;
     background: var(--color-bg-primary);
     padding: 8px;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     border: 1px solid var(--color-border);
     width: fit-content;
 }
@@ -225,7 +225,7 @@ input.threshold-input.error {
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     padding: 8px 16px;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     font-size: 13px;
     font-weight: 600;
     color: var(--color-text-secondary);
@@ -244,7 +244,7 @@ input.threshold-input.error {
     gap: 16px;
     padding: 16px;
     background: var(--color-bg-primary);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     border: 1px solid var(--color-border);
     width: fit-content;
     height: 32px;
@@ -273,7 +273,7 @@ input.threshold-input.error {
     bottom: 0;
     background-color: #E2E8F0;
     transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
 }
 
 .slider:before {

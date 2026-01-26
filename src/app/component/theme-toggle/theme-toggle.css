@@ -5,7 +5,7 @@
     color: var(--color-text-secondary);
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     transition: all 0.2s;
     font-weight: 600;
     cursor: pointer;

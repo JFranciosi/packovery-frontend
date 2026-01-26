@@ -78,7 +78,7 @@
     margin-bottom: 16px;
     padding: 20px;
     background: var(--color-bg-surface);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
     border: 1px solid rgba(0, 0, 0, 0.03);
     position: relative;
@@ -114,7 +114,7 @@
     width: 100%;
     height: 48px;
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     padding: 0 16px;
     font-size: 15px;
     color: var(--color-text-primary);
@@ -246,7 +246,7 @@
     overflow-y: auto;
     background: var(--color-bg-surface);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     padding: 8px;
@@ -273,7 +273,7 @@
     cursor: pointer;
     color: var(--color-text-primary);
     transition: all 0.2s;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
 }
 
 .custom-dropdown-options .option:hover {
@@ -287,7 +287,7 @@
     background: linear-gradient(135deg, #5767AE 0%, #4752c4 100%);
     color: white;
     border: 1px solid transparent;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -313,7 +313,7 @@
 .table-container {
     background-color: var(--color-bg-surface);
     border: 1px solid rgba(0, 0, 0, 0.03);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
     position: relative;
     padding-bottom: 8px;
@@ -398,7 +398,7 @@ td.action-cell {
     align-items: center;
     width: 36px;
     height: 36px;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     color: var(--color-primary);
     background-color: var(--color-primary-light);
     transition: all 0.2s;
@@ -432,7 +432,7 @@ td.action-cell {
     font-size: 14px;
     font-weight: 500;
     color: var(--color-text-secondary);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     transition: all 0.2s;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
@@ -470,7 +470,7 @@ td.action-cell {
     justify-content: center;
     align-items: center;
     z-index: 50;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
 }
 
 .spinner {
@@ -581,7 +581,7 @@ td.action-cell {
     tbody tr {
         background: var(--color-bg-surface);
         border: none;
-        border-radius: 16px;
+        border-radius: var(--border-radius-main);
         margin-bottom: 20px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
         padding: 0;
@@ -661,7 +661,7 @@ td.action-cell {
     .doc-icon {
         width: 48px;
         height: 48px;
-        border-radius: 16px;
+        border-radius: var(--border-radius-main);
         background-color: var(--color-primary);
         color: white;
     }

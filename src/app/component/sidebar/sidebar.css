@@ -67,7 +67,7 @@
     align-items: center;
     justify-content: center;
     background: var(--color-bg-primary);
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
 }
 
 .logo img {
@@ -90,7 +90,7 @@
     color: var(--color-text-secondary);
     background-color: transparent;
     text-decoration: none;
-    border-radius: 16px;
+    border-radius: var(--border-radius-main);
     transition: all 0.2s;
     font-weight: 600;
     cursor: pointer;

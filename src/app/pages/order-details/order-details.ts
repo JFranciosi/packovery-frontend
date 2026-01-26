@@ -48,7 +48,16 @@ export class OrderDetails implements OnInit {
     logout() {
     }
 
+    isOffline = false;
+
     ngOnInit() {
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.fetchOrder(id);
+        }
+    }
+
+    retryFetch() {
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.fetchOrder(id);
@@ -57,6 +66,9 @@ export class OrderDetails implements OnInit {
 
     private fetchOrder(id: string) {
         this.isLoading = true;
+        this.isOffline = false;
+        this.error = '';
+
         this.orderService.getOrderById(id).subscribe({
             next: (response) => {
                 if (response && response.order) {
@@ -64,6 +76,11 @@ export class OrderDetails implements OnInit {
                 }
             },
             error: (err) => {
+                if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                    this.isOffline = true;
+                    this.isLoading = false;
+                    return;
+                }
                 this.useMockOrder(id);
             }
         });
@@ -105,9 +122,14 @@ export class OrderDetails implements OnInit {
         };
 
         if (mapGps?.rider) {
-            const parts = mapGps.rider.trim().split(' ');
-            this.rider.name = parts[0] || '';
-            this.rider.surname = parts.slice(1).join(' ') || '';
+            if (typeof mapGps.rider === 'object' && mapGps.rider.firstName) {
+                this.rider.name = mapGps.rider.firstName || '';
+                this.rider.surname = mapGps.rider.lastName || '';
+            } else if (typeof mapGps.rider === 'string') {
+                const parts = mapGps.rider.trim().split(' ');
+                this.rider.name = parts[0] || '';
+                this.rider.surname = parts.slice(1).join(' ') || '';
+            }
             this.rider.transport = (this.rider.name && this.rider.surname) ? 'Automobile' : '';
         }
 

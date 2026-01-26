@@ -85,13 +85,14 @@ export class OrderSearch implements OnInit {
     currentPage = 1;
     hasMoreOrders = true;
     isLoading = false;
+    isOffline = false;
 
     // Rate limiting per il pulsante Cerca
     searchClickTimes: number[] = [];
     isSearchSpamming = false;
     spamTimeout: any = null;
     readonly MAX_CLICKS = 3; // Massimo 3 click
-    readonly CLICK_WINDOW = 1000; // in 1 secondo
+    readonly CLICK_WINDOW = 4000; // in 4 secondi
     readonly SPAM_COOLDOWN = 2000; // Cooldown di 2 secondi dopo lo spam
 
 
@@ -195,8 +196,19 @@ export class OrderSearch implements OnInit {
     searchOrders() {
         const now = Date.now();
 
-        // Se è già in modalità spam, ignora il click
+        // Se è già in modalità spam, resetta il timer e ignora il click
         if (this.isSearchSpamming) {
+            // Pulisci il timeout precedente per resettare il conto alla rovescia
+            if (this.spamTimeout) {
+                clearTimeout(this.spamTimeout);
+            }
+
+            // Imposta un nuovo timeout, estendendo di fatto il blocco
+            this.spamTimeout = setTimeout(() => {
+                this.isSearchSpamming = false;
+                this.searchClickTimes = [];
+            }, this.SPAM_COOLDOWN);
+
             return;
         }
 
@@ -231,6 +243,7 @@ export class OrderSearch implements OnInit {
         this.offset = 0;
         this.currentPage = 1;
         this.orders = []; // Reset orders on new search
+        this.isOffline = false; // Reset stato offline
         this.loadOrders();
     }
 
@@ -252,6 +265,10 @@ export class OrderSearch implements OnInit {
                     this.isLoading = false;
                 },
                 error: (err) => {
+                    // Controlla se l'errore è dovuto a mancanza di connessione
+                    if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                        this.isOffline = true;
+                    }
                     this.hasMoreOrders = false;
                     this.isLoading = false;
                 }
@@ -283,6 +300,10 @@ export class OrderSearch implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
+                // Controlla se l'errore è dovuto a mancanza di connessione
+                if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                    this.isOffline = true;
+                }
                 this.hasMoreOrders = false;
                 this.isLoading = false;
             }

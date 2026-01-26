@@ -43,11 +43,17 @@ export class AlertConfigurator implements OnInit, OnDestroy {
     isDeleteModalOpen = false;
     alertToDeleteIdNum: number | null = null;
 
+    isOffline = false;
+
     constructor(private alertService: AlertService, private router: Router, private authService: AuthService) { }
 
     ngOnInit() {
         this.loadSavedFilters();
         this.loadSelectOptions();
+        this.loadAlerts();
+    }
+
+    retryLoad() {
         this.loadAlerts();
     }
 
@@ -87,6 +93,7 @@ export class AlertConfigurator implements OnInit, OnDestroy {
 
     loadAlerts() {
         this.isLoading = true;
+        this.isOffline = false;
         this.alertService.getAlerts().subscribe({
             next: (data) => {
                 this.allAlerts = data;
@@ -94,6 +101,9 @@ export class AlertConfigurator implements OnInit, OnDestroy {
                 this.isLoading = false;
             },
             error: (err) => {
+                if (!navigator.onLine || err.status === 0 || err.status === 504) {
+                    this.isOffline = true;
+                }
                 this.isLoading = false;
             }
         });

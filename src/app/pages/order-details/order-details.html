@@ -1,5 +1,4 @@
 <div class="layout-container">
-    <!-- Mobile Header -->
     <header class="mobile-header">
         <div class="logo-mobile">
             <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +28,33 @@
         </div>
         }
 
-        @if (error) {
+        @if (isOffline) {
+        <div class="offline-container">
+            <div class="offline-message">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                    <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                    <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                    <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                    <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                </svg>
+                <h3>Connessione assente</h3>
+                <button class="btn-retry" (click)="retryFetch()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15">
+                        </path>
+                    </svg>
+                    Riprova
+                </button>
+            </div>
+        </div>
+        } @else if (error) {
         <div class="error-container">
             <div class="error-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c53030" stroke-width="2">
@@ -45,7 +70,6 @@
             </button>
         </div>
         } @else {
-        <!-- Top Header -->
         <div class="page-header">
             <h1 class="page-title">ID ordine: {{ order.id }}</h1>
             <button class="btn-back" routerLink="/order-search">
@@ -58,11 +82,9 @@
             </button>
         </div>
 
-        <!-- Map Section -->
         <app-map [departure]="order.departure" [arrival]="order.arrival" [currentPosition]="order.currentPosition">
         </app-map>
 
-        <!-- Section: Informazioni sull'ordine -->
         <h2 class="section-title">Informazioni sull'ordine</h2>
         <div class="info-grid">
             <div class="input-group">
@@ -91,7 +113,6 @@
             </div>
         </div>
 
-        <!-- Section: Informazioni sul rider -->
         <h2 class="section-title">Informazioni sul rider</h2>
         <div class="rider-grid">
             <div class="input-group">
@@ -126,7 +147,6 @@
         }
     </main>
 
-    <!-- Chat Drawer -->
     <app-chat [isOpen]="isChatOpen" [orderId]="order.id" [riderName]="rider.name" [riderSurname]="rider.surname"
         (close)="toggleChat()">
     </app-chat>

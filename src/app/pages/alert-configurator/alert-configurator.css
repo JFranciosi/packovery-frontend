@@ -166,7 +166,7 @@ thead tr {
 
 th {
     text-align: left;
-    padding: 0 24px;
+    padding: 0 16px;
     font-size: 13px;
     font-weight: 600;
     color: var(--color-text-secondary);
@@ -176,21 +176,15 @@ th {
 }
 
 tbody tr {
-    height: 72px;
+    height: 56px;
     transition: all 0.2s ease;
     cursor: default;
 }
 
-tbody tr:hover {
-    background-color: var(--color-bg-primary);
-    transform: scale(1.002);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    z-index: 10;
-    position: relative;
-}
+
 
 td {
-    padding: 0 24px;
+    padding: 0 16px;
     font-size: 15px;
     color: var(--color-text-primary);
     border-bottom: 1px solid var(--color-border);

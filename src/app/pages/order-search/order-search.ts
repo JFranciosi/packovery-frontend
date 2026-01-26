@@ -78,11 +78,22 @@ export class OrderSearch implements OnInit {
     selectedWeightLabel = '';
     selectedSizeLabel = '';
 
+
+
     offset = 0;
     limit = 20;
     currentPage = 1;
     hasMoreOrders = true;
     isLoading = false;
+
+    // Rate limiting per il pulsante Cerca
+    searchClickTimes: number[] = [];
+    isSearchSpamming = false;
+    spamTimeout: any = null;
+    readonly MAX_CLICKS = 3; // Massimo 3 click
+    readonly CLICK_WINDOW = 1000; // in 1 secondo
+    readonly SPAM_COOLDOWN = 2000; // Cooldown di 2 secondi dopo lo spam
+
 
     ngOnInit() {
         this.loadSelectOptions();
@@ -182,6 +193,40 @@ export class OrderSearch implements OnInit {
     }
 
     searchOrders() {
+        const now = Date.now();
+
+        // Se è già in modalità spam, ignora il click
+        if (this.isSearchSpamming) {
+            return;
+        }
+
+        // Registra il click corrente
+        this.searchClickTimes.push(now);
+
+        // Rimuovi i click più vecchi della finestra temporale
+        this.searchClickTimes = this.searchClickTimes.filter(
+            time => now - time < this.CLICK_WINDOW
+        );
+
+        // Se ci sono troppi click nella finestra temporale, attiva modalità spam
+        if (this.searchClickTimes.length > this.MAX_CLICKS) {
+            this.isSearchSpamming = true;
+
+            // Pulisci il timeout precedente se esiste
+            if (this.spamTimeout) {
+                clearTimeout(this.spamTimeout);
+            }
+
+            // Dopo il cooldown, disattiva la modalità spam
+            this.spamTimeout = setTimeout(() => {
+                this.isSearchSpamming = false;
+                this.searchClickTimes = [];
+            }, this.SPAM_COOLDOWN);
+
+            return; // Non eseguire la ricerca
+        }
+
+        // Esegui la ricerca normalmente
         this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
@@ -378,6 +423,34 @@ export class OrderSearch implements OnInit {
             case 'L': return 'L (31cm - 45cm)';
             case 'XL': return 'XL (46cm - 100cm)';
             default: return scale;
+        }
+    }
+
+    getWeightShort(scale: string): string {
+        return scale; // Restituisce solo S, M, L, XL
+    }
+
+    getSizeShort(scale: string): string {
+        return scale; // Restituisce solo S, M, L, XL
+    }
+
+    getWeightTooltip(scale: string): string {
+        switch (scale) {
+            case 'S': return '1g - 90g';
+            case 'M': return '1kg - 3kg';
+            case 'L': return '3kg - 5kg';
+            case 'XL': return '6kg - 10kg';
+            default: return '';
+        }
+    }
+
+    getSizeTooltip(scale: string): string {
+        switch (scale) {
+            case 'S': return '1cm - 15cm';
+            case 'M': return '16cm - 30cm';
+            case 'L': return '31cm - 45cm';
+            case 'XL': return '46cm - 100cm';
+            default: return '';
         }
     }
 }

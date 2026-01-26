@@ -45,5 +45,8 @@ export class Chat implements OnInit {
         });
 
         this.newMessage = '';
+
+        // Chiudi la chat dopo l'invio del messaggio
+        this.closeChat();
     }
 }

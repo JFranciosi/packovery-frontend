@@ -212,6 +212,8 @@
     justify-content: center;
     border-radius: 50%;
     transition: all 0.2s;
+    background: transparent;
+    border: none;
 }
 
 .clear-field:hover {
@@ -299,15 +301,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
 }
 
-.btn-search:hover {
+.btn-search:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(87, 103, 174, 0.35);
 }
 
-.btn-search:active {
+.btn-search:active:not(:disabled) {
     transform: scale(0.98);
+}
+
+.btn-search:disabled,
+.btn-search.spamming {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #9ca3c4 0%, #8a91b0 100%);
+    box-shadow: 0 2px 8px rgba(87, 103, 174, 0.15);
+}
+
+.btn-search:disabled:hover,
+.btn-search.spamming:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(87, 103, 174, 0.15);
+}
+
+.spinner-small {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.6s linear infinite;
 }
 
 .table-container {
@@ -342,31 +368,30 @@ thead tr {
 
 th {
     text-align: left;
-    padding: 0 24px;
+    padding: 0 16px;
     font-size: 13px;
     font-weight: 600;
     color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    background-color: var(--color-bg-primary);
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 tbody tr {
-    height: 72px;
+    height: 56px;
     transition: all 0.2s ease;
     cursor: default;
 }
 
-tbody tr:hover {
-    background-color: var(--color-bg-primary);
-    transform: scale(1.002);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    z-index: 10;
-    position: relative;
-}
+
 
 td {
-    padding: 0 24px;
+    padding: 0 16px;
     font-size: 15px;
     color: var(--color-text-primary);
     border-bottom: 1px solid var(--color-border);
@@ -386,6 +411,20 @@ td[data-label="ID ordine"] {
 
 td[data-label="Stato"] {
     font-weight: 600;
+}
+
+/* Tooltip styling for weight and size cells */
+.weight-cell,
+.size-cell {
+    cursor: help;
+    font-weight: 600;
+    position: relative;
+    text-align: center;
+}
+
+.weight-cell:hover,
+.size-cell:hover {
+    color: var(--color-primary);
 }
 
 td.action-cell {

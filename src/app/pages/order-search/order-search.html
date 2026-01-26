@@ -84,13 +84,15 @@
                     <input type="text" placeholder="..." [value]="filters.originCity"
                         (input)="onOriginCityInput($event)" (focus)="onOriginCityInput($event)">
                     @if (filters.originCity) {
-                    <span class="clear-field" (click)="filters.originCity = ''; isOriginCityOpen = false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button type="button" class="clear-field"
+                        (click)="filters.originCity = ''; isOriginCityOpen = false"
+                        aria-label="Cancella filtro città di partenza">
+                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
-                    </span>
+                    </button>
                     }
                 </div>
                 @if (isOriginCityOpen && filteredOriginCities.length > 0) {
@@ -110,13 +112,14 @@
                     <input type="text" placeholder="..." [value]="filters.destCity" (input)="onDestCityInput($event)"
                         (focus)="onDestCityInput($event)">
                     @if (filters.destCity) {
-                    <span class="clear-field" (click)="filters.destCity = ''; isDestCityOpen = false">
+                    <button type="button" class="clear-field" (click)="filters.destCity = ''; isDestCityOpen = false"
+                        aria-label="Cancella filtro città di destinazione">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
-                    </span>
+                    </button>
                     }
                 </div>
                 @if (isDestCityOpen && filteredDestCities.length > 0) {
@@ -143,14 +146,15 @@
                         {{ selectedWeightLabel || '----' }}
                     </div>
                     @if (filters.weight) {
-                    <span class="clear-field"
-                        (click)="filters.weight = ''; selectedWeightLabel = ''; $event.stopPropagation()">
+                    <button type="button" class="clear-field"
+                        (click)="filters.weight = ''; selectedWeightLabel = ''; $event.stopPropagation()"
+                        aria-label="Cancella filtro peso">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
-                    </span>
+                    </button>
                     }
                     <span class="chevron">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -177,14 +181,15 @@
                         {{ selectedSizeLabel || '----' }}
                     </div>
                     @if (filters.size) {
-                    <span class="clear-field"
-                        (click)="filters.size = ''; selectedSizeLabel = ''; $event.stopPropagation()">
+                    <button type="button" class="clear-field"
+                        (click)="filters.size = ''; selectedSizeLabel = ''; $event.stopPropagation()"
+                        aria-label="Cancella filtro dimensione">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
-                    </span>
+                    </button>
                     }
                     <span class="chevron">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -207,7 +212,15 @@
             <!-- Actions -->
             <div class="filter-group filter-action">
                 <label>&nbsp;</label>
-                <button class="btn-search" (click)="searchOrders()">Cerca</button>
+                <button class="btn-search" [class.spamming]="isSearchSpamming" [disabled]="isSearchSpamming"
+                    (click)="searchOrders()">
+                    @if (isSearchSpamming) {
+                    <div class="spinner-small"></div>
+                    <span>Attendi...</span>
+                    } @else {
+                    Cerca
+                    }
+                </button>
             </div>
         </div>
 
@@ -223,12 +236,12 @@
                     <tr>
                         <th style="width: 10%;">ID ordine</th>
                         <th style="width: 12%;">Stato</th>
-                        <th style="width: 20%;">Partenza</th>
-                        <th style="width: 20%;">Arrivo</th>
+                        <th style="width: 15%;">Partenza</th>
+                        <th style="width: 15%;">Arrivo</th>
                         <th style="width: 12%;">Data</th>
-                        <th style="width: 10%;">Peso</th>
-                        <th style="width: 12%;">Dimensione</th>
-                        <th style="width: 4%; text-align: right;">Azioni</th>
+                        <th style="width: 12%; text-align: center;">Peso</th>
+                        <th style="width: 16%; text-align: center;">Dimensione</th>
+                        <th style="width: 8%; text-align: right;">Azioni</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -243,8 +256,14 @@
                         <td [attr.data-label]="'Partenza'">{{ order.departureLocation }}</td>
                         <td [attr.data-label]="'Arrivo'">{{ order.deliveryLocation }}</td>
                         <td [attr.data-label]="'Data'">{{ order.plannedDeliveryTime | date:'dd/MM/yyyy' }}</td>
-                        <td [attr.data-label]="'Peso'">{{ getWeightLabel(order.packageWeight) }}</td>
-                        <td [attr.data-label]="'Dimensione'">{{ getSizeLabel(order.packageSize) }}</td>
+                        <td [attr.data-label]="'Peso'" [title]="getWeightTooltip(order.packageWeight)"
+                            class="weight-cell">
+                            {{ getWeightShort(order.packageWeight) }}
+                        </td>
+                        <td [attr.data-label]="'Dimensione'" [title]="getSizeTooltip(order.packageSize)"
+                            class="size-cell">
+                            {{ getSizeShort(order.packageSize) }}
+                        </td>
                         <td class="action-cell">
                             <a [routerLink]="['/order-details', order.id]" class="doc-icon" title="Vedi dettagli"
                                 [attr.aria-label]="'Vedi dettagli ordine ' + order.id">

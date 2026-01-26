@@ -156,6 +156,8 @@
     justify-content: center;
     border-radius: 50%;
     transition: all 0.2s;
+    background: transparent;
+    border: none;
 }
 
 .filter-group input+.clear-field {

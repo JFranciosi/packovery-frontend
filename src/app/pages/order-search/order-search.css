@@ -321,6 +321,12 @@
     display: block;
 }
 
+@media (min-width: 1280px) {
+    .table-container {
+        overflow-x: hidden;
+    }
+}
+
 table {
     width: 100%;
     border-collapse: separate;

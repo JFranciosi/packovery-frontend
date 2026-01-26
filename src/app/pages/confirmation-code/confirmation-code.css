@@ -74,8 +74,6 @@
     color: #b0b0b0;
 }
 
-/* Removed .btn-link styles as they are replaced by .resend-section */
-
 .login-form {
     width: 100%;
     max-width: 450px;
@@ -201,7 +199,6 @@
     background: none;
     border: none;
     color: #5C6BC0;
-    /* Matching btn-submit color */
     cursor: pointer;
     text-decoration: underline;
     font-size: inherit;
@@ -218,4 +215,20 @@
     color: #999;
     cursor: not-allowed;
     text-decoration: none;
+}
+
+.error-message {
+    text-align: center;
+    color: #dc3545;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    text-align: center;
+    color: #28a745;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-size: 0.9rem;
 }

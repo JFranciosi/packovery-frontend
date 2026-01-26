@@ -97,14 +97,14 @@
 }
 
 .filter-group label {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    height: 16px;
-    line-height: 16px;
+    margin-bottom: 6px;
     display: block;
+    min-height: 14px;
 }
 
 .filter-group input,
@@ -317,7 +317,7 @@
     padding-bottom: 8px;
     height: calc(100vh - 280px);
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     display: block;
 }
 
@@ -480,52 +480,7 @@ td.action-cell {
     }
 }
 
-@media (max-width: 1280px) {
-    .main-content {
-        padding: 20px;
-    }
-
-    .filters-container {
-        grid-template-columns: repeat(2, 1fr);
-        padding: 16px;
-    }
-
-    .table-container {
-        overflow-x: visible;
-    }
-
-    table {
-        min-width: 0;
-        width: 100%;
-        table-layout: auto;
-    }
-
-    th,
-    td {
-        padding: 8px 6px;
-        font-size: 12px;
-        white-space: normal;
-        word-wrap: break-word;
-        vertical-align: top;
-    }
-
-    th {
-        font-size: 10px;
-        line-height: 1.3;
-    }
-
-    .doc-icon {
-        width: 30px;
-        height: 30px;
-    }
-
-    .page-title {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     :host {
         height: 100vh;
         overflow: hidden;
@@ -564,6 +519,28 @@ td.action-cell {
         padding-bottom: 40px;
     }
 
+    .page-header {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .page-title {
+        font-size: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rider-grid {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-contact {
+        width: 100%;
+    }
+
     .filters-container {
         grid-template-columns: 1fr;
         padding: 20px;
@@ -585,7 +562,6 @@ td.action-cell {
     tr {
         display: block;
         min-width: 0;
-        /* Reset min-width for mobile cards */
     }
 
     thead tr {
@@ -629,7 +605,6 @@ td.action-cell {
     td {
         padding: 12px 20px;
         white-space: normal;
-        /* Allow text wrap in mobile cards */
     }
 
     td {

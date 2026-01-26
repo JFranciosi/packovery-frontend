@@ -406,7 +406,7 @@ input:checked+.slider:before {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     :host {
         height: 100vh;
         overflow: hidden;

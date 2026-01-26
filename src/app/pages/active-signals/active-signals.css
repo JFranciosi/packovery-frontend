@@ -19,6 +19,13 @@
     padding: 40px 60px;
     overflow-y: auto;
     animation: fadeInPage 0.5s ease-out;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1440px) {
+    .main-content {
+        padding: 30px;
+    }
 }
 
 @keyframes fadeInPage {
@@ -58,6 +65,8 @@
     gap: 20px;
     transition: background-color 0.2s ease;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .signal-card:hover {
@@ -87,9 +96,10 @@
 .signal-info {
     flex: 1;
     display: grid;
-    grid-template-columns: 180px 1fr 140px;
+    grid-template-columns: minmax(150px, auto) 1fr minmax(100px, auto);
     align-items: center;
     gap: 24px;
+    min-width: 0;
 }
 
 .signal-header {
@@ -190,22 +200,7 @@
     color: var(--color-text-primary);
 }
 
-@media (max-width: 1280px) {
-    .main-content {
-        padding: 20px;
-    }
-
-    .signal-info {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .signal-card {
-        padding: 16px;
-    }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     :host {
         height: 100vh;
         overflow: hidden;
@@ -238,9 +233,9 @@
 
     .signal-card {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-        padding: 20px;
+        align-items: stretch;
+        gap: 20px;
+        padding: 24px;
         width: 100%;
         max-width: 100%;
         box-sizing: border-box;
@@ -258,6 +253,12 @@
         width: 100%;
     }
 
+    .signal-time {
+        order: -1;
+        margin-bottom: 4px;
+        align-self: flex-start;
+    }
+
     .signal-action {
         width: 100%;
         margin-top: 8px;
@@ -266,7 +267,9 @@
     .btn-resolve {
         width: 100%;
         justify-content: center;
-        height: 44px;
+        height: 48px;
+        border-radius: 16px;
+        box-sizing: border-box;
     }
 }
 

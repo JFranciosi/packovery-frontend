@@ -1,0 +1,168 @@
+:host {
+    display: block;
+}
+
+.map-section {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius-main);
+    overflow: hidden;
+    margin-bottom: 32px;
+    background-color: var(--color-bg-surface);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.map-container {
+    height: 280px;
+    background-color: var(--color-secondary-light);
+    position: relative;
+    background-image: repeating-linear-gradient(45deg, var(--color-secondary-light) 0, var(--color-secondary-light) 10px, rgba(255, 255, 255, 0.5) 10px, rgba(255, 255, 255, 0.5) 20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-container.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5000;
+    border-radius: 0;
+}
+
+.fullscreen-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background: white;
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #4B5563;
+    transition: all 0.2s;
+}
+
+.fullscreen-toggle:hover {
+    background: #F3F4F6;
+    color: #1F2937;
+    transform: scale(1.05);
+}
+
+:host-context([data-theme="dark"]) .map-container {
+    background-image: repeating-linear-gradient(45deg, var(--color-bg-primary) 0, var(--color-bg-primary) 10px, var(--color-bg-surface) 10px, var(--color-bg-surface) 20px);
+    border-color: var(--color-border);
+}
+
+:host-context([data-theme="dark"]) .leaflet-layer,
+:host-context([data-theme="dark"]) .leaflet-control-zoom-in,
+:host-context([data-theme="dark"]) .leaflet-control-zoom-out,
+:host-context([data-theme="dark"]) .leaflet-control-attribution {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+:host-context([data-theme="dark"]) .leaflet-marker-icon,
+:host-context([data-theme="dark"]) .leaflet-marker-shadow,
+:host-context([data-theme="dark"]) .leaflet-popup-content-wrapper,
+:host-context([data-theme="dark"]) .leaflet-popup-tip {
+    filter: none;
+}
+
+:host-context([data-theme="dark"]) .leaflet-popup-content-wrapper,
+:host-context([data-theme="dark"]) .leaflet-popup-tip {
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+}
+
+.map-info-bar {
+    display: flex;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+}
+
+.info-segment {
+    flex: 1;
+    padding: 4px;
+    text-align: center;
+    border-right: 1px solid var(--color-border);
+    position: relative;
+}
+
+.info-segment:last-child {
+    border-right: none;
+}
+
+.info-segment label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.info-segment .value {
+    font-size: 15px;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .map-info-bar {
+        flex-direction: column;
+    }
+
+    .info-segment {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        padding: 16px;
+        text-align: left;
+    }
+}
+
+:host ::ng-deep .rider-position-icon {
+    background: transparent;
+    border: none;
+}
+
+:host ::ng-deep .rider-position-icon .pin {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ff0000;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+:host ::ng-deep .rider-position-icon .pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 0, 0, 0.5);
+    animation: rider-pulse 2s infinite;
+    z-index: -1;
+}
+
+@keyframes rider-pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+    }
+}

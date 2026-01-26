@@ -1,0 +1,64 @@
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SanitizeService } from '../../services/sanitize.service';
+import { OrderService } from '../../services/order.service';
+
+@Component({
+    selector: 'app-chat',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './chat.html',
+    styleUrls: ['./chat.css']
+})
+export class Chat implements OnInit {
+    private sanitizeService = inject(SanitizeService);
+    @Input() orderId!: string;
+    @Input() riderName!: string;
+    @Input() riderSurname!: string;
+    @Input() riderId!: string;
+    @Input() isOpen = false;
+
+    @Output() close = new EventEmitter<void>();
+
+    newMessage = '';
+    messages: { text: string, sender: 'user' | 'rider', time: string }[] = [];
+
+    ngOnInit() {
+
+        this.messages = [];
+    }
+
+    closeChat() {
+        this.close.emit();
+    }
+
+    onInputChange(event: any) {
+        this.newMessage = event.target.value;
+    }
+
+    private orderService = inject(OrderService);
+
+    sendMessage(val?: string) {
+        const sanitizedText = this.sanitizeService.sanitize(this.newMessage);
+        if (!sanitizedText) return;
+
+        this.orderService.sendMessageToRider(this.orderId, sanitizedText, this.riderId).subscribe({
+            next: () => {
+                this.messages.push({
+                    text: sanitizedText,
+                    sender: 'user',
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+
+                this.newMessage = '';
+                this.closeChat();
+            },
+            error: (err) => {
+                console.error('Failed to send message', err);
+                if (err.error) {
+                    console.error('Server response:', err.error);
+                }
+            }
+        });
+    }
+}

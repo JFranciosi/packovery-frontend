@@ -1,0 +1,42 @@
+
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { OrderResponse, FilterOrderRequest, SelectOptionsResponse, OrderDetailsResponse } from '../model/models';
+import { environment } from '../../environments/environment';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class OrderService {
+    private http = inject(HttpClient);
+    private apiUrl = `${environment.apiUrl}/order`;
+
+    getOrders(offset: number, limit: number): Observable<OrderResponse[]> {
+        const params = new HttpParams()
+            .set('offset', offset.toString())
+            .set('limit', limit.toString());
+        return this.http.get<OrderResponse[]>(this.apiUrl, { params });
+    }
+
+    getFilteredOrders(filter: FilterOrderRequest, offset: number, limit: number): Observable<OrderResponse[]> {
+        const params = new HttpParams()
+            .set('offset', offset.toString())
+            .set('limit', limit.toString());
+
+
+        return this.http.post<OrderResponse[]>(`${this.apiUrl}/filter`, filter, { params });
+    }
+
+    getOrderById(orderId: string): Observable<OrderDetailsResponse> {
+        return this.http.get<OrderDetailsResponse>(`${this.apiUrl}/${orderId}`);
+    }
+
+    getSelectOptions(): Observable<SelectOptionsResponse> {
+        return this.http.get<SelectOptionsResponse>(`${this.apiUrl}/select-options`);
+    }
+
+    sendMessageToRider(orderId: string, messageContent: string, riderId: string): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/message`, { orderId, messageContent, riderId });
+    }
+}

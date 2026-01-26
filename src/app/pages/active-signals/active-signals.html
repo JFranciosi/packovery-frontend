@@ -1,0 +1,116 @@
+<div class="layout-container">
+    <header class="mobile-header">
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="60" rx="15" fill="white" />
+                <path d="M0 15C0 6.71573 6.71573 0 15 0H45C53.2843 0 60 6.71573 60 15V30H0V15Z" fill="#9ACD32" />
+                <path d="M0 30H60V45C60 53.2843 53.2843 60 45 60H15C6.71573 60 0 53.2843 0 45V30Z" fill="#4A69BD" />
+                <rect x="18" y="18" width="24" height="24" rx="8" fill="white" />
+                <circle cx="30" cy="12" r="4" fill="#4A69BD" />
+                <circle cx="30" cy="48" r="4" fill="#9ACD32" />
+            </svg>
+        </div>
+        <button class="menu-toggle" (click)="toggleSidebar()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </header>
+
+    <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
+
+    <main class="main-content">
+        <h2 class="page-title">Segnalazioni attive</h2>
+
+        <app-alert-filter [typologyOptions]="typologyOptions" [initialFilters]="filters" [showOrderId]="true"
+            (filterChange)="onFilterChange($event)">
+        </app-alert-filter>
+
+        <div class="signals-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+            [scrollWindow]="false" (scrolled)="onScroll()">
+            @if (isLoading) {
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Caricamento segnalazioni...</p>
+            </div>
+            } @else {
+            @for (s of paginatedReports; track s.id) {
+            <div [class]="'signal-card ' + getTypologyClass(s.alertTypology)">
+                <div class="signal-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                        </path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <div class="signal-info">
+                    <div class="signal-header">
+                        <h3>ID ordine: {{ s.orderId }}</h3>
+                        <span class="alert-id">ID alert: {{ s.alertId }} - {{ s.alertName }}</span>
+                    </div>
+                    <div class="signal-desc">{{ getTypologyLabel(s.alertTypology) }}</div>
+                    <div class="signal-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        {{ formatDate(s.issueActivatedTime) }}
+                    </div>
+                </div>
+                <div class="signal-action">
+                    <button class="btn-resolve" (click)="resolveSignal(s)">
+                        Risolvi
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            } @empty {
+            <div class="empty-state">
+                @if (isOffline) {
+                <div class="offline-message">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                        <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                    </svg>
+                    <h3>Connessione assente</h3>
+                    <button class="btn-retry" (click)="loadReports()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        Riprova
+                    </button>
+                </div>
+                } @else {
+                <p>Tutto sotto controllo. Nessun alert attivo.</p>
+                }
+            </div>
+            }
+            }
+        </div>
+    </main>
+
+    @if (showResolvePopup) {
+    <app-resolve-signal-popup [report]="selectedReport" (close)="closeResolvePopup()"
+        (confirm)="confirmResolve($event)">
+    </app-resolve-signal-popup>
+    }
+</div>

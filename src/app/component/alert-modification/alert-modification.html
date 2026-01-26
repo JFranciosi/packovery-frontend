@@ -1,0 +1,105 @@
+<div class="layout-container">
+    <header class="mobile-header">
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="60" rx="15" fill="white" />
+                <path d="M0 15C0 6.71573 6.71573 0 15 0H45C53.2843 0 60 6.71573 60 15V30H0V15Z" fill="#9ACD32" />
+                <path d="M0 30H60V45C60 53.2843 53.2843 60 45 60H15C6.71573 60 0 53.2843 0 45V30Z" fill="#4A69BD" />
+                <rect x="18" y="18" width="24" height="24" rx="8" fill="white" />
+                <circle cx="30" cy="12" r="4" fill="#4A69BD" />
+                <circle cx="30" cy="48" r="4" fill="#9ACD32" />
+            </svg>
+        </div>
+        <button class="menu-toggle" (click)="toggleSidebar()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </header>
+
+    <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Modifica alert</h1>
+            <button class="btn-back" routerLink="/alert-configurator">
+                Torna indietro
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="flip-icon">
+                    <polyline points="9 14 4 9 9 4"></polyline>
+                    <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="form-container">
+            @if (isLoading) {
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+            }
+
+            @if (errorMessage) {
+            <div class="error-banner">
+                {{ errorMessage }}
+            </div>
+            }
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <label>ID alert</label>
+                    <input type="text" [value]="alert.id" readonly class="readonly-input">
+                </div>
+                <div class="form-group flex-1">
+                    <label>Tipologia</label>
+                    <input type="text" [value]="alert.type" readonly class="readonly-input">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" [value]="alert.name" readonly class="readonly-input">
+            </div>
+
+            <div class="form-group">
+                <label>Descrizione</label>
+                <textarea [value]="alert.description" rows="5" readonly class="readonly-input"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Soglia</label>
+                <div class="threshold-wrapper">
+                    <input type="text" [value]="alert.threshold" (input)="updateThreshold($event)"
+                        class="threshold-input">
+                    <div class="quick-add-buttons">
+                        <button type="button" (click)="addTime(0.5)">+0.5h</button>
+                        <button type="button" (click)="addTime(1)">+1h</button>
+                        <button type="button" (click)="addTime(2)">+2h</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <div class="form-group status-group">
+                    <label>Stato</label>
+                    <div class="status-toggle-wrapper">
+                        <label class="switch">
+                            <input type="checkbox" [checked]="alert.active" (change)="updateActive($event)">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="status-label">{{ alert.active ? 'Attivo' : 'Non attivo' }}</span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-modify" (click)="modifyAlert()">
+                        Modifica alert
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>

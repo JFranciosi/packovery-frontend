@@ -1,0 +1,316 @@
+<div class="layout-container">
+    <header class="mobile-header">
+        <div class="logo-mobile">
+            <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="60" rx="12" fill="white" />
+                <path d="M10 20C10 14.4772 14.4772 10 20 10H40C45.5228 10 50 14.4772 50 20V30H10V20Z" fill="#A4D05F" />
+                <path d="M10 30H50V40C50 45.5228 45.5228 50 40 50H20C14.4772 50 10 45.5228 10 40V30Z" fill="#4B68B8" />
+                <rect x="22" y="16" width="16" height="28" rx="6" fill="white" />
+            </svg>
+        </div>
+        <button class="menu-toggle" (click)="toggleSidebar()" aria-label="Apri menu laterale">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </header>
+
+    <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
+
+    <main class="main-content">
+        <h1 class="page-title">Ricerca ordine</h1>
+
+        <div class="filters-container">
+            <div class="filter-group">
+                <label for="filter-order-id">ID ordine</label>
+                <div class="input-wrapper">
+                    <input type="text" id="filter-order-id" placeholder="..." [value]="filters.orderId"
+                        (input)="onOrderIdInput($event)">
+                    @if (filters.orderId) {
+                    <button type="button" class="clear-field" (click)="filters.orderId = ''"
+                        aria-label="Cancella ID ordine">
+                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <div class="filter-group relative">
+                <label id="label-status">Stato</label>
+                <div class="select-wrapper" (click)="toggleDropdown('status'); $event.stopPropagation()" role="combobox"
+                    aria-haspopup="listbox" [attr.aria-expanded]="isStatusOpen" aria-labelledby="label-status">
+                    <div class="custom-select-trigger">
+                        {{ selectedStatusLabel || '----' }}
+                    </div>
+                    @if (filters.status) {
+                    <button type="button" class="clear-field"
+                        (click)="filters.status = ''; selectedStatusLabel = ''; $event.stopPropagation()"
+                        aria-label="Cancella filtro stato">
+                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    }
+                    <span class="chevron" aria-hidden="true">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                </div>
+                @if (isStatusOpen) {
+                <div class="custom-dropdown-options">
+                    @for (opt of statusOptions; track opt.value) {
+                    <div class="option" (click)="selectOption('status', opt)">
+                        {{ opt.label }}
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="filter-group relative" (click)="$event.stopPropagation()">
+                <label>Città di partenza</label>
+                <div class="input-wrapper">
+                    <input type="text" placeholder="..." [value]="filters.originCity"
+                        (input)="onOriginCityInput($event)" (focus)="onOriginCityInput($event)">
+                    @if (filters.originCity) {
+                    <button type="button" class="clear-field"
+                        (click)="filters.originCity = ''; isOriginCityOpen = false"
+                        aria-label="Cancella filtro città di partenza">
+                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    }
+                </div>
+                @if (isOriginCityOpen && filteredOriginCities.length > 0) {
+                <div class="custom-dropdown-options">
+                    @for (city of filteredOriginCities; track city.nome) {
+                    <div class="option" (click)="selectOriginCity(city)">
+                        {{ city.nome }} ({{ city.sigla }})
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="filter-group relative" (click)="$event.stopPropagation()">
+                <label>Città di destinazione</label>
+                <div class="input-wrapper">
+                    <input type="text" placeholder="..." [value]="filters.destCity" (input)="onDestCityInput($event)"
+                        (focus)="onDestCityInput($event)">
+                    @if (filters.destCity) {
+                    <button type="button" class="clear-field" (click)="filters.destCity = ''; isDestCityOpen = false"
+                        aria-label="Cancella filtro città di destinazione">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    }
+                </div>
+                @if (isDestCityOpen && filteredDestCities.length > 0) {
+                <div class="custom-dropdown-options">
+                    @for (city of filteredDestCities; track city.nome) {
+                    <div class="option" (click)="selectDestCity(city)">
+                        {{ city.nome }} ({{ city.sigla }})
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="filter-group relative" (click)="$event.stopPropagation()">
+                <label>Data creazione ordine</label>
+                <app-date-picker [date]="filters.date" placeholder="gg/mm/aaaa" (dateChange)="filters.date = $event">
+                </app-date-picker>
+            </div>
+
+            <div class="filter-group relative">
+                <label>Peso</label>
+                <div class="select-wrapper" (click)="toggleDropdown('weight'); $event.stopPropagation()">
+                    <div class="custom-select-trigger">
+                        {{ selectedWeightLabel || '----' }}
+                    </div>
+                    @if (filters.weight) {
+                    <button type="button" class="clear-field"
+                        (click)="filters.weight = ''; selectedWeightLabel = ''; $event.stopPropagation()"
+                        aria-label="Cancella filtro peso">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    }
+                    <span class="chevron">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                </div>
+                @if (isWeightOpen) {
+                <div class="custom-dropdown-options">
+                    @for (opt of weightOptions; track opt.value) {
+                    <div class="option" (click)="selectOption('weight', opt)">
+                        {{ opt.label }}
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="filter-group relative">
+                <label>Dimensione</label>
+                <div class="select-wrapper" (click)="toggleDropdown('size'); $event.stopPropagation()">
+                    <div class="custom-select-trigger">
+                        {{ selectedSizeLabel || '----' }}
+                    </div>
+                    @if (filters.size) {
+                    <button type="button" class="clear-field"
+                        (click)="filters.size = ''; selectedSizeLabel = ''; $event.stopPropagation()"
+                        aria-label="Cancella filtro dimensione">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    }
+                    <span class="chevron">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                </div>
+                @if (isSizeDropdownOpen) {
+                <div class="custom-dropdown-options">
+                    @for (opt of sizeOptions; track opt.value) {
+                    <div class="option" (click)="selectOption('size', opt)">
+                        {{ opt.label }}
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="filter-group filter-action">
+                <label>&nbsp;</label>
+                <button class="btn-search" [class.spamming]="isSearchSpamming" (click)="searchOrders()">
+                    @if (isSearchSpamming) {
+                    <div class="spinner-small"></div>
+                    <span>Attendi...</span>
+                    } @else {
+                    Cerca
+                    }
+                </button>
+            </div>
+        </div>
+
+        <div class="table-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+            [scrollWindow]="false" (scrolled)="onScroll()">
+            @if (isLoading) {
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+            }
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">ID ordine</th>
+                        <th style="width: 12%;">Stato</th>
+                        <th style="width: 15%;">Partenza</th>
+                        <th style="width: 15%;">Arrivo</th>
+                        <th style="width: 12%;">Data</th>
+                        <th style="width: 12%; text-align: center;">Peso</th>
+                        <th style="width: 16%; text-align: center;">Dimensione</th>
+                        <th style="width: 8%; text-align: right;">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (order of orders; track order.id) {
+                    <tr>
+                        <td [attr.data-label]="'ID ordine'">{{ order.id }}</td>
+                        <td [attr.data-label]="'Stato'">
+                            <span class="status-badge" [class]="order.status.toLowerCase().replace(' ', '-')">
+                                {{ getStatusLabel(order.status) }}
+                            </span>
+                        </td>
+                        <td [attr.data-label]="'Partenza'">{{ order.departureLocation }}</td>
+                        <td [attr.data-label]="'Arrivo'">{{ order.deliveryLocation }}</td>
+                        <td [attr.data-label]="'Data'">{{ order.plannedDeliveryTime | date:'dd/MM/yyyy' }}</td>
+                        <td [attr.data-label]="'Peso'" [title]="getWeightTooltip(order.packageWeight)"
+                            class="weight-cell">
+                            {{ getWeightShort(order.packageWeight) }}
+                        </td>
+                        <td [attr.data-label]="'Dimensione'" [title]="getSizeTooltip(order.packageSize)"
+                            class="size-cell">
+                            {{ getSizeShort(order.packageSize) }}
+                        </td>
+                        <td class="action-cell">
+                            <a [routerLink]="['/order-details', order.id]" class="doc-icon" title="Vedi dettagli"
+                                [attr.aria-label]="'Vedi dettagli ordine ' + order.id">
+                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="8" class="empty-message">
+                            @if (isOffline) {
+                            <div class="offline-message">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                                    <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                                    <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                                    <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                                </svg>
+                                <h3>Connessione assente</h3>
+                                <button class="btn-retry" (click)="searchOrders()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="23 4 23 10 17 10"></polyline>
+                                        <polyline points="1 20 1 14 7 14"></polyline>
+                                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15">
+                                        </path>
+                                    </svg>
+                                    Riprova
+                                </button>
+                            </div>
+                            } @else {
+                            <div class="no-results">
+                                Nessun ordine trovato
+                            </div>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>

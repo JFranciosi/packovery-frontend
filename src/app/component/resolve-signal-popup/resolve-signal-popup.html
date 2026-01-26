@@ -1,0 +1,38 @@
+@if (report) {
+<div class="popup-overlay" (click)="closePopup()">
+    <div class="popup-container" (click)="$event.stopPropagation()">
+        <div class="popup-header">
+            <h3>Risolvi Segnalazione</h3>
+            <button class="btn-close" (click)="closePopup()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popup-body">
+            <div class="signal-summary">
+                <p><strong>ID Ordine:</strong> {{ report.orderId }}</p>
+                <p><strong>ID Alert:</strong> {{ report.alertId }} - {{ report.alertName }}</p>
+                <p><strong>Tipologia:</strong> {{ getTypologyLabel(report.alertTypology) }}</p>
+            </div>
+            <div class="form-group">
+                <label for="resolution-description">Descrizione della risoluzione</label>
+                <textarea id="resolution-description" [(ngModel)]="resolutionDescription"
+                    placeholder="Inserisci una descrizione della risoluzione..." rows="5"></textarea>
+            </div>
+        </div>
+        <div class="popup-footer">
+            <button class="btn-cancel" (click)="closePopup()">Annulla</button>
+            <button class="btn-confirm" (click)="confirmResolve()">
+                Conferma Risoluzione
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+}

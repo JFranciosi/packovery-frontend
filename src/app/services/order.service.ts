@@ -35,4 +35,8 @@ export class OrderService {
     getSelectOptions(): Observable<SelectOptionsResponse> {
         return this.http.get<SelectOptionsResponse>(`${this.apiUrl}/select-options`);
     }
+
+    sendMessageToRider(orderId: string, messageContent: string, riderId: string): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/message`, { orderId, messageContent, riderId });
+    }
 }

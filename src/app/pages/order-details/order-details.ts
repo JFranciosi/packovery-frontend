@@ -28,6 +28,7 @@ export class OrderDetails implements OnInit {
     };
 
     rider = {
+        id: '',
         name: '',
         surname: '',
         estimatedArrival: '',
@@ -125,6 +126,7 @@ export class OrderDetails implements OnInit {
             if (typeof mapGps.rider === 'object' && mapGps.rider.firstName) {
                 this.rider.name = mapGps.rider.firstName || '';
                 this.rider.surname = mapGps.rider.lastName || '';
+                this.rider.id = mapGps.rider.id || ''; // Save rider ID
             } else if (typeof mapGps.rider === 'string') {
                 const parts = mapGps.rider.trim().split(' ');
                 this.rider.name = parts[0] || '';

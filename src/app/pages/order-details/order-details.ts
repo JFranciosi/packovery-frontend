@@ -122,9 +122,14 @@ export class OrderDetails implements OnInit {
         };
 
         if (mapGps?.rider) {
-            const parts = mapGps.rider.trim().split(' ');
-            this.rider.name = parts[0] || '';
-            this.rider.surname = parts.slice(1).join(' ') || '';
+            if (typeof mapGps.rider === 'object' && mapGps.rider.firstName) {
+                this.rider.name = mapGps.rider.firstName || '';
+                this.rider.surname = mapGps.rider.lastName || '';
+            } else if (typeof mapGps.rider === 'string') {
+                const parts = mapGps.rider.trim().split(' ');
+                this.rider.name = parts[0] || '';
+                this.rider.surname = parts.slice(1).join(' ') || '';
+            }
             this.rider.transport = (this.rider.name && this.rider.surname) ? 'Automobile' : '';
         }
 

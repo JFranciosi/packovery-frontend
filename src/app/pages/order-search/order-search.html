@@ -211,8 +211,7 @@
 
             <div class="filter-group filter-action">
                 <label>&nbsp;</label>
-                <button class="btn-search" [class.spamming]="isSearchSpamming" [disabled]="isSearchSpamming"
-                    (click)="searchOrders()">
+                <button class="btn-search" [class.spamming]="isSearchSpamming" (click)="searchOrders()">
                     @if (isSearchSpamming) {
                     <div class="spinner-small"></div>
                     <span>Attendi...</span>

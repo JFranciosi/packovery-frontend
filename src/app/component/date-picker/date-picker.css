@@ -26,7 +26,6 @@
     border-color: #b0b0b0;
 }
 
-/* Simulate focus state if needed, or rely on logic */
 .input-wrapper.focused {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 4px rgba(87, 103, 174, 0.1);
@@ -153,10 +152,8 @@
     overflow-y: auto;
     margin-bottom: 8px;
     padding-right: 4px;
-    /* Space for scrollbar */
 }
 
-/* Custom Scrollbar for years */
 .calendar-years::-webkit-scrollbar {
     width: 4px;
 }
@@ -199,7 +196,6 @@
     font-size: 14px;
     cursor: pointer;
     border-radius: 50%;
-    /* Rounded selection */
     color: var(--color-text-primary);
     transition: all 0.2s;
     position: relative;

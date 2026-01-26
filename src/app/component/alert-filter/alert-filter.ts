@@ -36,7 +36,6 @@ export class AlertFilterComponent implements OnInit {
                 status: this.initialFilters.status || '',
                 orderId: this.initialFilters.orderId || ''
             };
-            // Set initial labels
             if (this.filters.typology) {
                 const opt = this.typologyOptions.find(o => o.value === this.filters.typology);
                 if (opt) this.selectedTypologyLabel = opt.label;

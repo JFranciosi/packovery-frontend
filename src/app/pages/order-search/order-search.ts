@@ -87,13 +87,12 @@ export class OrderSearch implements OnInit {
     isLoading = false;
     isOffline = false;
 
-    // Rate limiting per il pulsante Cerca
     searchClickTimes: number[] = [];
     isSearchSpamming = false;
     spamTimeout: any = null;
-    readonly MAX_CLICKS = 3; // Massimo 3 click
-    readonly CLICK_WINDOW = 4000; // in 4 secondi
-    readonly SPAM_COOLDOWN = 2000; // Cooldown di 2 secondi dopo lo spam
+    readonly MAX_CLICKS = 3;
+    readonly CLICK_WINDOW = 4000;
+    readonly SPAM_COOLDOWN = 2000;
 
 
     ngOnInit() {
@@ -196,14 +195,11 @@ export class OrderSearch implements OnInit {
     searchOrders() {
         const now = Date.now();
 
-        // Se è già in modalità spam, resetta il timer e ignora il click
         if (this.isSearchSpamming) {
-            // Pulisci il timeout precedente per resettare il conto alla rovescia
             if (this.spamTimeout) {
                 clearTimeout(this.spamTimeout);
             }
 
-            // Imposta un nuovo timeout, estendendo di fatto il blocco
             this.spamTimeout = setTimeout(() => {
                 this.isSearchSpamming = false;
                 this.searchClickTimes = [];
@@ -212,38 +208,32 @@ export class OrderSearch implements OnInit {
             return;
         }
 
-        // Registra il click corrente
         this.searchClickTimes.push(now);
 
-        // Rimuovi i click più vecchi della finestra temporale
         this.searchClickTimes = this.searchClickTimes.filter(
             time => now - time < this.CLICK_WINDOW
         );
 
-        // Se ci sono troppi click nella finestra temporale, attiva modalità spam
         if (this.searchClickTimes.length > this.MAX_CLICKS) {
             this.isSearchSpamming = true;
 
-            // Pulisci il timeout precedente se esiste
             if (this.spamTimeout) {
                 clearTimeout(this.spamTimeout);
             }
 
-            // Dopo il cooldown, disattiva la modalità spam
             this.spamTimeout = setTimeout(() => {
                 this.isSearchSpamming = false;
                 this.searchClickTimes = [];
             }, this.SPAM_COOLDOWN);
 
-            return; // Non eseguire la ricerca
+            return;
         }
 
-        // Esegui la ricerca normalmente
         this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
-        this.orders = []; // Reset orders on new search
-        this.isOffline = false; // Reset stato offline
+        this.orders = [];
+        this.isOffline = false;
         this.loadOrders();
     }
 
@@ -265,7 +255,6 @@ export class OrderSearch implements OnInit {
                     this.isLoading = false;
                 },
                 error: (err) => {
-                    // Controlla se l'errore è dovuto a mancanza di connessione
                     if (!navigator.onLine || err.status === 0 || err.status === 504) {
                         this.isOffline = true;
                     }
@@ -300,7 +289,6 @@ export class OrderSearch implements OnInit {
                 this.isLoading = false;
             },
             error: (err) => {
-                // Controlla se l'errore è dovuto a mancanza di connessione
                 if (!navigator.onLine || err.status === 0 || err.status === 504) {
                     this.isOffline = true;
                 }
@@ -448,11 +436,11 @@ export class OrderSearch implements OnInit {
     }
 
     getWeightShort(scale: string): string {
-        return scale; // Restituisce solo S, M, L, XL
+        return scale;
     }
 
     getSizeShort(scale: string): string {
-        return scale; // Restituisce solo S, M, L, XL
+        return scale;
     }
 
     getWeightTooltip(scale: string): string {

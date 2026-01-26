@@ -1,5 +1,4 @@
 <div class="layout-container">
-    <!-- Mobile Header -->
     <header class="mobile-header">
         <div class="logo">
             <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,9 +22,7 @@
 
     <app-sidebar [isOpen]="isSidebarOpen" (close)="toggleSidebar()"></app-sidebar>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Header -->
         <div class="page-header">
             <h1 class="page-title">Modifica alert</h1>
             <button class="btn-back" routerLink="/alert-configurator">
@@ -50,7 +47,6 @@
                 {{ errorMessage }}
             </div>
             }
-            <!-- ID and Type (Side by Side) -->
             <div class="form-row">
                 <div class="form-group flex-1">
                     <label>ID alert</label>
@@ -62,19 +58,16 @@
                 </div>
             </div>
 
-            <!-- Nome -->
             <div class="form-group">
                 <label>Nome</label>
                 <input type="text" [value]="alert.name" readonly class="readonly-input">
             </div>
 
-            <!-- Descrizione -->
             <div class="form-group">
                 <label>Descrizione</label>
                 <textarea [value]="alert.description" rows="5" readonly class="readonly-input"></textarea>
             </div>
 
-            <!-- Soglia -->
             <div class="form-group">
                 <label>Soglia</label>
                 <div class="threshold-wrapper">
@@ -88,7 +81,6 @@
                 </div>
             </div>
 
-            <!-- Stato & Action Group -->
             <div class="footer-actions">
                 <div class="form-group status-group">
                     <label>Stato</label>

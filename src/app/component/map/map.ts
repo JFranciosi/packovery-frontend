@@ -146,12 +146,14 @@ export class Map implements AfterViewInit, OnDestroy, OnChanges {
         let startLat: number | null = null;
         let startLng: number | null = null;
 
-        if (this.isValidLocation(this.currentPosition)) {
-            startLat = this.currentPosition.lat;
-            startLng = this.currentPosition.lng;
+        if(this.currentPosition.lat != 0 && this.currentPosition.lng !=0) {
+            if (this.isValidLocation(this.currentPosition)) {
+                startLat = this.currentPosition.lat;
+                startLng = this.currentPosition.lng;
+            }
         } else if (this.isValidLocation(this.departure)) {
-            startLat = this.departure.lat;
-            startLng = this.departure.lng;
+                startLat = this.departure.lat;
+                startLng = this.departure.lng;
         }
 
         if (startLat !== null && startLng !== null && this.isValidLocation(this.arrival)) {

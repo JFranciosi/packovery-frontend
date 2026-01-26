@@ -119,7 +119,7 @@ export class Map implements AfterViewInit, OnDestroy, OnChanges {
 
         if (this.isValidLocation(this.departure)) {
             const m = L.marker([this.departure.lat, this.departure.lng]).addTo(this.map)
-                .bindPopup(`Punto di partenza: ${escapeHtml(this.departure.address || '')}`);
+                .bindPopup(`Partenza: ${escapeHtml(this.departure.address || '')}`);
             this.markers.push(m);
         }
 
@@ -139,12 +139,23 @@ export class Map implements AfterViewInit, OnDestroy, OnChanges {
 
             const m = L.marker([this.currentPosition.lat, this.currentPosition.lng], { icon })
                 .addTo(this.map)
-                .bindPopup('Posizione attuale');
+                .bindPopup('Posizione del rider');
             this.markers.push(m);
         }
 
-        if (this.isValidLocation(this.departure) && this.isValidLocation(this.arrival)) {
-            this.getRoute(this.departure.lat, this.departure.lng, this.arrival.lat, this.arrival.lng);
+        let startLat: number | null = null;
+        let startLng: number | null = null;
+
+        if (this.isValidLocation(this.currentPosition)) {
+            startLat = this.currentPosition.lat;
+            startLng = this.currentPosition.lng;
+        } else if (this.isValidLocation(this.departure)) {
+            startLat = this.departure.lat;
+            startLng = this.departure.lng;
+        }
+
+        if (startLat !== null && startLng !== null && this.isValidLocation(this.arrival)) {
+            this.getRoute(startLat, startLng, this.arrival.lat, this.arrival.lng);
         } else if (this.markers.length > 0) {
             const group = L.featureGroup(this.markers as any);
             this.map.fitBounds(group.getBounds(), { padding: [50, 50] });

@@ -2,13 +2,15 @@ import { Component, HostListener, ElementRef, inject, OnInit } from '@angular/co
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../component/sidebar/sidebar';
+
 import { LocationsService } from '../../services/locations.service';
 import { OrderService } from '../../services/order.service';
 import { OrderResponse, Comune, FilterOrderRequest } from '../../model/models';
+
 import { AuthService } from '../../services/auth.service';
-import { SanitizeService } from '../../services/sanitize.service';
 import { DatePickerComponent } from '../../component/date-picker/date-picker';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { SanitizeService } from '../../services/sanitize.service';
 
 @Component({
     selector: 'app-order-search',
@@ -69,6 +71,7 @@ export class OrderSearch implements OnInit {
     isDestCityOpen = false;
 
     orders: OrderResponse[] = [];
+    private mockOrders: OrderResponse[] = [];
 
     isStatusOpen = false;
     isWeightOpen = false;
@@ -78,23 +81,11 @@ export class OrderSearch implements OnInit {
     selectedWeightLabel = '';
     selectedSizeLabel = '';
 
-
-
     offset = 0;
-    limit = 20;
+    limit = 5;
     currentPage = 1;
     hasMoreOrders = true;
     isLoading = false;
-    isOffline = false;
-
-    // Rate limiting per il pulsante Cerca
-    searchClickTimes: number[] = [];
-    isSearchSpamming = false;
-    spamTimeout: any = null;
-    readonly MAX_CLICKS = 3; // Massimo 3 click
-    readonly CLICK_WINDOW = 4000; // in 4 secondi
-    readonly SPAM_COOLDOWN = 2000; // Cooldown di 2 secondi dopo lo spam
-
 
     ngOnInit() {
         this.loadSelectOptions();
@@ -104,6 +95,7 @@ export class OrderSearch implements OnInit {
     loadSavedFilters() {
         const user = this.authService.getUserEmail();
         if (user) {
+            console.log('Loading filters for user:', user);
             const saved = localStorage.getItem(`orderFilters_${user}`);
             if (saved) {
                 try {
@@ -125,6 +117,7 @@ export class OrderSearch implements OnInit {
                     this.searchOrders();
                     return;
                 } catch (e) {
+                    console.error('Error loading saved filters', e);
                 }
             }
         }
@@ -147,7 +140,7 @@ export class OrderSearch implements OnInit {
                         value: status
                     }));
                 } else {
-                    this.statusOptions = this.defaultStatusOptions;
+                    this.statusOptions = [];
                 }
 
                 if (data.packageScales && data.packageScales.length > 0) {
@@ -177,7 +170,8 @@ export class OrderSearch implements OnInit {
                 }
             },
             error: (err) => {
-                this.statusOptions = this.defaultStatusOptions;
+                console.warn('Failed to load select options, using defaults', err);
+                this.statusOptions = [];
                 this.weightOptions = this.defaultWeightOptions;
                 this.sizeOptions = this.defaultSizeOptions;
 
@@ -194,61 +188,15 @@ export class OrderSearch implements OnInit {
     }
 
     searchOrders() {
-        const now = Date.now();
-
-        // Se è già in modalità spam, resetta il timer e ignora il click
-        if (this.isSearchSpamming) {
-            // Pulisci il timeout precedente per resettare il conto alla rovescia
-            if (this.spamTimeout) {
-                clearTimeout(this.spamTimeout);
-            }
-
-            // Imposta un nuovo timeout, estendendo di fatto il blocco
-            this.spamTimeout = setTimeout(() => {
-                this.isSearchSpamming = false;
-                this.searchClickTimes = [];
-            }, this.SPAM_COOLDOWN);
-
-            return;
-        }
-
-        // Registra il click corrente
-        this.searchClickTimes.push(now);
-
-        // Rimuovi i click più vecchi della finestra temporale
-        this.searchClickTimes = this.searchClickTimes.filter(
-            time => now - time < this.CLICK_WINDOW
-        );
-
-        // Se ci sono troppi click nella finestra temporale, attiva modalità spam
-        if (this.searchClickTimes.length > this.MAX_CLICKS) {
-            this.isSearchSpamming = true;
-
-            // Pulisci il timeout precedente se esiste
-            if (this.spamTimeout) {
-                clearTimeout(this.spamTimeout);
-            }
-
-            // Dopo il cooldown, disattiva la modalità spam
-            this.spamTimeout = setTimeout(() => {
-                this.isSearchSpamming = false;
-                this.searchClickTimes = [];
-            }, this.SPAM_COOLDOWN);
-
-            return; // Non eseguire la ricerca
-        }
-
-        // Esegui la ricerca normalmente
         this.saveFilters();
         this.offset = 0;
         this.currentPage = 1;
-        this.orders = []; // Reset orders on new search
-        this.isOffline = false; // Reset stato offline
         this.loadOrders();
     }
 
+
+
     loadOrders() {
-        if (this.isLoading) return;
         this.isLoading = true;
 
         const hasFilters = Object.values(this.filters).some(v => v !== '');
@@ -257,18 +205,18 @@ export class OrderSearch implements OnInit {
             this.orderService.getOrders(this.offset, this.limit).subscribe({
                 next: (data) => {
                     if (data && data.length > 0) {
-                        this.orders = [...this.orders, ...data];
+                        this.orders = data;
                         this.hasMoreOrders = data.length === this.limit;
                     } else {
+                        console.warn('Backend non ha record, uso mock');
+                        this.orders = this.mockOrders;
                         this.hasMoreOrders = false;
                     }
                     this.isLoading = false;
                 },
                 error: (err) => {
-                    // Controlla se l'errore è dovuto a mancanza di connessione
-                    if (!navigator.onLine || err.status === 0 || err.status === 504) {
-                        this.isOffline = true;
-                    }
+                    console.warn('Backend offline, uso dati mock', err);
+                    this.orders = this.mockOrders;
                     this.hasMoreOrders = false;
                     this.isLoading = false;
                 }
@@ -278,7 +226,7 @@ export class OrderSearch implements OnInit {
 
         const request: FilterOrderRequest = {};
 
-        if (this.filters.orderId) request.id = this.filters.orderId;
+        if (this.filters.orderId) request.id = this.filters.orderId.toUpperCase();
         if (this.filters.status) request.status = this.filters.status;
         if (this.filters.originCity) request.departureLocation = this.filters.originCity;
         if (this.filters.destCity) request.deliveryLocation = this.filters.destCity;
@@ -292,28 +240,43 @@ export class OrderSearch implements OnInit {
         this.orderService.getFilteredOrders(request, this.offset, this.limit).subscribe({
             next: (data) => {
                 if (data && data.length > 0) {
-                    this.orders = [...this.orders, ...data];
+                    this.orders = data;
                     this.hasMoreOrders = data.length === this.limit;
                 } else {
+                    if (request.id) {
+                        this.orders = this.mockOrders.filter(o => o.id.includes(request.id!));
+                    } else {
+                        this.orders = [];
+                    }
                     this.hasMoreOrders = false;
                 }
                 this.isLoading = false;
             },
             error: (err) => {
-                // Controlla se l'errore è dovuto a mancanza di connessione
-                if (!navigator.onLine || err.status === 0 || err.status === 504) {
-                    this.isOffline = true;
-                }
+                console.warn('Backend offline, filtraggio locale su mock', err);
+                this.orders = this.mockOrders.filter(o => {
+                    let match = true;
+                    if (request.id && !o.id.includes(request.id)) match = false;
+                    if (request.status && o.status !== request.status) match = false;
+                    return match;
+                });
                 this.hasMoreOrders = false;
                 this.isLoading = false;
             }
         });
     }
 
-    onScroll() {
-        if (this.hasMoreOrders && !this.isLoading) {
-            this.offset += this.limit;
-            this.currentPage++;
+    nextPage() {
+        if (this.orders.length < this.limit) return;
+        this.offset += this.limit;
+        this.currentPage++;
+        this.loadOrders();
+    }
+
+    prevPage() {
+        if (this.offset > 0) {
+            this.offset -= this.limit;
+            this.currentPage--;
             this.loadOrders();
         }
     }
@@ -347,11 +310,11 @@ export class OrderSearch implements OnInit {
     }
 
     onOrderIdInput(event: any) {
-        this.filters.orderId = this.sanitizeService.sanitize(event.target.value, 50);
+        this.filters.orderId = event.target.value;
     }
 
     onOriginCityInput(event: any) {
-        const value = this.sanitizeService.sanitize(event.target.value, 100);
+        const value = event.target.value;
         this.filters.originCity = value;
         if (value.length >= 2) {
             this.locationsService.searchComuni(value).subscribe(cities => {
@@ -370,7 +333,7 @@ export class OrderSearch implements OnInit {
     }
 
     onDestCityInput(event: any) {
-        const value = this.sanitizeService.sanitize(event.target.value, 100);
+        const value = event.target.value;
         this.filters.destCity = value;
         if (value.length >= 2) {
             this.locationsService.searchComuni(value).subscribe(cities => {
@@ -404,7 +367,7 @@ export class OrderSearch implements OnInit {
     }
 
     logout() {
-        this.authService.logout().subscribe();
+        this.router.navigate(['/']);
     }
 
     @HostListener('document:click')
@@ -448,11 +411,11 @@ export class OrderSearch implements OnInit {
     }
 
     getWeightShort(scale: string): string {
-        return scale; // Restituisce solo S, M, L, XL
+        return scale;
     }
 
     getSizeShort(scale: string): string {
-        return scale; // Restituisce solo S, M, L, XL
+        return scale;
     }
 
     getWeightTooltip(scale: string): string {
@@ -474,4 +437,15 @@ export class OrderSearch implements OnInit {
             default: return '';
         }
     }
+
+    onScroll() {
+        if (this.hasMoreOrders && !this.isLoading) {
+            this.offset += this.limit;
+            this.currentPage++;
+            this.loadOrders();
+        }
+    }
+
+    isSearchSpamming = false;
+    isOffline = false;
 }

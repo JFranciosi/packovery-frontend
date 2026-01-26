@@ -53,15 +53,15 @@ export class AlertConfigurator implements OnInit, OnDestroy {
 
     loadSelectOptions() {
         this.alertService.getSelectOptions().subscribe({
-            next: (data) => {
-                if (data.alertTypologies && data.alertTypologies.length > 0) {
-                    this.typologyOptions = data.alertTypologies.map(t => ({
+            next: (data: string[]) => {
+                if (data && data.length > 0) {
+                    this.typologyOptions = data.map((t: string) => ({
                         label: this.getTypologyLabel(t),
                         value: t
                     }));
                 }
             },
-            error: (err) => console.warn('Failed to load alert typology options, using defaults', err)
+            error: (err: any) => console.warn('Failed to load alert typology options, using defaults', err)
         });
     }
 

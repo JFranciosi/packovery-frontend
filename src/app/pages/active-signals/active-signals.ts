@@ -5,6 +5,7 @@ import { SidebarComponent } from '../../component/sidebar/sidebar';
 import { ResolveSignalPopup } from '../../component/resolve-signal-popup/resolve-signal-popup';
 import { AlertFilterComponent } from '../../component/alert-filter/alert-filter';
 import { ReportService } from '../../services/report.service';
+import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
 import { ReportResponse } from '../../model/models';
 
@@ -37,6 +38,7 @@ export class ActiveSignals implements OnInit {
     showResolvePopup = false;
     selectedReport: ReportResponse | null = null;
 
+    private alertService = inject(AlertService);
     private reportService = inject(ReportService);
     private authService = inject(AuthService);
     private router = inject(Router);
@@ -48,16 +50,16 @@ export class ActiveSignals implements OnInit {
     }
 
     loadSelectOptions() {
-        this.reportService.getSelectOptions().subscribe({
-            next: (data) => {
-                if (data.alertTypologies && data.alertTypologies.length > 0) {
-                    this.typologyOptions = data.alertTypologies.map(t => ({
+        this.alertService.getSelectOptions().subscribe({
+            next: (data: string[]) => {
+                if (data && data.length > 0) {
+                    this.typologyOptions = data.map((t: string) => ({
                         label: this.getTypologyLabel(t),
                         value: t
                     }));
                 }
             },
-            error: (err) => console.warn('Failed to load report typology options, using defaults', err)
+            error: (err: any) => console.warn('Failed to load alert typology options, using defaults', err)
         });
     }
 

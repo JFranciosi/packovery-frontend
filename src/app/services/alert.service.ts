@@ -38,7 +38,7 @@ export class AlertService {
         );
     }
 
-    getSelectOptions(): Observable<import('../model/models').SelectOptionsResponse> {
-        return this.http.get<import('../model/models').SelectOptionsResponse>(`${this.apiUrl}/select-options`);
+    getSelectOptions(): Observable<string[]> {
+        return this.http.get<string[]>(`${this.apiUrl}/select-options`);
     }
 }
